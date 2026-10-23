@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#12453f">
-    <title>الربيع للمساحة</title>
+    <title>الربيع للمساحة | حاسبة مناسيب وميول وإحداثيات للمساحين</title>
+    <meta name="description" content="أدوات مساحية مجانية: حساب ميول الطرق والرامبات، مناسيب الصرف والترع، الميزانية والتوقيع المساحي، الإحداثيات، والقوانين المساحية مع أمثلة محلولة.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_EG">
+    <meta property="og:title" content="الربيع للمساحة">
+    <meta property="og:description" content="حاسبة مساحية للميول والمناسيب والصرف والإحداثيات مع قوانين وأمثلة.">
+    <meta property="og:image" content="logo.png">
+    <link rel="icon" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -202,6 +210,19 @@
         .f-ex { margin-top: 10px; padding: 10px 12px; background: var(--accent-soft); border-right: 5px solid var(--primary); border-radius: 8px; white-space: pre-line; line-height: 1.9; font-weight: 500; color: var(--ink); }
         .f-ex[hidden] { display: none; }
         .f-empty { text-align: center; padding: 20px; color: var(--muted); }
+        .ai-note { color: var(--muted); font-size: .92rem; margin: 0 0 14px; }
+        .ai-status { margin: 8px 0; font-size: .88rem; color: var(--primary); font-weight: 600; min-height: 1.2em; }
+        .ai-quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .ai-quick button { min-height: 38px; padding: 4px 12px; border-radius: 999px; border: 1.5px solid var(--primary); background: transparent; color: var(--primary); font-weight: 600; font-size: .85rem; cursor: pointer; }
+        .ai-quick button:hover { background: var(--accent-soft); }
+        .ai-chat { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+        .ai-msg { padding: 12px 14px; border-radius: 12px; white-space: pre-wrap; line-height: 1.9; max-width: 94%; }
+        .ai-msg.user { align-self: flex-start; background: var(--primary); color: #fff; }
+        .ai-msg.bot { align-self: flex-end; background: #fff; border: 1px solid var(--border); color: var(--ink); }
+        .ai-msg.err { align-self: stretch; background: #fbeaea; color: var(--danger); }
+        .ai-send { display: flex; gap: 8px; align-items: flex-end; }
+        .ai-send textarea { flex: 1; resize: none; }
+        .ai-send .btn-calc { width: auto; margin: 0; padding: 0 22px; }
     </style>
 </head>
 <body>
@@ -489,12 +510,18 @@
             <div id="tab-ai" class="section">
                 <div class="card">
                     <h2><i class="fas fa-microchip"></i> تحليل اللوحات والمخططات الذكي</h2>
-                    <p style="color: #64748b; line-height: 1.5; font-weight: 600; font-size: 0.9rem;">
-                        ارفع صور المخططات أو لقطات الشاشة أو أوراق الحسابات، وقم بإرسالها في المحادثة المباشرة معي لتحليلها واستخراج المناسيب بدقة.
-                    </p>
-                    <div class="action-box" style="text-align:center; padding:20px;">
-                        <input type="file" accept="image/*,.pdf,.dwg" id="fileUpload" style="background: white; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;">
-                        <button class="btn-calc" onclick="handleFileUpload()"><i class="fas fa-cogs"></i> توجيه للمعالجة</button>
+                    <p class="ai-note">ارفع صورة أو ملف PDF للوحة، واسأل عن أي حاجة فيها. لو اللوحة DWG أو DXF، صدّرها PDF من الأوتوكاد الأول.</p>
+                    <input type="file" id="fileUpload" accept="image/*,application/pdf" onchange="pickAiFile(this)">
+                    <div id="aiStatus" class="ai-status"></div>
+                    <div class="ai-quick">
+                        <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟')">اشرح اللوحة</button>
+                        <button onclick="sendAi('استخرج كل المناسيب والأطوال والميول والأقطار الظاهرة في اللوحة في قائمة مرتبة.')">استخرج المناسيب والأرقام</button>
+                        <button onclick="sendAi('إيه القوانين المساحية اللي أحتاجها للشغل على اللوحة دي؟ اشرح كل قانون بمثال من أرقام اللوحة.')">القوانين المناسبة</button>
+                    </div>
+                    <div id="aiChat" class="ai-chat"></div>
+                    <div class="ai-send">
+                        <textarea id="aiInput" rows="2" placeholder="اكتب سؤالك عن اللوحة..."></textarea>
+                        <button class="btn-calc" onclick="sendAi()">إرسال</button>
                     </div>
                 </div>
             </div>
@@ -1044,8 +1071,74 @@
         function toggleFormulasLang() { isArabic = !isArabic; renderFormulas(); }
         renderFormulas();
 
-        function handleFileUpload() {
-            alert("يرجى إرسال الصورة أو اللوحة مباشرة في نافذة المحادثة هنا، وسأقوم بتحليلها واستخراج كافة المناسيب والقيم لك فورا.");
+        let aiFile = null, aiHistory = [], aiBusy = false;
+        function aiStatus(t) { document.getElementById('aiStatus').textContent = t; }
+        function aiAdd(cls, text) {
+            const d = document.createElement('div');
+            d.className = 'ai-msg ' + cls; d.textContent = text;
+            const box = document.getElementById('aiChat');
+            box.appendChild(d); d.scrollIntoView({ block: 'end', behavior: 'smooth' });
+            return d;
+        }
+        function fileToB64(f) {
+            return new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result.split(',')[1]); r.onerror = no; r.readAsDataURL(f); });
+        }
+        async function shrinkImage(f) {
+            const bmp = await createImageBitmap(f);
+            const k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
+            const c = document.createElement('canvas');
+            c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+            const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+            ctx.drawImage(bmp, 0, 0, c.width, c.height);
+            return c.toDataURL('image/jpeg', 0.85).split(',')[1];
+        }
+        async function pickAiFile(input) {
+            const f = input.files[0];
+            if (!f) return;
+            aiFile = null; aiHistory = []; document.getElementById('aiChat').innerHTML = '';
+            try {
+                if (f.type.startsWith('image/')) {
+                    aiFile = { mediaType: 'image/jpeg', data: await shrinkImage(f) };
+                } else if (f.type === 'application/pdf') {
+                    if (f.size > 3 * 1024 * 1024) return aiStatus('ملف الـ PDF أكبر من 3 ميجا. صدّر صفحة واحدة أو صورة أصغر.');
+                    aiFile = { mediaType: 'application/pdf', data: await fileToB64(f) };
+                } else {
+                    return aiStatus('الصيغة دي مش مدعومة. صدّر اللوحة PDF أو صورة.');
+                }
+                aiStatus('تم رفع اللوحة. اسأل أو اختار من الأزرار.');
+            } catch (e) { aiStatus('تعذر قراءة الملف. جرّب ملف تاني.'); }
+        }
+        async function sendAi(q) {
+            const inp = document.getElementById('aiInput');
+            q = (q || inp.value).trim();
+            if (!aiFile) return aiStatus('ارفع اللوحة الأول.');
+            if (!q || aiBusy) return;
+            inp.value = ''; aiBusy = true;
+            aiHistory.push({ role: 'user', content: q });
+            aiAdd('user', q);
+            const wait = aiAdd('bot', 'جاري التحليل...');
+            try {
+                let res = await callAi();
+                if (res.status === 401) {
+                    const code = prompt('أدخل كود الاستخدام:');
+                    if (code) { localStorage.setItem('ai_code', code); res = await callAi(); }
+                }
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(res.status === 401 ? 'كود الاستخدام غير صحيح.' : res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.' : 'حصل خطأ في التحليل. جرّب تاني بعد شوية.');
+                wait.textContent = data.text;
+                aiHistory.push({ role: 'assistant', content: data.text });
+                while (aiHistory.length > 20) aiHistory.splice(0, 2);
+            } catch (e) {
+                wait.className = 'ai-msg err'; wait.textContent = e.message;
+                aiHistory.pop();
+            }
+            aiBusy = false;
+        }
+        function callAi() {
+            return fetch('/api/analyze', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file: aiFile, messages: aiHistory, code: localStorage.getItem('ai_code') || '' })
+            });
         }
     </script>
 </body>
