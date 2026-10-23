@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#12453f">
+    <title>الربيع للمساحة</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #14231f;
+            --primary: #12453f;
+            --primary-light: #2c7a6e;
+            --secondary: #14231f;
+            --accent: #d9f23d;
+            --accent-soft: #eaf7a8;
+            --bg-color: #eceee5;
+            --card-bg: #fbfcf8;
+            --text-main: #2b3a35;
+            --muted: #5d6b64;
+            --border: #cdd5c3;
+            --success: #14532d;
+            --danger: #9f2a2a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; display: flex; flex-direction: column;
+            height: 100vh; height: 100dvh;
+            color: var(--text-main); overflow: hidden;
+            font-variant-numeric: tabular-nums; line-height: 1.6;
+        }
+        h1, h2, h3, h4 { font-family: 'Reem Kufi', 'IBM Plex Sans Arabic', sans-serif; }
+        button, input, select, textarea { font-family: inherit; }
+        :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+        header {
+            background: var(--primary); color: #fff;
+            padding: 0 16px; height: 58px; flex-shrink: 0;
+            font-family: 'Reem Kufi', sans-serif; font-size: 1.2rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: space-between; z-index: 100;
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .site-logo { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; background: #fff; }
+        .menu-toggle-btn {
+            background: var(--accent); color: var(--ink); border: none;
+            width: 42px; height: 42px; border-radius: 10px; cursor: pointer; font-size: 18px;
+        }
+        .menu-toggle-btn:active { transform: scale(.96); }
+
+        .side-drawer {
+            position: fixed; top: 0; right: -320px; width: min(300px, 86vw); height: 100%;
+            background: var(--card-bg); box-shadow: -8px 0 30px rgba(20,35,31,.25);
+            z-index: 1000; transition: right .25s ease; display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .side-drawer.open { right: 0; }
+        .drawer-header {
+            background: var(--primary); color: #fff; padding: 0 18px; height: 58px; flex-shrink: 0;
+            font-family: 'Reem Kufi', sans-serif; font-size: 1.1rem; font-weight: 700;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .drawer-header button { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+        .drawer-nav-btn {
+            background: transparent; border: none; padding: 15px 20px; text-align: right;
+            font-size: .95rem; font-weight: 600; color: var(--text-main); cursor: pointer;
+            display: flex; align-items: center; gap: 14px; width: 100%;
+            border-bottom: 1px solid var(--border); border-right: 5px solid transparent;
+        }
+        .drawer-nav-btn i { width: 22px; text-align: center; color: var(--primary-light); }
+        .drawer-nav-btn:hover { background: #f1f4ea; }
+        .drawer-nav-btn.active { background: var(--accent-soft); color: var(--ink); font-weight: 700; border-right-color: var(--primary); }
+        .drawer-nav-btn.active i { color: var(--primary); }
+        .overlay { position: fixed; inset: 0; background: rgba(20,35,31,.5); z-index: 999; display: none; }
+        .overlay.active { display: block; }
+
+        .app-container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        .main-content { flex: 1; padding: 16px; overflow-y: auto; scroll-behavior: smooth; }
+        .section { display: none; opacity: 0; }
+        .section.active { display: block; animation: fadeIn .2s ease forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        footer {
+            background: var(--bg-color); color: var(--muted); padding: 8px 15px; flex-shrink: 0;
+            text-align: center; font-size: .8rem; font-weight: 500; border-top: 1px solid var(--border);
+        }
+
+        .card {
+            background: var(--card-bg); padding: 22px; border-radius: 14px;
+            max-width: 900px; margin: 0 auto 16px auto; border: 1px solid var(--border);
+        }
+        .card h2 {
+            margin: 0 0 18px; color: var(--ink); font-size: 1.2rem; font-weight: 700;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        }
+        .card h2 > i:first-child {
+            width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0;
+            background: var(--primary); color: var(--accent); border-radius: 9px; font-size: 16px;
+        }
+        .card h3, .card h4 { color: var(--ink); }
+
+        .hero-home {
+            position: relative; overflow: hidden; padding: 30px 22px 22px;
+            background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Cg fill='none' stroke='%2312453f' stroke-opacity='.2' stroke-width='1.4'%3E%3Cpath id='p' d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(1.45)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(1.95)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(2.5)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(3.1)'/%3E%3C/g%3E%3C/svg%3E") no-repeat left -90px top -60px / 460px;
+        }
+        .hero-home h1 { font-size: clamp(1.7rem, 6.5vw, 2.4rem); line-height: 1.35; margin: 0 0 10px; color: var(--ink); font-weight: 700; max-width: 16ch; }
+        .hero-home p { color: var(--muted); font-size: 1rem; margin: 0 0 24px; max-width: 46ch; }
+
+        .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+        .quick-card {
+            background: #fff; border: 1px solid var(--border); padding: 12px 14px; border-radius: 12px; cursor: pointer;
+            display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: center; text-align: start;
+        }
+        .quick-card:hover { border-color: var(--primary); background: var(--accent-soft); }
+        .quick-card i {
+            grid-row: 1 / 3; width: 46px; height: 46px; display: grid; place-items: center;
+            background: var(--primary); color: var(--accent); border-radius: 10px; font-size: 19px;
+        }
+        .quick-card h3 { font-size: 1rem; margin: 0; color: var(--ink); font-weight: 700; }
+        .quick-card span { font-size: .82rem; color: var(--muted); line-height: 1.45; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+        .form-group { display: flex; flex-direction: column; }
+        .full-width { grid-column: span 2; }
+        .mt-2 { margin-top: 10px; }
+        label { margin-bottom: 6px; font-weight: 600; font-size: .86rem; color: var(--ink); }
+        input, select, textarea {
+            padding: 11px 12px; min-height: 46px; border: 1.5px solid #b9c4ad; border-radius: 9px;
+            font-size: 1rem; background: #fff; color: var(--ink); font-weight: 500; width: 100%;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(217,242,61,.65);
+        }
+        .hi-field, #l_hi_display { }
+        .hi-field { background: var(--accent-soft); padding: 12px; border-radius: 10px; border: 1.5px solid #c5dc4a; }
+        .bm-box { background: #f2f5ea; padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
+        #l_hi_display {
+            background: var(--accent); color: var(--ink) !important; border-radius: 10px; padding: 10px;
+            font-size: 1.25rem !important; font-weight: 700 !important; margin-bottom: 0;
+        }
+
+        .btn-calc {
+            width: 100%; min-height: 50px; padding: 12px; background: var(--primary); color: #fff;
+            border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 6px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-calc:hover { background: #0c332e; }
+        .btn-calc:active { transform: translateY(1px); }
+        .btn-success { background: var(--accent); color: var(--ink); }
+        .btn-success:hover { background: #c9e32b; }
+        .btn-pdf { background: var(--danger); }
+        .btn-pdf:hover { background: #7f2020; }
+        .btn-lang { background: var(--primary); font-size: .8rem; padding: 6px 12px; border-radius: 8px; color: #fff; border: none; cursor: pointer; margin-inline-start: auto; }
+
+        .result-container { margin-top: 16px; overflow-x: auto; border-radius: 10px; }
+        .slope-info {
+            background: var(--accent-soft); color: var(--ink); padding: 12px 14px; border-radius: 10px;
+            font-weight: 700; margin-bottom: 12px; border-right: 5px solid var(--primary);
+        }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: center; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 14px; }
+        th, td { padding: 12px 8px; direction: ltr; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); font-size: .95rem; }
+        th:first-child, td:first-child { border-left: none; }
+        tr:last-child td { border-bottom: none; }
+        th { background: var(--primary); color: #fff; font-weight: 600; }
+        tr:nth-child(even) td { background-color: #f6f8f1; }
+        td[style*="--success"] { background: var(--accent-soft) !important; color: var(--ink) !important; }
+        .custom-result-box span[style*="--success"], .custom-result-box span[style*="--primary"] {
+            background: var(--accent); color: var(--ink) !important; padding: 1px 8px; border-radius: 6px;
+        }
+
+        .report-footer-logo { text-align: center; margin-top: 15px; padding: 12px; font-weight: 700; color: var(--ink); border-top: 2px solid var(--primary); }
+        .action-box { border: 1px solid var(--border); padding: 14px; border-radius: 12px; margin-top: 16px; background: #fff; }
+        .action-box h4 { margin: 0 0 12px; font-size: 1rem; }
+        .custom-result-box { background: #f2f5ea; border: 1px solid var(--border); padding: 14px; border-radius: 10px; text-align: center; margin-top: 12px; font-weight: 700; line-height: 2; }
+
+        .formula-item { padding: 14px; border-bottom: 1px solid var(--border); direction: ltr; text-align: left; }
+        .formula-item:last-child { border-bottom: none; }
+        .formula-ar { direction: rtl; text-align: right; }
+        .formula-item i { color: var(--primary-light) !important; }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .main-content { padding: 10px; }
+            .card { padding: 16px; }
+            .hero-home { padding: 24px 16px 16px; background-position: left -150px top -80px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+        #formulaSearch { margin-top: 4px; }
+        #formulas-list { margin-top: 14px; }
+        .f-cat { font-family: 'Reem Kufi', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--ink); margin: 22px 0 8px; padding-right: 10px; border-right: 5px solid var(--accent); }
+        .f-cat:first-child { margin-top: 4px; }
+        .f-item { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .f-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+        .f-head strong { color: var(--ink); font-size: .98rem; }
+        .f-btn { flex-shrink: 0; min-height: 36px; padding: 4px 14px; border-radius: 8px; border: 1.5px solid var(--primary); background: transparent; color: var(--primary); font-weight: 600; font-size: .85rem; cursor: pointer; }
+        .f-btn[aria-expanded="true"] { background: var(--primary); color: #fff; }
+        .f-formula { direction: ltr; text-align: left; white-space: pre-line; background: #f2f5ea; border-radius: 8px; padding: 10px 12px; font-weight: 600; color: var(--ink); line-height: 1.8; overflow-x: auto; }
+        .f-formula.ar { direction: rtl; text-align: right; }
+        .f-desc { margin: 8px 0 0; font-size: .88rem; color: var(--muted); }
+        .f-ex { margin-top: 10px; padding: 10px 12px; background: var(--accent-soft); border-right: 5px solid var(--primary); border-radius: 8px; white-space: pre-line; line-height: 1.9; font-weight: 500; color: var(--ink); }
+        .f-ex[hidden] { display: none; }
+        .f-empty { text-align: center; padding: 20px; color: var(--muted); }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط العلوي -->
+    <header>
+        <div class="header-left">
+            <img src="logo.png" alt="الربيع للمساحة" class="site-logo" onerror="this.style.display='none'">
+            <span>الربيع للمساحة</span>
+        </div>
+        <button class="menu-toggle-btn" onclick="toggleMenu()" title="القائمة الرئيسية">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- القائمة الجانبية المنسدلة -->
+    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+    <div id="sideDrawer" class="side-drawer">
+        <div class="drawer-header">
+            <span><i class="fas fa-list-ul"></i> القوائم الفرعية</span>
+            <button onclick="toggleMenu()"><i class="fas fa-times"></i></button>
+        </div>
+        <button class="drawer-nav-btn active" onclick="openTab('tab-home', this)"><i class="fas fa-home"></i> الرئيسية</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-roads', this)"><i class="fas fa-road"></i> الطرق والرامبات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-sewage', this)"><i class="fas fa-water"></i> الصرف والترع</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-level', this)"><i class="fas fa-ruler-combined"></i> الميزانية والرفع</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-cogo', this)"><i class="fas fa-draw-polygon"></i> الإحداثيات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-formwork', this)"><i class="fas fa-layer-group"></i> التطبيق والحمالات والكاب</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-notebook', this)"><i class="fas fa-edit"></i> ملاحظات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-formulas', this)"><i class="fas fa-book-open"></i> القوانين</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> تحليل اللوحات</button>
+    </div>
+
+    <div class="app-container">
+        <main class="main-content">
+            
+            <!-- 0. الواجهة الرئيسية -->
+            <div id="tab-home" class="section active">
+                <div class="card hero-home">
+                    <h1>مرحباً بك في تطبيق الربيع للمساحة</h1>
+                    <p>أداتك الهندسية المتكاملة لحسابات الميدان، الميول، الشبكات، والميزانية بدقة متناهية.</p>
+                    
+                    <div class="quick-grid">
+                        <div class="quick-card" onclick="openTabFromCard('tab-roads')">
+                            <i class="fas fa-road"></i>
+                            <h3>الطرق والرامبات</h3>
+                            <span>حساب الميول والمناسيب</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-sewage')">
+                            <i class="fas fa-water"></i>
+                            <h3>الصرف والترع</h3>
+                            <span>Invert & Crown وحفر الخنادق</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-level')">
+                            <i class="fas fa-ruler-combined"></i>
+                            <h3>الميزانية والرفع</h3>
+                            <span>H.I والتوقيع المساحي</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-cogo')">
+                            <i class="fas fa-draw-polygon"></i>
+                            <h3>الإحداثيات</h3>
+                            <span>حسابات التوتال ستيشن</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-formwork')">
+                            <i class="fas fa-layer-group"></i>
+                            <h3>التطبيق والحمالات والكاب</h3>
+                            <span>مناسيب وقراءات القامة للسقف الرئيسي والكاب</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-notebook')">
+                            <i class="fas fa-edit"></i>
+                            <h3>ملاحظات</h3>
+                            <span>كتابة حرة وتدوين ميداني + حاسبة</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-formulas')">
+                            <i class="fas fa-book-open"></i>
+                            <h3>القوانين</h3>
+                            <span>المراجع الهندسية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. الطرق والرامبات -->
+            <div id="tab-roads" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-road"></i> حساب ميول ومناسيب الطرق والرامبات</h2>
+                    <div class="form-grid">
+                        <div class="form-group"><label>منسوب نقطة البداية (متر):</label><input type="number" id="r_start" step="any"></div>
+                        <div class="form-group"><label>منسوب نقطة النهاية (متر):</label><input type="number" id="r_end" step="any"></div>
+                        <div class="form-group"><label>الطول الإجمالي (متر):</label><input type="number" id="r_length" step="any"></div>
+                        <div class="form-group"><label>استخراج نقطة كل مسافة (متر):</label><input type="number" id="r_interval" step="any"></div>
+                        <div class="form-group full-width hi-field">
+                            <label style="color: var(--primary);"><i class="fas fa-crosshairs"></i> منسوب سطح الميزان (H.I) [اختياري للتوقيع]:</label>
+                            <input type="number" id="r_hi" step="any">
+                        </div>
+                    </div>
+                    <button class="btn-calc" onclick="calcRamps()"><i class="fas fa-calculator"></i> بدء الحساب الهندسي</button>
+                    <div id="r_result" class="result-container"></div>
+                    <div id="r_custom_box" class="action-box" style="display: none;">
+                        <h4><i class="fas fa-search-location"></i> الاستعلام عن مسافة محددة</h4>
+                        <div class="form-grid" style="margin-bottom: 0;">
+                            <div class="form-group"><label>أدخل المسافة المراد حساب منسوبها:</label><input type="number" id="r_custom_dist" step="any"></div>
+                        </div>
+                        <button class="btn-calc btn-success" onclick="calcCustomRampPoint()"><i class="fas fa-bolt"></i> استخراج النتيجة</button>
+                        <div id="r_custom_result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. الصرف الصحي والترع والمصارف -->
+            <div id="tab-sewage" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-water"></i> شبكات الصرف الصحي والقطاعات المائية (الترع)</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>نوع الشبكة أو القطاع:</label>
+                            <select id="network_type" onchange="toggleNetworkInputs()">
+                                <option value="sewage">شبكة صرف صحي (Invert & Crown)</option>
+                                <option value="canal">قطاع ترعة / مصرف (قاع وجوانب)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="div_dia">
+                            <label id="label_dia">قطر الماسورة:</label>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="number" id="s_dia" step="any" style="flex: 2;">
+                                <select id="s_dia_unit" style="flex: 1;">
+                                    <option value="inch">بوصة</option>
+                                    <option value="cm">سم</option>
+                                    <option value="m">متر</option>
+                                </select>
+                            </div>
+                            <small id="dia_hint" style="color: var(--muted); margin-top: 4px;">مقاس الماسورة نفسه، مثلاً ماسورة 12 بوصة.</small>
+                        </div>
+                        <div class="form-group" id="div_thickness">
+                            <label>سمك الماسورة (التخانة):</label>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="number" id="s_thick" step="any" style="flex: 2;">
+                                <select id="s_thick_unit" style="flex: 1;">
+                                    <option value="cm">سم</option>
+                                    <option value="inch">بوصة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>منسوب قاع البداية (Invert Start):</label><input type="number" id="s_start" step="any"></div>
+                        <div class="form-group"><label>منسوب قاع النهاية (Invert End):</label><input type="number" id="s_end" step="any"></div>
+                        <div class="form-group"><label>الطول الكلي للفرعة / القطاع (متر):</label><input type="number" id="s_length" step="any"></div>
+                        <div class="form-group"><label>مسافة الحساب التراكمية (متر):</label><input type="number" id="s_interval" step="any"></div>
+                        <div class="form-group full-width hi-field">
+                            <label style="color: var(--primary);"><i class="fas fa-crosshairs"></i> منسوب سطح الميزان (H.I) [اختياري]:</label>
+                            <input type="number" id="s_hi" step="any">
+                        </div>
+                    </div>
+                    <button class="btn-calc" onclick="calcNetwork()"><i class="fas fa-calculator"></i> حساب المناسيب والقمم والبطون</button>
+                    <div id="s_result" class="result-container"></div>
+                    <div id="s_custom_box" class="action-box" style="display: none;">
+                        <h4><i class="fas fa-search-location"></i> الاستعلام عن نقطة محددة للشبكة</h4>
+                        <div class="form-grid" style="margin-bottom: 0;">
+                            <div class="form-group"><label>أدخل المسافة للاستعلام:</label><input type="number" id="s_custom_dist" step="any"></div>
+                        </div>
+                        <button class="btn-calc btn-success" onclick="calcCustomNetworkPoint()"><i class="fas fa-bolt"></i> استخراج البيانات</button>
+                        <div id="s_custom_result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. الميزانية والرفع -->
+            <div id="tab-level" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-ruler-combined"></i> الميزانية (الرفع والتوقيع المساحي)</h2>
+                    <div class="bm-box">
+                        <div class="form-grid">
+                            <div class="form-group"><label>منسوب النقطة الثابتة (BM):</label><input type="number" id="l_bm" step="any"></div>
+                            <div class="form-group"><label>قراءة القامة الخلفية (B.S):</label><input type="number" id="l_bs" step="any"></div>
+                        </div>
+                        <button class="btn-calc" style="background: var(--secondary);" onclick="calcHI()"><i class="fas fa-check-circle"></i> تعيين منسوب الجهاز (H.I)</button>
+                        <h3 id="l_hi_display" style="text-align:center; color:var(--primary); margin-top:12px; font-weight:800; font-size:1.1rem;">سطح الميزان = 0.000</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="action-box" style="margin-top: 0; background: #fff;">
+                            <h4><i class="fas fa-arrow-up"></i> الرفع المساحي</h4>
+                            <div class="form-group"><label>قراءة القامة المرصودة:</label><input type="number" id="l_reading" step="any"></div>
+                            <div class="form-group mt-2"><label>اسم النقطة:</label><input type="text" id="l_pt_name_survey"></div>
+                            <button class="btn-calc" onclick="calcSurvey()">تسجيل المنسوب</button>
+                        </div>
+                        <div class="action-box" style="margin-top: 0; background: #fff;">
+                            <h4><i class="fas fa-bullseye"></i> التوقيع المساحي</h4>
+                            <div class="form-group"><label>المنسوب التصميمي:</label><input type="number" id="l_design_elev" step="any"></div>
+                            <div class="form-group mt-2"><label>اسم النقطة:</label><input type="text" id="l_pt_name_setout"></div>
+                            <button class="btn-calc btn-success" onclick="calcSetOut()">استنتاج القراءة</button>
+                        </div>
+                    </div>
+                    <div class="result-container" id="levelResultContainer">
+                        <div id="printLevelArea">
+                            <table id="levelTable">
+                                <tr><th>العملية</th><th>النقطة</th><th>القامة</th><th>المنسوب</th></tr>
+                            </table>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('levelTable', 'الميزانية_والرفع')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                            <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printLevelArea', 'تقرير_الميزانية')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. الإحداثيات -->
+            <div id="tab-cogo" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-draw-polygon"></i> حسابات الإحداثيات (COGO)</h2>
+                    <div class="form-grid">
+                        <div class="form-group"><label>إحداثي الشرق (Easting):</label><input type="number" id="c_e1" step="any"></div>
+                        <div class="form-group"><label>إحداثي الشمال (Northing):</label><input type="number" id="c_n1" step="any"></div>
+                        <div class="form-group"><label>المسافة الأفقية (متر):</label><input type="number" id="c_dist" step="any"></div>
+                        <div class="form-group"><label>الانحراف (Azimuth):</label><input type="number" id="c_angle" step="any"></div>
+                    </div>
+                    <button class="btn-calc" onclick="calcCOGO()"><i class="fas fa-map-marker-alt"></i> حساب الإحداثيات</button>
+                    <div id="c_result" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- 5. التطبيق والحمالات والكاب -->
+            <div id="tab-formwork" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-layer-group"></i> حساب مناسيب وقراءات السقف الرئيسي والكاب</h2>
+                    <div class="form-grid">
+                        <div class="form-group"><label>منسوب أعلى الخرسانة (السقف الرئيسي):</label><input type="number" id="fw_finish_elev" step="any"></div>
+                        <div class="form-group"><label>منسوب سطح الميزان (H.I):</label><input type="number" id="fw_hi" step="any"></div>
+                        <div class="form-group"><label>سمك الخرسانة (سم):</label><input type="number" id="fw_thick" step="any"></div>
+                        <div class="form-group"><label>لوح الكونتر (التطبيق) (سم) [اختياري]:</label><input type="number" id="fw_deck_thick" step="any"></div>
+                        <div class="form-group"><label>العرق (سم) [اختياري]:</label><input type="number" id="fw_beam_thick" step="any"></div>
+                        <div class="form-group"><label>الحمال العكسي (سم) [اختياري]:</label><input type="number" id="fw_cross_thick" step="any"></div>
+                        <div class="form-group full-width"><label>الحمال الأساسي (سم) [اختياري - يترك فارغاً إذا لم يوجد]:</label><input type="number" id="fw_main_thick" step="any"></div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+                    
+                    <h3 style="color: var(--secondary); font-size: 1rem; margin-bottom: 12px;"><i class="fas fa-level-down-alt"></i> بيانات الكاب (الجزء الأوطى - اختياري)</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width"><label>مقدار انخفاض الكاب عن السقف الرئيسي (سم):</label><input type="number" id="cap_drop" step="any"></div>
+                    </div>
+
+                    <button class="btn-calc" onclick="calcFormworkShoring()"><i class="fas fa-calculator"></i> احسب مناسيب وقراءات السقف والكاب</button>
+                    <div id="fw_result" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- 6. ملاحظات (كتابة حرة + آلة حاسبة) -->
+            <div id="tab-notebook" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-edit"></i> ملاحظات ميدانية وأجندة حرة</h2>
+                    <p style="color: #64748b; font-weight: 600; font-size: 0.88rem;">اكتب كل ما تحتاجه بحرية تامة كأنك تكتب على ورقة أو أجندة، ويتم حفظ ملاحظاتك تلقائياً:</p>
+                    
+                    <div class="form-group" style="margin-top: 15px;">
+                        <textarea id="freeNotesArea" rows="8" placeholder="اكتب ملاحظاتك، أرقام الروبيرات، أو أي تعليمات هنا..." style="resize: vertical; font-size: 0.95rem; padding: 15px; line-height: 1.6; border-radius: 10px; border: 1px solid #cbd5e1; font-family: 'Cairo', sans-serif;"></textarea>
+                    </div>
+                    <button class="btn-calc btn-success" onclick="saveFreeNotes()"><i class="fas fa-save"></i> حفظ الملاحظات</button>
+
+                    <div class="action-box" style="margin-top: 25px;">
+                        <h4><i class="fas fa-calculator"></i> الآلة الحاسبة السريعة</h4>
+                        <div class="form-grid" style="margin-bottom: 10px;">
+                            <div class="form-group full-width">
+                                <label>اكتب العملية الحسابية:</label>
+                                <input type="text" id="quickCalcInput" placeholder="أدخل العملية هنا..." style="direction: ltr; text-align: left; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <button class="btn-calc" style="background: var(--secondary);" onclick="runQuickCalc()"><i class="fas fa-equals"></i> احسب النتيجة</button>
+                        <div id="quickCalcResult" class="custom-result-box" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. القوانين -->
+            <div id="tab-formulas" class="section">
+                <div class="card">
+                    <h2>
+                        <span style="display:flex; align-items:center; gap:8px;"><i class="fas fa-book-open"></i> المراجع والقوانين المساحية</span>
+                        <button class="btn-lang" onclick="toggleFormulasLang()"><i class="fas fa-sync-alt"></i> تبديل اللغة</button>
+                    </h2>
+                    <input type="search" id="formulaSearch" placeholder="ابحث عن قانون..." oninput="renderFormulas()">
+                    <div id="formulas-list"></div>
+                </div>
+            </div>
+
+            <!-- 8. تحليل اللوحات -->
+            <div id="tab-ai" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-microchip"></i> تحليل اللوحات والمخططات الذكي</h2>
+                    <p style="color: #64748b; line-height: 1.5; font-weight: 600; font-size: 0.9rem;">
+                        ارفع صور المخططات أو لقطات الشاشة أو أوراق الحسابات، وقم بإرسالها في المحادثة المباشرة معي لتحليلها واستخراج المناسيب بدقة.
+                    </p>
+                    <div class="action-box" style="text-align:center; padding:20px;">
+                        <input type="file" accept="image/*,.pdf,.dwg" id="fileUpload" style="background: white; cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;">
+                        <button class="btn-calc" onclick="handleFileUpload()"><i class="fas fa-cogs"></i> توجيه للمعالجة</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- التوقيع البسيط فى الواجهة بالموقع -->
+    <footer>
+        الربيع للمساحة
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const drawer = document.getElementById('sideDrawer');
+            const overlay = document.getElementById('overlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function openTab(tabId, btn) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.drawer-nav-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            if(btn) btn.classList.add('active');
+            
+            const drawer = document.getElementById('sideDrawer');
+            const overlay = document.getElementById('overlay');
+            if (drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        }
+
+        function openTabFromCard(tabId) {
+            let btnMap = {
+                'tab-roads': 1,
+                'tab-sewage': 2,
+                'tab-level': 3,
+                'tab-cogo': 4,
+                'tab-formwork': 5,
+                'tab-notebook': 6,
+                'tab-formulas': 7,
+                'tab-ai': 8
+            };
+            let btns = document.querySelectorAll('.drawer-nav-btn');
+            let targetBtn = btns[btnMap[tabId]];
+            openTab(tabId, targetBtn);
+        }
+
+        function exactNum(num) {
+            let cleanNum = parseFloat(num.toFixed(6));
+            let str = cleanNum.toString();
+            if (!str.includes('.')) return str + '.000';
+            let decimalsCount = str.split('.')[1].length;
+            if (decimalsCount < 3) return cleanNum.toFixed(3); 
+            return str; 
+        }
+
+        // --- تصدير إلى Excel (CSV) مع التوقيع الرسمي في الأسفل ---
+        function exportTableToCSV(tableId, filename = 'الربيع_للمساحة') {
+            let table = document.getElementById(tableId);
+            if (!table) {
+                alert("لا توجد بيانات متاحة للتصدير حالياً.");
+                return;
+            }
+            let csv = [];
+            let rows = table.querySelectorAll('tr');
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cols.length; j++) {
+                    let text = cols[j].innerText.replace(/"/g, '""');
+                    row.push('"' + text + '"');
+                }
+                csv.push(row.join(','));
+            }
+            csv.push('"إعداد: محمد ربيع - 01121573708"');
+            
+            let csvString = csv.join('\n');
+            let blob = new Blob(['\ufeff' + csvString], { type: 'text/csv;charset=utf-8;' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = filename + '_' + new Date().toISOString().slice(0,10) + '.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // --- تصدير إلى PDF مع التوقيع الرسمي في الأسفل ---
+        function exportElementToPDF(containerId, reportTitle = 'تقرير_مساحي') {
+            let element = document.getElementById(containerId);
+            if (!element) {
+                alert("لا توجد بيانات متاحة للتحميل.");
+                return;
+            }
+            let printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html lang="ar" dir="rtl">
+                <head>
+                    <title>${reportTitle}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Cairo', sans-serif; padding: 25px; color: #1e293b; }
+                        h2 { text-align: center; color: #1e3a8a; margin-bottom: 20px; font-size: 22px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; direction: ltr; }
+                        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; font-size: 15px; }
+                        th { background-color: #0f172a; color: white; }
+                        tr:nth-child(even) { background-color: #f8fafc; }
+                        .report-footer-logo { text-align: center; margin-top: 30px; padding: 15px; font-size: 16px; font-weight: 800; color: #1e3a8a; border-top: 2px solid #f59e0b; background: #fdfbf7; }
+                    </style>
+                </head>
+                <body>
+                    <h2>تطبيق الربيع للمساحة - ${reportTitle}</h2>
+                    ${element.innerHTML}
+                    <div class="report-footer-logo"><i class="fas fa-signature" style="color:#f59e0b;"></i> إعداد: محمد ربيع | 01121573708</div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 600);
+        }
+
+        // --- حساب التطبيق والحمالات والكاب بالتسلسل الهندسي الصحيح ---
+        function calcFormworkShoring() {
+            let finishElev = parseFloat(document.getElementById('fw_finish_elev').value);
+            let hi = parseFloat(document.getElementById('fw_hi').value);
+            let thickCm = parseFloat(document.getElementById('fw_thick').value);
+            let deckCm = parseFloat(document.getElementById('fw_deck_thick').value) || 0;
+            let beamCm = parseFloat(document.getElementById('fw_beam_thick').value) || 0;
+            let crossCm = parseFloat(document.getElementById('fw_cross_thick').value) || 0;
+            let mainCm = parseFloat(document.getElementById('fw_main_thick').value) || 0;
+
+            if(isNaN(finishElev) || isNaN(hi) || isNaN(thickCm)) {
+                return alert("يرجى إدخال بيانات السقف الرئيسي الأساسية.");
+            }
+
+            let thickM = thickCm / 100;
+            let html = `<div id="printFormworkArea">`;
+
+            // --- الجدول الأول: السقف الرئيسي ---
+            html += `<h4 style="color:var(--secondary); margin-bottom:8px;"><i class="fas fa-table"></i> جدول السقف الرئيسي</h4>`;
+            html += `<table id="exportMainTable">`;
+            html += `<tr><th>العنصر</th><th>المنسوب (م)</th><th>قراءة القامة (H.I)</th></tr>`;
+
+            // 1. التطبيق (لوح الكونتر)
+            let currElev = finishElev - thickM;
+            html += `<tr><td>التطبيق (لوح الكونتر)</td><td style="font-weight:800; color:var(--primary);">${exactNum(currElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - currElev)} م</td></tr>`;
+
+            let prevElev = currElev;
+            let prevThick = deckCm;
+
+            // 2. العرق
+            if(beamCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>العرق</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+                prevThick = beamCm;
+            }
+
+            // 3. الحمال العكسي
+            if(crossCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>الحمال العكسي</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+                prevThick = crossCm;
+            }
+
+            // 4. الحمال الأساسي
+            if(mainCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>الحمال الأساسي</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+            }
+
+            html += `</table>`;
+
+            // --- الجدول الثاني: الكاب (الجزء الأوطى - طرح الانخفاض) ---
+            let capDropCm = parseFloat(document.getElementById('cap_drop').value);
+
+            if(!isNaN(capDropCm) && capDropCm > 0) {
+                let slabDeck = finishElev - thickM;
+                let capDeckElev = slabDeck - (capDropCm / 100); // طرح الانخفاض لأنه أوطى بدقة
+
+                html += `<h4 style="color:var(--secondary); margin-bottom:8px; margin-top:20px;"><i class="fas fa-table"></i> جدول الكاب (الجزء الأوطى)</h4>`;
+                html += `<table id="exportCapTable">`;
+                html += `<tr><th>العنصر</th><th>المنسوب (م)</th><th>قراءة القامة (H.I)</th></tr>`;
+
+                // 1. التطبيق (كاب)
+                html += `<tr><td>التطبيق (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capDeckElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capDeckElev)} م</td></tr>`;
+
+                let capPrevElev = capDeckElev;
+                let capPrevThick = deckCm;
+
+                // 2. العرق (كاب)
+                if(beamCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>العرق (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                    capPrevThick = beamCm;
+                }
+
+                // 3. الحمال العكسي (كاب)
+                if(crossCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>الحمال العكسي (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                    capPrevThick = crossCm;
+                }
+
+                // 4. الحمال الأساسي (كاب)
+                if(mainCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>الحمال الأساسي (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                }
+
+                html += `</table>`;
+            }
+
+            html += `</div>`;
+
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportMainTable', 'التطبيق_والحمالات')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printFormworkArea', 'تقرير_التطبيق_والحمالات')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+
+            document.getElementById('fw_result').innerHTML = html;
+        }
+
+        function toggleNetworkInputs() {
+            let type = document.getElementById('network_type').value;
+            let divThick = document.getElementById('div_thickness');
+            let labelDia = document.getElementById('label_dia');
+            if(type === 'sewage') {
+                divThick.style.display = 'flex';
+                labelDia.innerHTML = 'قطر الماسورة:';
+                document.getElementById('s_dia_unit').value = 'inch';
+                document.getElementById('dia_hint').style.display = '';
+            } else {
+                divThick.style.display = 'none';
+                labelDia.innerHTML = 'عرض قاع الترعة / المصرف:';
+                document.getElementById('s_dia_unit').value = 'm';
+                document.getElementById('dia_hint').style.display = 'none';
+            }
+        }
+
+        function calcRamps() {
+            let start = parseFloat(document.getElementById('r_start').value);
+            let end = parseFloat(document.getElementById('r_end').value);
+            let len = parseFloat(document.getElementById('r_length').value);
+            let interval = parseFloat(document.getElementById('r_interval').value);
+            let hi = parseFloat(document.getElementById('r_hi').value);
+            let has_hi = !isNaN(hi);
+            
+            if(isNaN(start) || isNaN(end) || isNaN(len) || isNaN(interval) || interval <= 0 || len <= 0) return alert("يرجى إدخال بيانات صحيحة.");
+
+            let slopePerMeter = (end - start) / len;
+            let slopeCm = exactNum(Math.abs(slopePerMeter * 100));
+            let slopeDir = slopePerMeter > 0 ? "صعود (+)" : slopePerMeter < 0 ? "نزول (-)" : "مستوى";
+
+            let html = `<div class="slope-info"><i class="fas fa-info-circle"></i> الميل = ${slopeCm} سم لكل متر (${slopeDir})</div>`;
+            html += `<div id="printRampsArea"><table id="exportRampsTable"><tr><th>المسافة (م)</th><th>المنسوب (م)</th>`;
+            if(has_hi) html += '<th>قراءة القامة للتوقيع (م)</th>';
+            html += '</tr>';
+            
+            for(let d = 0; d <= len; d += interval) {
+                let currentElev = start + (d * slopePerMeter);
+                html += `<tr><td>${exactNum(d)}</td><td style="font-weight:700;">${exactNum(currentElev)}</td>`;
+                if(has_hi) html += `<td style="font-weight:800; color:var(--success);">${exactNum(hi - currentElev)}</td>`;
+                html += `</tr>`;
+            }
+            if(len % interval !== 0) {
+                html += `<tr style="background:#eff6ff;"><td>${exactNum(len)} (النهاية)</td><td style="font-weight:800; color:var(--primary);">${exactNum(end)}</td>`;
+                if(has_hi) html += `<td style="font-weight:800; color:var(--success);">${exactNum(hi - end)}</td>`;
+                html += `</tr>`;
+            }
+            html += '</table>';
+            html += `</div>`;
+            
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportRampsTable', 'الطرق_والرامبات')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printRampsArea', 'تقرير_الطرق_والرامبات')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+            
+            document.getElementById('r_result').innerHTML = html;
+            document.getElementById('r_custom_box').style.display = 'block';
+            document.getElementById('r_custom_result').innerHTML = ''; 
+        }
+
+        function calcCustomRampPoint() {
+            let start = parseFloat(document.getElementById('r_start').value);
+            let end = parseFloat(document.getElementById('r_end').value);
+            let len = parseFloat(document.getElementById('r_length').value);
+            let customDist = parseFloat(document.getElementById('r_custom_dist').value);
+            let hi = parseFloat(document.getElementById('r_hi').value);
+            let has_hi = !isNaN(hi);
+
+            if(isNaN(customDist) || customDist < 0 || customDist > len) return alert("مسافة غير صحيحة.");
+            let targetElev = start + (customDist * ((end - start) / len));
+            
+            let html = `<div class="custom-result-box">المنسوب عند مسافة ${exactNum(customDist)} م = <span style="color:var(--primary); font-size:1.1rem;">${exactNum(targetElev)}</span>`;
+            if(has_hi) html += `<br>قراءة القامة المطلوبة = <span style="color:var(--success); font-size:1.1rem;">${exactNum(hi - targetElev)}</span>`;
+            html += `</div>`;
+            document.getElementById('r_custom_result').innerHTML = html;
+        }
+
+        function calcNetwork() {
+            let type = document.getElementById('network_type').value;
+            let diaUnit = document.getElementById('s_dia_unit').value;
+            let diaFactor = diaUnit === 'inch' ? 0.0254 : diaUnit === 'cm' ? 0.01 : 1;
+            let dia = (parseFloat(document.getElementById('s_dia').value) || 0) * diaFactor;
+            let start = parseFloat(document.getElementById('s_start').value);
+            let end = parseFloat(document.getElementById('s_end').value);
+            let len = parseFloat(document.getElementById('s_length').value);
+            let interval = parseFloat(document.getElementById('s_interval').value);
+            let hi = parseFloat(document.getElementById('s_hi').value);
+            let has_hi = !isNaN(hi);
+
+            if(isNaN(start) || isNaN(end) || isNaN(len) || isNaN(interval) || interval <= 0 || len <= 0) return alert("يرجى إدخال بيانات صحيحة.");
+
+            let outerDia = dia;
+            if(type === 'sewage') {
+                let thick = parseFloat(document.getElementById('s_thick').value) || 0;
+                let unit = document.getElementById('s_thick_unit').value;
+                let thickMeters = unit === 'cm' ? (thick / 100) : (thick * 0.0254);
+                outerDia = dia + (2 * thickMeters);
+            }
+
+            let slopeInMeters = (start - end) / len; 
+            let slopeCm = exactNum(Math.abs(slopeInMeters * 100));
+
+            let html = `<div class="slope-info"><i class="fas fa-info-circle"></i> انحدار القاع = ${slopeCm} سم لكل متر طولي</div>`;
+            html += `<div id="printSewageArea">`;
+            
+            if(type === 'sewage') {
+                html += '<table id="exportSewageTable"><tr><th>المسافة (م)</th><th>أسفل الماسورة (Invert)</th><th>أعلى الماسورة (Crown)</th>';
+                if(has_hi) {
+                    html += '<th>قامة أسفل الماسورة</th><th>قامة أعلى الماسورة</th>';
+                }
+                html += '</tr>';
+                for(let d = 0; d <= len; d += interval) {
+                    let invert = start - (d * slopeInMeters);
+                    let crown = invert + outerDia;
+                    html += `<tr><td>${exactNum(d)}</td><td>${exactNum(invert)}</td><td style="font-weight:700;">${exactNum(crown)}</td>`;
+                    if(has_hi) {
+                        let invRod = hi - invert;
+                        let croRod = hi - crown;
+                        html += `<td style="color:var(--success); font-weight:800;">${exactNum(invRod)}</td>`;
+                        html += `<td style="color:var(--success); font-weight:800;">${exactNum(croRod)}</td>`;
+                    }
+                    html += `</tr>`;
+                }
+            } else {
+                html += '<table id="exportSewageTable"><tr><th>المسافة (م)</th><th>منسوب القاع (Bed Level)</th><th>منسوب الجمة (Top Bank)</th>';
+                if(has_hi) html += '<th>قامة قاع الترعة</th>';
+                html += '</tr>';
+                for(let d = 0; d <= len; d += interval) {
+                    let bed = start - (d * slopeInMeters);
+                    let topBank = bed + dia; 
+                    html += `<tr><td>${exactNum(d)}</td><td>${exactNum(bed)}</td><td>${exactNum(topBank)}</td>`;
+                    if(has_hi) html += `<td style="color:var(--success); font-weight:800;">${exactNum(hi - bed)}</td>`;
+                    html += `</tr>`;
+                }
+            }
+            html += '</table>';
+            html += `</div>`;
+            
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportSewageTable', 'الشبكات_والصرف')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printSewageArea', 'تقرير_الشبكات_والصرف')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+
+            document.getElementById('s_result').innerHTML = html;
+            document.getElementById('s_custom_box').style.display = 'block';
+            document.getElementById('s_custom_result').innerHTML = '';
+        }
+
+        function calcCustomNetworkPoint() {
+            let start = parseFloat(document.getElementById('s_start').value);
+            let end = parseFloat(document.getElementById('s_end').value);
+            let len = parseFloat(document.getElementById('s_length').value);
+            let customDist = parseFloat(document.getElementById('s_custom_dist').value);
+            let hi = parseFloat(document.getElementById('s_hi').value);
+            let has_hi = !isNaN(hi);
+
+            if(isNaN(customDist) || customDist < 0 || customDist > len) return alert("مسافة غير صحيحة.");
+            let invert = start - (customDist * ((start - end) / len));
+            
+            let html = `<div class="custom-result-box">منسوب قاع النقطة = <span style="color:var(--primary); font-size:1.1rem;">${exactNum(invert)}</span>`;
+            if(has_hi) html += `<br>قراءة قامة القاع = <span style="color:var(--success); font-size:1.1rem;">${exactNum(hi - invert)}</span>`;
+            html += `</div>`;
+            document.getElementById('s_custom_result').innerHTML = html;
+        }
+
+        let currentHI = 0;
+        function calcHI() {
+            let bm = parseFloat(document.getElementById('l_bm').value);
+            let bs = parseFloat(document.getElementById('l_bs').value);
+            if(isNaN(bm) || isNaN(bs)) return alert("أدخل بيانات صحيحة.");
+            currentHI = bm + bs;
+            document.getElementById('l_hi_display').innerText = `سطح الميزان (H.I) = ${exactNum(currentHI)}`;
+        }
+        function calcSurvey() {
+            if(currentHI === 0) return alert("حدد سطح الميزان أولاً.");
+            let reading = parseFloat(document.getElementById('l_reading').value);
+            let name = document.getElementById('l_pt_name_survey').value || "نقطة";
+            let elev = currentHI - reading;
+            addRowToTable('رفع', name, exactNum(reading), exactNum(elev), 'var(--primary)');
+            document.getElementById('l_reading').value = '';
+        }
+        function calcSetOut() {
+            if(currentHI === 0) return alert("حدد سطح الميزان أولاً.");
+            let designElev = parseFloat(document.getElementById('l_design_elev').value);
+            let name = document.getElementById('l_pt_name_setout').value || "توقيع";
+            let reading = currentHI - designElev;
+            addRowToTable('توقيع', name, exactNum(reading), exactNum(designElev), 'var(--success)');
+            document.getElementById('l_design_elev').value = '';
+        }
+        function addRowToTable(type, name, reading, elev, color) {
+            let table = document.getElementById('levelTable');
+            let row = table.insertRow(-1);
+            row.innerHTML = `<td><span style="color:${color}; font-weight:800;">${type}</span></td><td>${name}</td><td style="font-weight:800;">${reading}</td><td style="font-weight:800;">${elev}</td>`;
+        }
+
+        function calcCOGO() {
+            let e1 = parseFloat(document.getElementById('c_e1').value);
+            let n1 = parseFloat(document.getElementById('c_n1').value);
+            let dist = parseFloat(document.getElementById('c_dist').value);
+            let angle = parseFloat(document.getElementById('c_angle').value);
+            if(isNaN(e1) || isNaN(n1) || isNaN(dist) || isNaN(angle)) return alert("أدخل بيانات صحيحة.");
+            let rad = angle * Math.PI / 180;
+            let e2 = e1 + (dist * Math.sin(rad));
+            let n2 = n1 + (dist * Math.cos(rad));
+            
+            let html = `<div id="printCogoArea"><table id="exportCogoTable"><tr><th>النقطة</th><th>East</th><th>North</th></tr><tr><td>المعلومة</td><td>${exactNum(e1)}</td><td>${exactNum(n1)}</td></tr><tr style="background:#eff6ff;"><td>المطلوبة</td><td style="font-weight:800; color:var(--success);">${exactNum(e2)}</td><td style="font-weight:800; color:var(--success);">${exactNum(n2)}</td></tr></table>`;
+            html += `</div>`;
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportCogoTable', 'الإحداثيات_COGO')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printCogoArea', 'تقرير_الإحداثيات')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+            
+            document.getElementById('c_result').innerHTML = html;
+        }
+
+        function saveFreeNotes() {
+            let notes = document.getElementById('freeNotesArea').value;
+            localStorage.setItem('free_notes_rabie_v2', notes);
+            alert("تم حفظ الملاحظات بنجاح في متصفحك.");
+        }
+
+        function runQuickCalc() {
+            let expr = document.getElementById('quickCalcInput').value;
+            try {
+                let sanitized = expr.replace(/[^0-9+\-*/().\s]/g, '');
+                let res = Function('"use strict";return (' + sanitized + ')')();
+                if (isNaN(res)) throw new Error();
+                let resultBox = document.getElementById('quickCalcResult');
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = `النتيجة = <span style="color:var(--primary); font-size:1.2rem;">${exactNum(res)}</span>`;
+            } catch(e) {
+                alert("يرجى إدخال عملية حسابية صحيحة.");
+            }
+        }
+
+        window.onload = function() {
+            let savedNotes = localStorage.getItem('free_notes_rabie_v2');
+            if(savedNotes) {
+                document.getElementById('freeNotesArea').value = savedNotes;
+            }
+        };
+
+        const formulaCats = ['الميزانية والمناسيب', 'الميول والمنحدرات', 'الصرف والترع', 'الإحداثيات والمضلعات', 'قياس المسافات', 'المنحنيات', 'الكميات', 'التطبيق والحمالات والكاب'];
+        const formulasData = [
+            { c:0, t:'منسوب سطح الميزان', e:'Height of Instrument', f:'H.I = BM + B.S', a:'منسوب سطح الميزان (H.I) = منسوب النقطة الثابتة (BM) + القراءة الخلفية (B.S)', d:'القراءة الخلفية هي قراءة القامة على النقطة الثابتة.', x:'منسوب النقطة الثابتة (BM) = 100.000 م ، القراءة الخلفية (B.S) = 1.532 م\nمنسوب سطح الميزان (H.I) = 100.000 + 1.532 = 101.532 م' },
+            { c:0, t:'منسوب نقطة مرصودة', e:'Reduced Level of a point', f:'R.L = H.I − F.S', a:'منسوب النقطة (R.L) = منسوب سطح الميزان (H.I) − القراءة الأمامية (F.S)', d:'القراءة الأمامية هي قراءة القامة على النقطة المراد معرفة منسوبها.', x:'منسوب سطح الميزان (H.I) = 101.532 ، القراءة الأمامية (F.S) = 2.145\nمنسوب النقطة (R.L) = 101.532 − 2.145 = 99.387 م' },
+            { c:0, t:'قراءة التوقيع (المنسوب التصميمي)', e:'Setting-out rod reading', f:'Rod = H.I − Design Level', a:'قراءة القامة = منسوب سطح الميزان (H.I) − المنسوب التصميمي', d:'القراءة التي يجب أن تظهر على القامة لتكون النقطة على المنسوب المطلوب.', x:'منسوب سطح الميزان (H.I) = 101.532 ، المنسوب التصميمي = 100.250\nقراءة القامة = 101.532 − 100.250 = 1.282 م' },
+            { c:0, t:'الصعود والهبوط', e:'Rise and Fall', f:'Δh = B.S − F.S\nR.L(new) = R.L(old) + Δh', a:'فرق المنسوب (Δh) = القراءة الخلفية (B.S) − القراءة الأمامية (F.S)\nمنسوب النقطة الجديدة = منسوب النقطة السابقة + فرق المنسوب (Δh)', d:'الناتج الموجب صعود، والسالب هبوط بين النقطتين.', x:'منسوب النقطة أ = 100.000 ، القراءة الخلفية (B.S) على أ = 1.532 ، القراءة الأمامية (F.S) على ب = 0.870\nفرق المنسوب (Δh) = 1.532 − 0.870 = +0.662 (صعود)\nمنسوب النقطة ب = 100.000 + 0.662 = 100.662 م' },
+            { c:0, t:'مراجعة حسابات الميزانية', e:'Arithmetic check', f:'ΣB.S − ΣF.S = R.L(last) − R.L(first)', a:'مجموع القراءات الخلفية (ΣB.S) − مجموع القراءات الأمامية (ΣF.S) = المنسوب الأخير − المنسوب الأول', d:'يجب أن يتساوى الطرفان، وإلا فهناك خطأ حسابي.', x:'مجموع القراءات الخلفية = 4.215 ، مجموع القراءات الأمامية = 3.105 ← الفرق = 1.110\nالمنسوب الأول 100.000 والأخير 101.110 ← الفرق 1.110 ✓' },
+            { c:0, t:'خطأ القفل المسموح به', e:'Allowable misclosure', f:'e = C × √K  (mm)', a:'خطأ القفل المسموح (e) بالمليمتر = المعامل (C) × الجذر التربيعي للمسافة بالكيلومتر (K)', d:'المعامل حسب درجة الميزانية (مثلاً 12 للدقة العالية و24 للعادية). راجع مواصفات المشروع.', x:'المسافة (K) = 2.25 كم ، المعامل (C) = 12\nخطأ القفل المسموح (e) = 12 × √2.25 = 12 × 1.5 = 18 مم' },
+            { c:0, t:'تصحيح الانحناء والانكسار', e:'Curvature & refraction', f:'c = 0.0673 × K²  (m)', a:'تصحيح الانحناء والانكسار (c) بالمتر = 0.0673 × مربع المسافة بالكيلومتر (K²)', d:'المسافة بين الجهاز والقامة. مهم في الأطوال الكبيرة.', x:'المسافة (K) = 0.5 كم\nالتصحيح (c) = 0.0673 × 0.25 = 0.0168 م ≈ 1.7 سم' },
+
+            { c:1, t:'الميل', e:'Slope', f:'S % = (Δh ÷ L) × 100', a:'الميل (S) بالنسبة المئوية = (فرق المنسوب Δh ÷ الطول الأفقي L) × 100', d:'النسبة المئوية تساوي عدد السنتيمترات لكل متر.', x:'فرق المنسوب (Δh) = 0.80 م ، الطول (L) = 40 م\nالميل (S) = (0.80 ÷ 40) × 100 = 2% = 2 سم لكل متر' },
+            { c:1, t:'المنسوب عند مسافة معينة', e:'Elevation at a distance', f:'R.L(d) = R.L(start) + d × (R.L(end) − R.L(start)) ÷ L', a:'المنسوب عند المسافة (d) = منسوب البداية + المسافة (d) × [ (منسوب النهاية − منسوب البداية) ÷ الطول الكلي (L) ]', d:'المسافة تُقاس من نقطة البداية. نفس قانون الطرق والرامبات.', x:'منسوب البداية 10.000 ، منسوب النهاية 11.500 ، الطول (L) = 30 م ، المسافة (d) = 12 م\nالميل = 1.500 ÷ 30 = 0.05 م لكل متر\nالمنسوب = 10.000 + 12 × 0.05 = 10.600 م' },
+
+            { c:2, t:'القطر الخارجي للماسورة', e:'Outer diameter', f:'OD = ID + 2 × t', a:'القطر الخارجي (OD) = القطر الداخلي (ID) + 2 × سمك الماسورة (t)', d:'سمك الماسورة بالبوصة × 0.0254 للتحويل إلى متر.', x:'القطر الداخلي (ID) = 0.30 م (حوالي 12 بوصة) ، سمك الماسورة (t) = 3 سم = 0.03 م\nالقطر الخارجي (OD) = 0.30 + 2 × 0.03 = 0.36 م' },
+            { c:2, t:'منسوب أعلى الماسورة', e:'Crown level', f:'Crown = Invert + OD', a:'منسوب أعلى الماسورة (Crown) = منسوب أسفل الماسورة (Invert) + القطر الخارجي (OD)', d:'منسوب أسفل الماسورة هو منسوب القاع من الداخل.', x:'منسوب أسفل الماسورة (Invert) = 20.000 ، القطر الخارجي (OD) = 0.36\nمنسوب أعلى الماسورة (Crown) = 20.000 + 0.36 = 20.360 م' },
+            { c:2, t:'منسوب القاع عند مسافة', e:'Invert at a distance', f:'Invert(d) = Invert(start) − d × S', a:'منسوب أسفل الماسورة عند المسافة (d) = منسوب أسفل الماسورة عند البداية − المسافة (d) × الانحدار (S)', d:'الانحدار بالمتر لكل متر.', x:'منسوب البداية 20.000 ، منسوب النهاية 19.700 ، الطول (L) = 60 م ، المسافة (d) = 25 م\nالانحدار (S) = 0.300 ÷ 60 = 0.005\nمنسوب أسفل الماسورة = 20.000 − 25 × 0.005 = 19.875 م' },
+            { c:2, t:'انحدار الماسورة', e:'Pipe gradient', f:'S = (Inv₁ − Inv₂) ÷ L', a:'الانحدار (S) = (منسوب القاع الأول Inv₁ − منسوب القاع الثاني Inv₂) ÷ الطول (L)', d:'الضرب في 100 يعطي النسبة المئوية، وفي 1000 يعطي في الألف.', x:'منسوب القاع الأول = 20.000 ، منسوب القاع الثاني = 19.700 ، الطول (L) = 60 م\nالانحدار (S) = 0.300 ÷ 60 = 0.005 = 0.5% = 5 في الألف' },
+            { c:2, t:'عمق الحفر', e:'Trench depth', f:'Depth = N.G.L − Invert', a:'عمق الحفر = منسوب سطح الأرض الطبيعية (N.G.L) − منسوب أسفل الماسورة (Invert)', d:'أضف سمك الماسورة والفرشة إن لزم.', x:'منسوب سطح الأرض الطبيعية (N.G.L) = 22.500 ، منسوب أسفل الماسورة (Invert) = 20.000\nعمق الحفر = 22.500 − 20.000 = 2.500 م' },
+            { c:2, t:'سرعة وتصرف الماسورة (ماننج)', e:'Manning flow', f:'V = (1 ÷ n) × R^(2/3) × S^(1/2)\nQ = V × A\nFull pipe: R = D ÷ 4 ، A = π D² ÷ 4', a:'السرعة (V) = (1 ÷ معامل الخشونة n) × نصف القطر الهيدروليكي (R)^(2/3) × الانحدار (S)^(1/2)\nالتصرف (Q) = السرعة (V) × مساحة المقطع (A)\nللماسورة الممتلئة: R = القطر (D) ÷ 4 ، A = π × D² ÷ 4', d:'معامل الخشونة حوالي 0.013 للخرسانة.', x:'القطر (D) = 0.40 م ، معامل الخشونة (n) = 0.013 ، الانحدار (S) = 0.005\nنصف القطر الهيدروليكي (R) = 0.40 ÷ 4 = 0.10\nالسرعة (V) = (1 ÷ 0.013) × 0.10^(2/3) × 0.005^(1/2) ≈ 1.17 م/ث\nمساحة المقطع (A) = π × 0.16 ÷ 4 = 0.1257 م²\nالتصرف (Q) = 1.17 × 0.1257 ≈ 0.147 م³/ث' },
+            { c:2, t:'مساحة قطاع الترعة شبه المنحرف', e:'Trapezoidal canal area', f:'A = (b + z × h) × h', a:'مساحة المقطع (A) = [ عرض القاع (b) + ميل الجانب (z) × عمق الماء (h) ] × عمق الماء (h)', d:'ميل الجانب = أفقي لكل 1 رأسي.', x:'عرض القاع (b) = 2.0 م ، ميل الجانب (z) = 1.5 ، عمق الماء (h) = 1.2 م\nمساحة المقطع (A) = (2.0 + 1.5 × 1.2) × 1.2 = 4.56 م²' },
+
+            { c:3, t:'إحداثيات نقطة من نقطة معلومة', e:'Forward computation', f:'E₂ = E₁ + D × sin(Az)\nN₂ = N₁ + D × cos(Az)', a:'الشرق الجديد (E₂) = الشرق المعلوم (E₁) + المسافة (D) × جا(الانحراف Az)\nالشمال الجديد (N₂) = الشمال المعلوم (N₁) + المسافة (D) × جتا(الانحراف Az)', d:'الانحراف يُقاس من الشمال مع عقارب الساعة. جا = sin ، جتا = cos.', x:'الشرق المعلوم (E₁) = 1000 ، الشمال المعلوم (N₁) = 2000 ، المسافة (D) = 50 م ، الانحراف (Az) = 30°\nالشرق الجديد (E₂) = 1000 + 50 × جا 30° = 1000 + 50 × 0.5 = 1025.000\nالشمال الجديد (N₂) = 2000 + 50 × جتا 30° = 2000 + 50 × 0.8660 = 2043.301' },
+            { c:3, t:'المسافة الأفقية بين نقطتين', e:'Horizontal distance', f:'D = √(ΔE² + ΔN²)', a:'المسافة الأفقية (D) = √[ (فرق الشرق ΔE)² + (فرق الشمال ΔN)² ]', d:'فرق الشرق وفرق الشمال بين النقطتين.', x:'فرق الشرق (ΔE) = 30 ، فرق الشمال (ΔN) = 40\nالمسافة (D) = √(900 + 1600) = 50 م' },
+            { c:3, t:'الانحراف بين نقطتين', e:'Azimuth', f:'Az = atan2(ΔE, ΔN)\nIf negative add 360°', a:'الانحراف (Az) = ظا⁻¹( فرق الشرق ΔE ÷ فرق الشمال ΔN ) مع مراعاة الربع\nإذا كانت النتيجة سالبة أضف 360°', d:'ظا⁻¹ = معكوس الظل (atan). يعطي الزاوية من الشمال إلى الخط.', x:'فرق الشرق (ΔE) = 30 ، فرق الشمال (ΔN) = 40\nالانحراف (Az) = ظا⁻¹(30 ÷ 40) = 36.870° = 36°52′12″' },
+            { c:3, t:'تحويل الدرجات والدقائق والثواني', e:'DMS to decimal', f:'Deg = D + M ÷ 60 + S ÷ 3600\nRad = Deg × π ÷ 180', a:'الدرجات العشرية = الدرجات (D) + الدقائق (M) ÷ 60 + الثواني (S) ÷ 3600\nالراديان = الدرجات العشرية × π ÷ 180', d:'ضروري قبل إدخال الزاوية في الآلة الحاسبة.', x:'36°52′12″ = 36 + 52 ÷ 60 + 12 ÷ 3600 = 36.8700°\nبالراديان = 36.87 × π ÷ 180 = 0.6435' },
+            { c:3, t:'مجموع الزوايا الداخلية للمضلع', e:'Sum of interior angles', f:'Σ = (n − 2) × 180°', a:'مجموع الزوايا الداخلية (Σ) = (عدد الأضلاع n − 2) × 180°', d:'الفرق عن المجموع المقاس هو خطأ القفل الزاوي.', x:'مضلع من 5 أضلاع\nمجموع الزوايا (Σ) = (5 − 2) × 180° = 540°' },
+            { c:3, t:'خطأ القفل الخطي ودقة المضلع', e:'Linear misclosure & precision', f:'e = √(ΣΔE² + ΣΔN²)\nPrecision = 1 ÷ (P ÷ e)', a:'خطأ القفل الخطي (e) = √[ (مجموع ΔE)² + (مجموع ΔN)² ]\nالدقة = 1 ÷ ( محيط المضلع P ÷ خطأ القفل e )', d:'مجموع فروق الإحداثيات يجب أن يساوي صفراً في مضلع مقفل.', x:'مجموع ΔE = 0.03 ، مجموع ΔN = 0.04 ← خطأ القفل (e) = 0.05 م\nمحيط المضلع (P) = 500 م\nالدقة = 1 ÷ (500 ÷ 0.05) = 1 : 10000' },
+            { c:3, t:'مساحة مضلع من الإحداثيات', e:'Area by coordinates (Shoelace)', f:'A = ½ × |Σ (Eᵢ × Nᵢ₊₁ − Eᵢ₊₁ × Nᵢ)|', a:'المساحة (A) = ½ × | مجموع ( الشرق Eᵢ × الشمال التالي Nᵢ₊₁ − الشرق التالي Eᵢ₊₁ × الشمال Nᵢ ) |', d:'النقاط بترتيب دوراني، والنقطة الأخيرة تعود للأولى.', x:'النقاط (0,0) (10,0) (10,5) (0,5)\nالحدود: 0 + 50 + 50 + 0 = 100\nالمساحة (A) = ½ × 100 = 50 م²' },
+            { c:3, t:'مساحة مثلث', e:'Triangle area', f:'A = √(s(s−a)(s−b)(s−c)) ، s = (a+b+c) ÷ 2\nA = ½ × a × b × sin(C)', a:'قانون هيرون: المساحة (A) = √[ s × (s − a) × (s − b) × (s − c) ] ، نصف المحيط (s) = (a + b + c) ÷ 2\nأو: المساحة (A) = ½ × الضلع a × الضلع b × جا(الزاوية المحصورة C)', d:'الأول عند معرفة الأضلاع الثلاثة، والثاني عند معرفة ضلعين والزاوية بينهما.', x:'الأضلاع a = 3 ، b = 4 ، c = 5\nنصف المحيط (s) = 6\nالمساحة (A) = √(6 × 3 × 2 × 1) = 6 م²' },
+
+            { c:4, t:'اختزال المسافة المائلة', e:'Slope distance reduction', f:'D = S × cos(α)\nV = S × sin(α)', a:'المسافة الأفقية (D) = المسافة المائلة (S) × جتا(زاوية الميل α)\nالمسافة الرأسية (V) = المسافة المائلة (S) × جا(زاوية الميل α)', d:'', x:'المسافة المائلة (S) = 50.000 م ، زاوية الميل (α) = 5°\nالمسافة الأفقية (D) = 50 × 0.99619 = 49.810 م\nالمسافة الرأسية (V) = 50 × 0.08716 = 4.358 م' },
+            { c:4, t:'المسافة بالستاديا', e:'Stadia distance', f:'D = K × s ، (K = 100)', a:'المسافة (D) = ثابت الستاديا (K = 100) × الفرق بين قراءة الشعرة العليا والسفلى (s)', d:'', x:'الشعرة العليا 1.850 ، الشعرة السفلى 1.350 ← الفرق (s) = 0.500\nالمسافة (D) = 100 × 0.500 = 50 م' },
+            { c:4, t:'التحويل بمقياس الرسم', e:'Scale conversion', f:'Ground = Map × Scale denominator', a:'المسافة على الأرض = المسافة على اللوحة × مقام مقياس الرسم', d:'', x:'مقياس الرسم 1:500 ، المسافة على اللوحة 4.2 سم\nالمسافة على الأرض = 4.2 × 500 = 2100 سم = 21 م' },
+
+            { c:5, t:'عناصر المنحنى الدائري', e:'Circular curve elements', f:'T = R × tan(Δ ÷ 2)\nL = R × Δ (rad)\nLC = 2R × sin(Δ ÷ 2)\nE = R × (sec(Δ ÷ 2) − 1)\nM = R × (1 − cos(Δ ÷ 2))', a:'المماس (T) = نصف القطر (R) × ظا(Δ ÷ 2)\nطول المنحنى (L) = نصف القطر (R) × زاوية الانحراف Δ بالراديان\nالوتر الرئيسي (LC) = 2 × نصف القطر (R) × جا(Δ ÷ 2)\nالمسافة الخارجية (E) = نصف القطر (R) × ( قا(Δ ÷ 2) − 1 )\nالسهم (M) = نصف القطر (R) × ( 1 − جتا(Δ ÷ 2) )', d:'ظا = tan ، قا = sec (مقلوب جتا).', x:'نصف القطر (R) = 200 م ، زاوية الانحراف (Δ) = 60°\nالمماس (T) = 200 × ظا 30° = 115.470 م\nطول المنحنى (L) = 200 × 1.0472 = 209.440 م\nالوتر الرئيسي (LC) = 2 × 200 × جا 30° = 200.000 م\nالمسافة الخارجية (E) = 200 × (1.1547 − 1) = 30.940 م\nالسهم (M) = 200 × (1 − 0.8660) = 26.795 م' },
+            { c:5, t:'المنحنى الرأسي (قطع مكافئ)', e:'Parabolic vertical curve', f:'y = y₀ + g₁ × x + ((g₂ − g₁) ÷ (2L)) × x²', a:'المنسوب (y) = منسوب البداية (y₀) + الميل الأول (g₁) × المسافة (x) + [ (الميل الثاني g₂ − الميل الأول g₁) ÷ (2 × طول المنحنى L) ] × x²', d:'الميلان كنسب عشرية، والمسافة (x) من بداية المنحنى.', x:'الميل الأول (g₁) = +0.02 ، الميل الثاني (g₂) = −0.01 ، الطول (L) = 100 م ، منسوب البداية (y₀) = 50.000 ، المسافة (x) = 40 م\nالمنسوب (y) = 50 + 0.02 × 40 + (−0.03 ÷ 200) × 1600\nالمنسوب (y) = 50 + 0.80 − 0.24 = 50.560 م' },
+
+            { c:6, t:'حجم الحفر', e:'Excavation volume', f:'V = W × H × L', a:'الحجم (V) = العرض (W) × متوسط العمق (H) × الطول (L)', d:'', x:'العرض (W) = 1.2 م ، العمق (H) = 2.5 م ، الطول (L) = 50 م\nالحجم (V) = 1.2 × 2.5 × 50 = 150 م³' },
+            { c:6, t:'الحفر والردم', e:'Cut and fill', f:'Cut/Fill = Existing Level − Design Level', a:'الحفر أو الردم = المنسوب الموجود − المنسوب التصميمي', d:'الناتج الموجب حفر، والسالب ردم.', x:'الموجود 12.400 ، التصميمي 11.900 ← +0.500 م (حفر)\nالموجود 12.400 ، التصميمي 12.700 ← −0.300 م (ردم)' },
+            { c:6, t:'الكميات بطريقة متوسط المساحات', e:'Average end area', f:'V = ((A₁ + A₂) ÷ 2) × L', a:'الحجم (V) = [ (المساحة الأولى A₁ + المساحة الثانية A₂) ÷ 2 ] × المسافة بين القطاعين (L)', d:'', x:'المساحة الأولى (A₁) = 12 م² ، المساحة الثانية (A₂) = 18 م² ، المسافة (L) = 20 م\nالحجم (V) = ((12 + 18) ÷ 2) × 20 = 300 م³' },
+
+            { c:7, t:'منسوب التطبيق وقراءة القامة', e:'Deck level and rod reading', f:'Deck = Top of Concrete − Thickness\nRod = H.I − Deck', a:'منسوب التطبيق = منسوب أعلى الخرسانة − سمك الخرسانة\nقراءة القامة = منسوب سطح الميزان (H.I) − منسوب التطبيق', d:'', x:'منسوب أعلى الخرسانة = 25.000 ، سمك الخرسانة = 0.20 م ، منسوب سطح الميزان (H.I) = 27.300\nمنسوب التطبيق = 25.000 − 0.20 = 24.800 م\nقراءة القامة = 27.300 − 24.800 = 2.500 م' },
+            { c:7, t:'منسوب العرق والحمالات', e:'Joists and beams level', f:'Level(next) = Level(prev) − Thickness(prev)', a:'منسوب العنصر التالي = منسوب العنصر السابق − سمك العنصر السابق', d:'كل عنصر تحت السابق بمقدار سمك السابق.', x:'منسوب التطبيق = 24.800 ، سمك لوح الكونتر = 1.8 سم\nمنسوب العرق = 24.800 − 0.018 = 24.782 م\nقراءة القامة = 27.300 − 24.782 = 2.518 م' },
+            { c:7, t:'منسوب الكاب', e:'Drop (cap) level', f:'Cap Deck = Slab Deck − Drop', a:'منسوب تطبيق الكاب = منسوب تطبيق السقف الرئيسي − مقدار الانخفاض', d:'الكاب أوطى من السقف الرئيسي، فيُطرح الانخفاض.', x:'منسوب التطبيق = 24.800 ، مقدار الانخفاض = 15 سم\nمنسوب تطبيق الكاب = 24.800 − 0.15 = 24.650 م\nقراءة القامة = 27.300 − 24.650 = 2.650 م' }
+        ];
+        let isArabic = true;
+        function renderFormulas() {
+            const list = document.getElementById('formulas-list');
+            const q = ((document.getElementById('formulaSearch') || {}).value || '').trim().toLowerCase();
+            list.innerHTML = '';
+            let lastCat = -1, count = 0;
+            formulasData.forEach(f => {
+                if (q && !(f.t + f.e + f.f + f.a + f.d).toLowerCase().includes(q)) return;
+                count++;
+                if (f.c !== lastCat) {
+                    lastCat = f.c;
+                    let h = document.createElement('div');
+                    h.className = 'f-cat';
+                    h.textContent = formulaCats[f.c];
+                    list.appendChild(h);
+                }
+                let div = document.createElement('div');
+                div.className = 'f-item';
+                div.innerHTML = `<div class="f-head"><strong>${isArabic ? f.t : f.e}</strong><button class="f-btn" aria-expanded="false" onclick="toggleExample(this)">أمثلة</button></div>` +
+                    `<div class="f-formula${isArabic ? ' ar' : ''}">${isArabic ? f.a : f.f}</div>${f.d ? `<p class="f-desc">${f.d}</p>` : ''}<div class="f-ex" hidden>${f.x}</div>`;
+                list.appendChild(div);
+            });
+            if (!count) list.innerHTML = '<div class="f-empty">لا يوجد قانون مطابق للبحث.</div>';
+        }
+        function toggleExample(btn) {
+            const ex = btn.closest('.f-item').querySelector('.f-ex');
+            const opening = ex.hidden;
+            ex.hidden = !opening;
+            btn.setAttribute('aria-expanded', opening);
+            btn.textContent = opening ? 'إخفاء المثال' : 'أمثلة';
+        }
+        function toggleFormulasLang() { isArabic = !isArabic; renderFormulas(); }
+        renderFormulas();
+
+        function handleFileUpload() {
+            alert("يرجى إرسال الصورة أو اللوحة مباشرة في نافذة المحادثة هنا، وسأقوم بتحليلها واستخراج كافة المناسيب والقيم لك فورا.");
+        }
+    </script>
+</body>
+</html>
