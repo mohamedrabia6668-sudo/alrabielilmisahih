@@ -510,8 +510,8 @@
             <div id="tab-ai" class="section">
                 <div class="card">
                     <h2><i class="fas fa-microchip"></i> تحليل اللوحات والمخططات الذكي</h2>
-                    <p class="ai-note">ارفع صورة أو ملف PDF للوحة، واسأل عن أي حاجة فيها. لو اللوحة DWG أو DXF، صدّرها PDF من الأوتوكاد الأول.</p>
-                    <input type="file" id="fileUpload" accept="image/*,application/pdf" onchange="pickAiFile(this)">
+                    <p class="ai-note">ارفع صورة أو PDF أو DXF للوحة، واسأل عن أي حاجة فيها. ملفات DWG لازم تتحول الأول (Save As ← DXF أو Plot ← PDF).</p>
+                    <input type="file" id="fileUpload" onchange="pickAiFile(this)">
                     <div id="aiStatus" class="ai-status"></div>
                     <div class="ai-quick">
                         <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟')">اشرح اللوحة</button>
@@ -1092,26 +1092,72 @@
             ctx.drawImage(bmp, 0, 0, c.width, c.height);
             return c.toDataURL('image/jpeg', 0.85).split(',')[1];
         }
+        let aiErr = '';
+        async function sniffKind(f) {
+            const b = new Uint8Array(await f.slice(0, 64).arrayBuffer());
+            const head = String.fromCharCode(...b);
+            const name = f.name.toLowerCase();
+            if (head.startsWith('%PDF-')) return 'pdf';
+            if ((b[0] === 0xFF && b[1] === 0xD8) || head.startsWith('\x89PNG') || head.startsWith('GIF8') || (head.startsWith('RIFF') && head.includes('WEBP'))) return 'image';
+            if (/^AC10\d\d/.test(head) || /\.dwg(\b|[-_.])/.test(name)) return 'dwg';
+            if (head.includes('SECTION') || /\.dxf(\b|[-_.])/.test(name)) return 'dxf';
+            if (f.type.startsWith('image/')) return 'image';
+            return 'other';
+        }
+        function dxfSummary(txt) {
+            const L = txt.split(/\r?\n/), counts = {}, texts = [];
+            let sec = '', ent = null;
+            const flush = () => {
+                if (ent && ent.text && texts.length < 1500) {
+                    const t = ent.text.replace(/\\P/g, ' ').replace(/\\[A-Za-z][^;]*;/g, '').replace(/[{}]/g, '').trim();
+                    if (t) texts.push((ent.layer || '-') + ' | ' + t + ' | ' + (ent.x || '') + ',' + (ent.y || ''));
+                }
+            };
+            for (let i = 0; i + 1 < L.length; i += 2) {
+                const c = L[i].trim(), v = L[i + 1].trim();
+                if (c === '0') {
+                    flush(); ent = null;
+                    if (v === 'SECTION') { sec = '?'; }
+                    else if (v === 'ENDSEC') { sec = ''; }
+                    else if (sec === 'ENTITIES' || sec === 'BLOCKS') { counts[v] = (counts[v] || 0) + 1; ent = { type: v, text: '' }; }
+                } else if (c === '2' && sec === '?') { sec = v; }
+                else if (ent) {
+                    if (c === '8') ent.layer = v;
+                    else if (c === '1' || c === '3') ent.text = (c === '3' ? ent.text + v : v + ent.text);
+                    else if (c === '10') ent.x = v;
+                    else if (c === '20') ent.y = v;
+                }
+            }
+            flush();
+            const cs = Object.keys(counts).map(k => k + '=' + counts[k]).join(', ');
+            return ('عدد العناصر: ' + cs + '\nالنصوص والأبعاد (الطبقة | النص | X,Y):\n' + texts.join('\n')).slice(0, 120000);
+        }
         async function pickAiFile(input) {
             const f = input.files[0];
             if (!f) return;
-            aiFile = null; aiHistory = []; document.getElementById('aiChat').innerHTML = '';
+            aiFile = null; aiErr = ''; aiHistory = []; document.getElementById('aiChat').innerHTML = '';
             try {
-                if (f.type.startsWith('image/')) {
+                const kind = await sniffKind(f);
+                if (kind === 'image') {
                     aiFile = { mediaType: 'image/jpeg', data: await shrinkImage(f) };
-                } else if (f.type === 'application/pdf') {
-                    if (f.size > 3 * 1024 * 1024) return aiStatus('ملف الـ PDF أكبر من 3 ميجا. صدّر صفحة واحدة أو صورة أصغر.');
-                    aiFile = { mediaType: 'application/pdf', data: await fileToB64(f) };
+                } else if (kind === 'pdf') {
+                    if (f.size > 3 * 1024 * 1024) aiErr = 'ملف الـ PDF أكبر من 3 ميجا. صدّر صفحة واحدة أو صورة أصغر.';
+                    else aiFile = { mediaType: 'application/pdf', data: await fileToB64(f) };
+                } else if (kind === 'dxf') {
+                    if (f.size > 40 * 1024 * 1024) aiErr = 'ملف DXF كبير جداً.';
+                    else aiFile = { mediaType: 'text/plain', text: dxfSummary(await f.text()) };
+                } else if (kind === 'dwg') {
+                    aiErr = 'ملف DWG مش بيتقرأ مباشرة. من الأوتوكاد اعمل Save As ← DXF، أو Plot ← PDF، وارفعه.';
                 } else {
-                    return aiStatus('الصيغة دي مش مدعومة. صدّر اللوحة PDF أو صورة.');
+                    aiErr = 'الصيغة دي مش مدعومة. ارفع صورة أو PDF أو DXF.';
                 }
-                aiStatus('تم رفع اللوحة. اسأل أو اختار من الأزرار.');
-            } catch (e) { aiStatus('تعذر قراءة الملف. جرّب ملف تاني.'); }
+            } catch (e) { aiErr = 'تعذر قراءة الملف. جرّب ملف تاني.'; }
+            aiStatus(aiErr || (aiFile && aiFile.text ? 'تم قراءة نصوص وأبعاد ملف DXF. اسأل عنها.' : 'تم رفع اللوحة. اسأل أو اختار من الأزرار.'));
         }
         async function sendAi(q) {
             const inp = document.getElementById('aiInput');
             q = (q || inp.value).trim();
-            if (!aiFile) return aiStatus('ارفع اللوحة الأول.');
+            if (!aiFile) return aiStatus(aiErr || 'ارفع اللوحة الأول.');
             if (!q || aiBusy) return;
             inp.value = ''; aiBusy = true;
             aiHistory.push({ role: 'user', content: q });
@@ -1124,7 +1170,7 @@
                     if (code) { localStorage.setItem('ai_code', code); res = await callAi(); }
                 }
                 const data = await res.json().catch(() => ({}));
-                if (!res.ok) throw new Error(res.status === 401 ? 'كود الاستخدام غير صحيح.' : res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.' : 'حصل خطأ في التحليل. جرّب تاني بعد شوية.');
+                if (!res.ok) throw new Error(res.status === 401 ? 'كود الاستخدام غير صحيح.' : res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.' : 'حصل خطأ في التحليل: ' + (data.error || res.status));
                 wait.textContent = data.text;
                 aiHistory.push({ role: 'assistant', content: data.text });
                 while (aiHistory.length > 20) aiHistory.splice(0, 2);
