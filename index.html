@@ -223,6 +223,19 @@
         .ai-send { display: flex; gap: 8px; align-items: flex-end; }
         .ai-send textarea { flex: 1; resize: none; }
         .ai-send .btn-calc { width: auto; margin: 0; padding: 0 22px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .auth-btn { min-height: 42px; padding: 0 12px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.55); background: transparent; color: #fff; font-weight: 600; font-size: .85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .auth-btn[hidden] { display: none; }
+        .auth-btn img { width: 30px; height: 30px; border-radius: 50%; }
+        .h-user { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; background: #f2f5ea; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: .9rem; }
+        .h-item { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+        .h-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+        .h-head strong { color: var(--ink); }
+        .h-date { font-size: .78rem; color: var(--muted); }
+        .h-in { font-size: .82rem; color: var(--muted); margin: 6px 0; }
+        .h-res { font-size: .88rem; white-space: pre-line; background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; margin: 6px 0; direction: rtl; }
+        .h-act { display: flex; gap: 8px; margin-top: 8px; }
+        .h-act .del { border-color: var(--danger); color: var(--danger); }
     </style>
 </head>
 <body>
@@ -233,9 +246,12 @@
             <img src="logo.png" alt="الربيع للمساحة" class="site-logo" onerror="this.style.display='none'">
             <span>الربيع للمساحة</span>
         </div>
-        <button class="menu-toggle-btn" onclick="toggleMenu()" title="القائمة الرئيسية">
-            <i class="fas fa-bars"></i>
-        </button>
+        <div class="header-actions">
+            <button id="authBtn" class="auth-btn" onclick="authClick()" hidden></button>
+            <button class="menu-toggle-btn" onclick="toggleMenu()" title="القائمة الرئيسية">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
     <!-- القائمة الجانبية المنسدلة -->
@@ -254,6 +270,7 @@
         <button class="drawer-nav-btn" onclick="openTab('tab-notebook', this)"><i class="fas fa-edit"></i> ملاحظات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-formulas', this)"><i class="fas fa-book-open"></i> القوانين</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> تحليل اللوحات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-history', this); renderHistory()"><i class="fas fa-history"></i> سجل العمليات</button>
     </div>
 
     <div class="app-container">
@@ -503,6 +520,16 @@
                     </h2>
                     <input type="search" id="formulaSearch" placeholder="ابحث عن قانون..." oninput="renderFormulas()">
                     <div id="formulas-list"></div>
+                </div>
+            </div>
+
+            <!-- سجل العمليات -->
+            <div id="tab-history" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-history"></i> سجل العمليات</h2>
+                    <div id="historyUser" class="h-user"></div>
+                    <div id="historyList"></div>
+                    <button class="btn-calc btn-pdf" onclick="historyClearAll()" style="margin-top: 8px;"><i class="fas fa-trash"></i> مسح السجل</button>
                 </div>
             </div>
 
@@ -1186,6 +1213,115 @@
                 body: JSON.stringify({ file: aiFile, messages: aiHistory, code: localStorage.getItem('ai_code') || '' })
             });
         }
+    </script>
+    <script src="firebase-config.js"></script>
+    <script>
+        const HLS = 'rabia_history';
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        const H = {
+            cloud: () => !!(window.Cloud && window.currentUser),
+            local() { try { return JSON.parse(localStorage.getItem(HLS) || '[]'); } catch (e) { return []; } },
+            saveLocal(a) { try { localStorage.setItem(HLS, JSON.stringify(a.slice(0, 100))); } catch (e) {} },
+            async add(e) { if (H.cloud()) return window.Cloud.add(e); const a = H.local(); a.unshift(Object.assign({ id: 'l' + e.at }, e)); H.saveLocal(a); },
+            async list() { return H.cloud() ? window.Cloud.list() : H.local(); },
+            async remove(id) { if (H.cloud()) return window.Cloud.remove(id); H.saveLocal(H.local().filter(x => x.id !== id)); },
+            async clear() { if (H.cloud()) return window.Cloud.clear(); H.saveLocal([]); }
+        };
+        document.addEventListener('click', ev => {
+            const b = ev.target.closest('button[onclick^="calc"], button[onclick^="runQuickCalc"]');
+            if (!b) return;
+            setTimeout(() => {
+                const sec = b.closest('.section');
+                if (!sec) return;
+                const res = Array.from(sec.querySelectorAll('.result-container, .custom-result-box, #r_custom_result, #s_custom_result, #l_hi_display'))
+                    .map(x => x.innerText.trim()).filter(Boolean).join('\n');
+                if (!res) return;
+                const inputs = [];
+                sec.querySelectorAll('input, select, textarea').forEach(el => {
+                    if (!el.id || el.type === 'file' || el.type === 'button' || el.value === '') return;
+                    const g = el.closest('.form-group'), lb = g && g.querySelector('label');
+                    inputs.push({ id: el.id, l: lb ? lb.textContent.trim().replace(/[:：]\s*$/, '') : el.id, v: el.value });
+                });
+                const h2 = sec.querySelector('h2');
+                H.add({ sec: sec.id, title: h2 ? h2.textContent.trim() : sec.id, inputs: inputs.slice(0, 40), result: res.slice(0, 500), at: Date.now() }).catch(() => {});
+            }, 400);
+        });
+        function paintAuth(u) {
+            const b = document.getElementById('authBtn');
+            if (!window.Cloud) { b.hidden = true; return; }
+            b.hidden = false;
+            b.innerHTML = u ? (u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer">' : '<i class="fas fa-user"></i>') : '<i class="fab fa-google"></i> دخول';
+        }
+        function authClick() {
+            if (window.currentUser) { openTab('tab-history', document.querySelector('.drawer-nav-btn[onclick*="tab-history"]')); renderHistory(); }
+            else window.Cloud.signIn();
+        }
+        window.onAuthChanged = async u => {
+            window.currentUser = u; paintAuth(u);
+            if (u) {
+                const loc = H.local();
+                if (loc.length) { try { for (const e of loc.reverse()) await window.Cloud.add(e); H.saveLocal([]); } catch (e) {} }
+            }
+            if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
+        };
+        async function renderHistory() {
+            const u = window.currentUser, box = document.getElementById('historyUser');
+            if (window.Cloud) {
+                box.innerHTML = u
+                    ? '<span>' + esc(u.displayName || u.email) + '<br><small>' + esc(u.email || '') + '</small></span><button class="f-btn" onclick="Cloud.signOut()">تسجيل الخروج</button>'
+                    : '<span>سجلك محفوظ على الجهاز ده بس. سجّل دخول بجوجل علشان يتحفظ في حسابك ويظهر على أي جهاز.</span><button class="f-btn" onclick="Cloud.signIn()">دخول بجوجل</button>';
+            } else box.innerHTML = '<span>السجل محفوظ على الجهاز ده فقط.</span>';
+            const list = document.getElementById('historyList');
+            list.textContent = 'جاري التحميل...';
+            let items = [];
+            try { items = await H.list(); } catch (e) { list.textContent = 'تعذر تحميل السجل.'; return; }
+            window._hItems = items;
+            if (!items.length) { list.innerHTML = '<div class="f-empty">لسه مفيش عمليات محفوظة. أي حساب تعمله هيتسجل هنا.</div>'; return; }
+            list.innerHTML = items.map((x, i) =>
+                '<div class="h-item"><div class="h-head"><strong>' + esc(x.title) + '</strong><span class="h-date">' + esc(new Date(x.at).toLocaleString('ar-EG')) + '</span></div>' +
+                '<div class="h-in">' + esc((x.inputs || []).slice(0, 6).map(p => p.l + ': ' + p.v).join(' | ')) + '</div>' +
+                '<div class="h-res">' + esc(String(x.result || '').slice(0, 220)) + '</div>' +
+                '<div class="h-act"><button class="f-btn" onclick="historyRestore(' + i + ')">استرجاع المدخلات</button><button class="f-btn del" onclick="historyDelete(' + i + ')">حذف</button></div></div>'
+            ).join('');
+        }
+        function historyRestore(i) {
+            const x = window._hItems[i];
+            (x.inputs || []).forEach(p => {
+                const el = document.getElementById(p.id);
+                if (el) { el.value = p.v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
+            });
+            openTab(x.sec, document.querySelector('.drawer-nav-btn[onclick*="\'' + x.sec + '\'"]'));
+        }
+        async function historyDelete(i) { await H.remove(window._hItems[i].id); renderHistory(); }
+        async function historyClearAll() { if (confirm('تمسح كل السجل؟')) { await H.clear(); renderHistory(); } }
+        paintAuth(null);
+    </script>
+    <script type="module">
+        const cfg = window.FIREBASE_CONFIG;
+        if (cfg && cfg.apiKey) {
+            const V = 'https://www.gstatic.com/firebasejs/10.14.1/';
+            const { initializeApp } = await import(V + 'firebase-app.js');
+            const A = await import(V + 'firebase-auth.js');
+            const F = await import(V + 'firebase-firestore.js');
+            const app = initializeApp(cfg), auth = A.getAuth(app), db = F.getFirestore(app);
+            const col = () => F.collection(db, 'users', auth.currentUser.uid, 'history');
+            window.Cloud = {
+                async signIn() {
+                    const p = new A.GoogleAuthProvider();
+                    try { await A.signInWithPopup(auth, p); }
+                    catch (e) {
+                        if (e.code === 'auth/popup-blocked') await A.signInWithRedirect(auth, p);
+                        else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') alert('تعذر تسجيل الدخول: ' + e.code);
+                    }
+                },
+                signOut: () => A.signOut(auth),
+                add: e => { const { id, ...r } = e; return F.addDoc(col(), r); },
+                async list() { const s = await F.getDocs(F.query(col(), F.orderBy('at', 'desc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                remove: id => F.deleteDoc(F.doc(db, 'users', auth.currentUser.uid, 'history', id)),
+                async clear() { const s = await F.getDocs(col()); await Promise.all(s.docs.map(d => F.deleteDoc(d.ref))); }
+            };
+            A.onAuthStateChanged(auth, u => window.onAuthChanged(u));
+        } else { window.onAuthChanged(null); }
     </script>
 </body>
 </html>
