@@ -39,18 +39,28 @@ module.exports = async (req, res) => {
   };
   try {
     if (!key) return res.status(500).json({ error: 'GEMINI_API_KEY غير مضاف في فرسل' });
-    let out = await gen(process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite');
-    if (out.r.status === 404) {
-      const lr = await fetch(base + '?pageSize=100', { headers: { 'x-goog-api-key': key } });
+    const tried = [];
+    const first = (process.env.GEMINI_MODEL || '').trim() || 'gemini-2.5-flash-lite';
+    tried.push(first);
+    let out = await gen(first);
+    if (!out.r.ok && out.r.status !== 429 && out.r.status !== 400) {
+      const lr = await fetch(base + '?pageSize=200', { headers: { 'x-goog-api-key': key } });
       const ld = await lr.json().catch(() => ({}));
-      const pick = (ld.models || [])
-        .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/.test(m.name) && !/(image|tts|live|audio|exp|preview)/.test(m.name))
-        .map(m => m.name.replace('models/', ''));
-      if (pick.length) out = await gen(pick[0]);
+      const ver = n => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
+      const list = (ld.models || [])
+        .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/.test(m.name) && !/(image|tts|live|audio|exp|preview|robotics|computer)/.test(m.name))
+        .map(m => m.name.replace('models/', ''))
+        .filter(n => n !== first)
+        .sort((x, y) => ver(y) - ver(x) || x.length - y.length);
+      for (const name of list.slice(0, 3)) {
+        tried.push(name);
+        out = await gen(name);
+        if (out.r.ok || out.r.status === 429) break;
+      }
     }
     const { r, data } = out;
     if (!r.ok) {
-      const msg = (data.error && data.error.message) || ('status ' + r.status);
+      const msg = ((data.error && data.error.message) || ('status ' + r.status)) + ' [الموديلات المجرّبة: ' + tried.join(', ') + ']';
       console.error('gemini error', r.status, msg);
       return res.status(r.status === 429 ? 429 : 502).json({ error: msg });
     }
