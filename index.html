@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#12453f">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="الربيع">
     <title>الربيع للمساحة | حاسبة مناسيب وميول وإحداثيات للمساحين</title>
     <meta name="description" content="أدوات مساحية مجانية: حساب ميول الطرق والرامبات، مناسيب الصرف والترع، الميزانية والتوقيع المساحي، الإحداثيات، والقوانين المساحية مع أمثلة محلولة.">
     <meta name="robots" content="index, follow">
@@ -223,6 +227,7 @@
         .ai-send { display: flex; gap: 8px; align-items: flex-end; }
         .ai-send textarea { flex: 1; resize: none; }
         .ai-send .btn-calc { width: auto; margin: 0; padding: 0 22px; }
+        .drawer-nav-btn[hidden] { display: none; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         .auth-btn { min-height: 42px; padding: 0 12px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.55); background: transparent; color: #fff; font-weight: 600; font-size: .85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
         .auth-btn[hidden] { display: none; }
@@ -236,9 +241,57 @@
         .h-res { font-size: .88rem; white-space: pre-line; background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; margin: 6px 0; direction: rtl; }
         .h-act { display: flex; gap: 8px; margin-top: 8px; }
         .h-act .del { border-color: var(--danger); color: var(--danger); }
+        .gate { position: fixed; inset: 0; z-index: 3000; background: var(--primary); overflow-y: auto; padding: 20px 16px; display: flex; }
+        .gate[hidden] { display: none; }
+        .gate-card { margin: auto; width: 100%; max-width: 400px; background: var(--card-bg); border-radius: 18px; padding: 26px 22px; text-align: center; }
+        .gate-logo { width: 84px; height: 84px; border-radius: 20px; object-fit: cover; margin-bottom: 10px; }
+        .gate-card h1 { font-size: 1.6rem; margin: 0 0 6px; color: var(--ink); }
+        .gate-card p { margin: 0 0 18px; color: var(--muted); font-size: .92rem; }
+        .gate-card input { margin-bottom: 10px; }
+        .gate-btn { width: 100%; min-height: 48px; border-radius: 10px; font-weight: 700; font-size: .98rem; cursor: pointer; border: 1.5px solid var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .gate-btn.main { background: var(--primary); color: #fff; }
+        .gate-btn.google { background: #fff; color: var(--ink); border-color: var(--border); }
+        .gate-btn.ghost { background: transparent; color: var(--primary); }
+        .gate-or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .82rem; margin: 6px 0 12px; }
+        .gate-or::before, .gate-or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+        .gate-tabs { display: flex; background: #eef1e6; border-radius: 10px; padding: 4px; margin-bottom: 12px; }
+        .gate-tabs button { flex: 1; min-height: 38px; border: none; border-radius: 8px; background: transparent; font-weight: 700; color: var(--muted); cursor: pointer; }
+        .gate-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+        .gate-err { min-height: 1.2em; color: var(--danger); font-size: .85rem; margin-bottom: 8px; }
+        .gate-link { background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; margin-bottom: 10px; font-size: .88rem; }
+        .q-item, .a-item { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+        .q-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--muted); }
+        .q-meta strong { color: var(--ink); font-size: .92rem; }
+        .q-text { margin: 8px 0; white-space: pre-wrap; line-height: 1.8; color: var(--ink); }
+        .q-acts { display: flex; gap: 8px; margin-top: 6px; }
+        .q-acts .del { border-color: var(--danger); color: var(--danger); }
+        .q-ans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+        .a-item { background: var(--accent-soft); border-color: #c5dc4a; }
+        .q-ans textarea { margin: 8px 0; }
     </style>
 </head>
 <body>
+    <div id="authGate" class="gate" hidden>
+        <div class="gate-card">
+            <img src="logo.png" class="gate-logo" alt="">
+            <h1>الربيع للمساحة</h1>
+            <p>حاسبات مساحية، مساعد ذكي، ومجتمع أسئلة وإجابات</p>
+            <button class="gate-btn google" onclick="Cloud.signIn()"><i class="fab fa-google"></i> المتابعة بحساب جوجل</button>
+            <div class="gate-or">أو بالبريد الإلكتروني</div>
+            <div class="gate-tabs">
+                <button id="gtLogin" class="on" onclick="gateMode('login')">دخول</button>
+                <button id="gtSignup" onclick="gateMode('signup')">إنشاء حساب</button>
+            </div>
+            <input id="gName" placeholder="الاسم" autocomplete="name" hidden>
+            <input id="gEmail" type="email" placeholder="البريد الإلكتروني" autocomplete="email" dir="ltr">
+            <input id="gPass" type="password" placeholder="كلمة السر (6 حروف على الأقل)" autocomplete="current-password" dir="ltr" onkeydown="if (event.key === 'Enter') gateSubmit()">
+            <div id="gErr" class="gate-err"></div>
+            <button id="gSubmit" class="gate-btn main" onclick="gateSubmit()">دخول</button>
+            <button class="gate-link" onclick="gateReset()">نسيت كلمة السر؟</button>
+            <button class="gate-btn ghost" onclick="gateGuest()">الدخول كزائر</button>
+        </div>
+    </div>
+
 
     <!-- الشريط العلوي -->
     <header>
@@ -271,6 +324,8 @@
         <button class="drawer-nav-btn" onclick="openTab('tab-formulas', this)"><i class="fas fa-book-open"></i> القوانين</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> تحليل اللوحات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-history', this); renderHistory()"><i class="fas fa-history"></i> سجل العمليات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-qa', this); renderQA()"><i class="fas fa-comments"></i> الأسئلة والإجابات</button>
+        <button id="installBtn" class="drawer-nav-btn" onclick="installApp()" hidden><i class="fas fa-download"></i> تثبيت التطبيق</button>
     </div>
 
     <div class="app-container">
@@ -523,6 +578,18 @@
                 </div>
             </div>
 
+            <!-- الأسئلة والإجابات -->
+            <div id="tab-qa" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-comments"></i> الأسئلة والإجابات</h2>
+                    <p id="qaInfo" class="ai-note"></p>
+                    <textarea id="qaText" rows="3" maxlength="1000" placeholder="اكتب سؤالك المساحي هنا..."></textarea>
+                    <input id="qaName" placeholder="اسمك (اختياري)" style="margin-top: 8px;" hidden>
+                    <button id="qaAsk" class="btn-calc" onclick="askQ()"><i class="fas fa-paper-plane"></i> نشر السؤال</button>
+                    <div id="qaList" style="margin-top: 16px;"></div>
+                </div>
+            </div>
+
             <!-- سجل العمليات -->
             <div id="tab-history" class="section">
                 <div class="card">
@@ -536,14 +603,16 @@
             <!-- 8. تحليل اللوحات -->
             <div id="tab-ai" class="section">
                 <div class="card">
-                    <h2><i class="fas fa-microchip"></i> تحليل اللوحات والمخططات الذكي</h2>
-                    <p class="ai-note">ارفع صورة أو PDF أو DXF للوحة، واسأل عن أي حاجة فيها. ملفات DWG لازم تتحول الأول (Save As ← DXF أو Plot ← PDF).</p>
+                    <h2><i class="fas fa-microchip"></i> المساعد الذكي للمساحة</h2>
+                    <p class="ai-note">اسأل أي سؤال في المساحة (شرح، قوانين، حسابات)، أو ارفع لوحة (صورة أو PDF أو DXF) وهقراها وأجاوب عنها. ملفات DWG لازم تتحول الأول (Save As ← DXF أو Plot ← PDF). محتاج تسجيل دخول بحساب.</p>
                     <input type="file" id="fileUpload" onchange="pickAiFile(this)">
                     <div id="aiStatus" class="ai-status"></div>
                     <div class="ai-quick">
-                        <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟')">اشرح اللوحة</button>
-                        <button onclick="sendAi('استخرج كل المناسيب والأطوال والميول والأقطار الظاهرة في اللوحة في قائمة مرتبة.')">استخرج المناسيب والأرقام</button>
-                        <button onclick="sendAi('إيه القوانين المساحية اللي أحتاجها للشغل على اللوحة دي؟ اشرح كل قانون بمثال من أرقام اللوحة.')">القوانين المناسبة</button>
+                        <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟', true)">اشرح اللوحة</button>
+                        <button onclick="sendAi('استخرج كل المناسيب والأطوال والميول والأقطار الظاهرة في اللوحة في قائمة مرتبة.', true)">استخرج الأرقام</button>
+                        <button onclick="sendAi('إيه القوانين المساحية اللي أحتاجها للشغل على اللوحة دي؟ اشرح كل قانون بمثال من أرقام اللوحة.', true)">قوانين اللوحة</button>
+                        <button onclick="sendAi('اشرح الفرق بين H.I و R.L وإزاي أحسب منسوب نقطة بالميزانية بمثال.')">ميزانية بالمثال</button>
+                        <button onclick="sendAi('إزاي أحسب ميل ماسورة صرف ومنسوب القاع عند كل مسافة؟ اشرح بمثال.')">ميل الصرف</button>
                     </div>
                     <div id="aiChat" class="ai-chat"></div>
                     <div class="ai-send">
@@ -1181,23 +1250,21 @@
             } catch (e) { aiErr = 'تعذر قراءة الملف. جرّب ملف تاني.'; }
             aiStatus(aiErr || (aiFile && aiFile.text ? 'تم قراءة نصوص وأبعاد ملف DXF. اسأل عنها.' : 'تم رفع اللوحة. اسأل أو اختار من الأزرار.'));
         }
-        async function sendAi(q) {
+        async function sendAi(q, needFile) {
             const inp = document.getElementById('aiInput');
             q = (q || inp.value).trim();
-            if (!aiFile) return aiStatus(aiErr || 'ارفع اللوحة الأول.');
             if (!q || aiBusy) return;
+            if (needFile && !aiFile) return aiStatus(aiErr || 'ارفع اللوحة الأول.');
+            if (window.Cloud && !window.isRegistered) { aiStatus('سجّل دخول بحساب علشان تستخدم المساعد الذكي.'); return showGate(); }
             inp.value = ''; aiBusy = true;
             aiHistory.push({ role: 'user', content: q });
             aiAdd('user', q);
             const wait = aiAdd('bot', 'جاري التحليل...');
             try {
-                let res = await callAi();
-                if (res.status === 401) {
-                    const code = prompt('أدخل كود الاستخدام:');
-                    if (code) { localStorage.setItem('ai_code', code); res = await callAi(); }
-                }
+                const res = await callAi();
+                if (res.status === 401) { showGate(); throw new Error('سجّل دخول بحساب علشان تستخدم المساعد الذكي.'); }
                 const data = await res.json().catch(() => ({}));
-                if (!res.ok) throw new Error(res.status === 401 ? 'كود الاستخدام غير صحيح.' : res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.' : 'حصل خطأ في التحليل: ' + (data.error || res.status));
+                if (!res.ok) throw new Error(res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.' : 'حصل خطأ في التحليل: ' + (data.error || res.status));
                 wait.textContent = data.text;
                 aiHistory.push({ role: 'assistant', content: data.text });
                 while (aiHistory.length > 20) aiHistory.splice(0, 2);
@@ -1207,10 +1274,13 @@
             }
             aiBusy = false;
         }
-        function callAi() {
+        async function callAi() {
+            const u = window.currentUser;
+            const tok = (u && !u.isAnonymous) ? await u.getIdToken() : '';
             return fetch('/api/analyze', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ file: aiFile, messages: aiHistory, code: localStorage.getItem('ai_code') || '' })
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok },
+                body: JSON.stringify({ file: aiFile, messages: aiHistory })
             });
         }
     </script>
@@ -1219,7 +1289,7 @@
         const HLS = 'rabia_history';
         const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
         const H = {
-            cloud: () => !!(window.Cloud && window.currentUser),
+            cloud: () => !!(window.Cloud && window.isRegistered),
             local() { try { return JSON.parse(localStorage.getItem(HLS) || '[]'); } catch (e) { return []; } },
             saveLocal(a) { try { localStorage.setItem(HLS, JSON.stringify(a.slice(0, 100))); } catch (e) {} },
             async add(e) { if (H.cloud()) return window.Cloud.add(e); const a = H.local(); a.unshift(Object.assign({ id: 'l' + e.at }, e)); H.saveLocal(a); },
@@ -1250,26 +1320,28 @@
             const b = document.getElementById('authBtn');
             if (!window.Cloud) { b.hidden = true; return; }
             b.hidden = false;
-            b.innerHTML = u ? (u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer">' : '<i class="fas fa-user"></i>') : '<i class="fab fa-google"></i> دخول';
+            b.innerHTML = (u && !u.isAnonymous) ? (u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer">' : '<i class="fas fa-user"></i>') : '<i class="fab fa-google"></i> دخول';
         }
         function authClick() {
-            if (window.currentUser) { openTab('tab-history', document.querySelector('.drawer-nav-btn[onclick*="tab-history"]')); renderHistory(); }
-            else window.Cloud.signIn();
+            if (window.isRegistered) { openTab('tab-history', document.querySelector('.drawer-nav-btn[onclick*="tab-history"]')); renderHistory(); }
+            else showGate();
         }
         window.onAuthChanged = async u => {
-            window.currentUser = u; paintAuth(u);
-            if (u) {
+            window.currentUser = u; window.isRegistered = !!(u && !u.isAnonymous);
+            paintAuth(u);
+            if (window.isRegistered) {
+                hideGate();
                 const loc = H.local();
                 if (loc.length) { try { for (const e of loc.reverse()) await window.Cloud.add(e); H.saveLocal([]); } catch (e) {} }
-            }
+            } else if (window.Cloud && !sessionStorage.getItem(GUEST_KEY)) showGate();
             if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
+            if (document.getElementById('tab-qa').classList.contains('active')) renderQA();
         };
         async function renderHistory() {
             const u = window.currentUser, box = document.getElementById('historyUser');
             if (window.Cloud) {
-                box.innerHTML = u
-                    ? '<span>' + esc(u.displayName || u.email) + '<br><small>' + esc(u.email || '') + '</small></span><button class="f-btn" onclick="Cloud.signOut()">تسجيل الخروج</button>'
-                    : '<span>سجلك محفوظ على الجهاز ده بس. سجّل دخول بجوجل علشان يتحفظ في حسابك ويظهر على أي جهاز.</span><button class="f-btn" onclick="Cloud.signIn()">دخول بجوجل</button>';
+                box.innerHTML = window.isRegistered ? '<span>' + esc(u.displayName || u.email) + '<br><small>' + esc(u.email || '') + '</small></span><button class="f-btn" onclick="doSignOut()">تسجيل الخروج</button>'
+                    : '<span>سجلك محفوظ على الجهاز ده بس. سجّل دخول بجوجل علشان يتحفظ في حسابك ويظهر على أي جهاز.</span><button class="f-btn" onclick="showGate()">دخول / إنشاء حساب</button>';
             } else box.innerHTML = '<span>السجل محفوظ على الجهاز ده فقط.</span>';
             const list = document.getElementById('historyList');
             list.textContent = 'جاري التحميل...';
@@ -1294,34 +1366,189 @@
         }
         async function historyDelete(i) { await H.remove(window._hItems[i].id); renderHistory(); }
         async function historyClearAll() { if (confirm('تمسح كل السجل؟')) { await H.clear(); renderHistory(); } }
+        const GUEST_KEY = 'rabia_guest';
+        let gateM = 'login';
+        function showGate() { document.getElementById('authGate').hidden = false; }
+        function hideGate() { document.getElementById('authGate').hidden = true; }
+        function gateMode(m) {
+            gateM = m;
+            document.getElementById('gtLogin').className = m === 'login' ? 'on' : '';
+            document.getElementById('gtSignup').className = m === 'signup' ? 'on' : '';
+            document.getElementById('gName').hidden = m !== 'signup';
+            document.getElementById('gSubmit').textContent = m === 'signup' ? 'إنشاء الحساب' : 'دخول';
+            document.getElementById('gErr').textContent = '';
+        }
+        const AUTH_ERR = {
+            'auth/invalid-credential': 'البريد أو كلمة السر غير صحيحة.',
+            'auth/wrong-password': 'كلمة السر غير صحيحة.',
+            'auth/user-not-found': 'مفيش حساب بالبريد ده.',
+            'auth/email-already-in-use': 'البريد ده مسجل قبل كده. جرّب تسجل دخول.',
+            'auth/weak-password': 'كلمة السر ضعيفة (6 حروف على الأقل).',
+            'auth/invalid-email': 'البريد الإلكتروني غير صحيح.',
+            'auth/too-many-requests': 'محاولات كتير. استنى شوية وجرّب تاني.',
+            'auth/network-request-failed': 'مشكلة في الاتصال بالنت.',
+            'auth/operation-not-allowed': 'طريقة الدخول دي لسه مش مفعّلة في Firebase.'
+        };
+        async function gateSubmit() {
+            const err = document.getElementById('gErr'), btn = document.getElementById('gSubmit');
+            const email = document.getElementById('gEmail').value.trim(), pass = document.getElementById('gPass').value, name = document.getElementById('gName').value.trim();
+            if (!email || !pass) { err.textContent = 'اكتب البريد وكلمة السر.'; return; }
+            if (gateM === 'signup' && !name) { err.textContent = 'اكتب اسمك.'; return; }
+            btn.disabled = true; err.textContent = '';
+            try { gateM === 'signup' ? await Cloud.emailSignUp(name, email, pass) : await Cloud.emailSignIn(email, pass); }
+            catch (e) { err.textContent = AUTH_ERR[e.code] || ('تعذر تسجيل الدخول: ' + (e.code || '')); }
+            btn.disabled = false;
+        }
+        async function gateReset() {
+            const err = document.getElementById('gErr'), email = document.getElementById('gEmail').value.trim();
+            if (!email) { err.textContent = 'اكتب بريدك الأول وبعدين اضغط نسيت كلمة السر.'; return; }
+            try { await Cloud.resetPassword(email); err.style.color = 'var(--success)'; err.textContent = 'بعتنا رسالة لتغيير كلمة السر على بريدك.'; }
+            catch (e) { err.style.color = ''; err.textContent = AUTH_ERR[e.code] || 'تعذر إرسال الرسالة.'; }
+        }
+        function gateGuest() { sessionStorage.setItem(GUEST_KEY, '1'); hideGate(); }
+        function doSignOut() { sessionStorage.removeItem(GUEST_KEY); Cloud.signOut(); }
+
+        let qaItems = [];
+        const qDate = t => new Date(t).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
+        async function renderQA() {
+            const box = document.getElementById('qaList');
+            if (!window.Cloud) { box.innerHTML = '<div class="f-empty">الأسئلة والإجابات غير متاحة حالياً.</div>'; return; }
+            const u = window.currentUser;
+            document.getElementById('qaInfo').textContent = window.isRegistered
+                ? 'أهلاً ' + (u.displayName || u.email) + '، تقدر تسأل وتجاوب على أسئلة الناس.'
+                : 'أنت داخل كزائر: تقدر تسأل، والإجابة للأعضاء المسجلين فقط.';
+            document.getElementById('qaName').hidden = !!window.isRegistered;
+            box.textContent = 'جاري التحميل...';
+            try { qaItems = await window.Cloud.qa.list(); } catch (e) { box.textContent = 'تعذر تحميل الأسئلة.'; return; }
+            const me = u && u.uid;
+            box.innerHTML = qaItems.length ? qaItems.map((q, i) =>
+                '<div class="q-item"><div class="q-meta"><strong>' + esc(q.name) + '</strong><span>' + esc(qDate(q.at)) + '</span></div>' +
+                '<div class="q-text">' + esc(q.text) + '</div><div class="q-acts">' +
+                '<button class="f-btn" onclick="toggleAns(' + i + ')">الإجابات (' + (q.answers || 0) + ')</button>' +
+                (q.uid === me ? '<button class="f-btn del" onclick="delQ(' + i + ')">حذف</button>' : '') +
+                '</div><div class="q-ans" id="qa-' + i + '" hidden></div></div>').join('')
+                : '<div class="f-empty">لسه مفيش أسئلة. كن أول من يسأل!</div>';
+        }
+        async function toggleAns(i) {
+            const el = document.getElementById('qa-' + i);
+            if (!el.hidden) { el.hidden = true; return; }
+            el.hidden = false; await renderAns(i);
+        }
+        function qCount(i) { document.getElementById('qa-' + i).parentElement.querySelector('.f-btn').textContent = 'الإجابات (' + (qaItems[i].answers || 0) + ')'; }
+        async function renderAns(i) {
+            const el = document.getElementById('qa-' + i), q = qaItems[i];
+            el.textContent = 'جاري التحميل...';
+            let list = [];
+            try { list = await window.Cloud.qa.answers(q.id); } catch (e) { el.textContent = 'تعذر تحميل الإجابات.'; return; }
+            const me = window.currentUser && window.currentUser.uid;
+            el.innerHTML = (list.length ? list.map(a =>
+                '<div class="a-item"><div class="q-meta"><strong>' + esc(a.name) + '</strong><span>' + esc(qDate(a.at)) + '</span></div>' +
+                '<div class="q-text">' + esc(a.text) + '</div>' +
+                (a.uid === me ? '<div class="q-acts"><button class="f-btn del" onclick="delA(' + i + ',\'' + esc(a.id) + '\')">حذف</button></div>' : '') + '</div>').join('')
+                : '<div class="f-empty">مفيش إجابات لسه.</div>') +
+                (window.isRegistered
+                    ? '<textarea id="ans-' + i + '" rows="2" maxlength="2000" placeholder="اكتب إجابتك..."></textarea><button class="btn-calc" onclick="answerQ(' + i + ')">إرسال الإجابة</button>'
+                    : '<div class="ai-note">سجّل دخول بحساب علشان تقدر تجاوب. <button class="f-btn" onclick="showGate()">دخول / إنشاء حساب</button></div>');
+        }
+        async function askQ() {
+            const t = document.getElementById('qaText'), btn = document.getElementById('qaAsk'), text = t.value.trim();
+            if (!text) return;
+            btn.disabled = true;
+            try {
+                await window.Cloud.qa.ask(text, window.isRegistered ? '' : (document.getElementById('qaName').value.trim() || 'زائر'));
+                t.value = ''; await renderQA();
+            } catch (e) { alert('تعذر نشر السؤال: ' + (e.code || e.message)); }
+            btn.disabled = false;
+        }
+        async function answerQ(i) {
+            const t = document.getElementById('ans-' + i), text = t.value.trim();
+            if (!text) return;
+            try { await window.Cloud.qa.answer(qaItems[i].id, text); qaItems[i].answers = (qaItems[i].answers || 0) + 1; qCount(i); await renderAns(i); }
+            catch (e) { alert('تعذر إرسال الإجابة: ' + (e.code || e.message)); }
+        }
+        async function delQ(i) {
+            if (!confirm('تمسح السؤال ده؟')) return;
+            try { await window.Cloud.qa.delQ(qaItems[i].id); renderQA(); } catch (e) { alert('تعذر الحذف.'); }
+        }
+        async function delA(i, aid) {
+            if (!confirm('تمسح الإجابة دي؟')) return;
+            try { await window.Cloud.qa.delA(qaItems[i].id, aid); qaItems[i].answers = Math.max(0, (qaItems[i].answers || 1) - 1); qCount(i); await renderAns(i); }
+            catch (e) { alert('تعذر الحذف.'); }
+        }
         paintAuth(null);
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+        let deferredInstall = null;
+        window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; document.getElementById('installBtn').hidden = false; });
+        window.addEventListener('appinstalled', () => { document.getElementById('installBtn').hidden = true; });
+        async function installApp() {
+            if (!deferredInstall) return;
+            deferredInstall.prompt();
+            await deferredInstall.userChoice;
+            deferredInstall = null; document.getElementById('installBtn').hidden = true;
+        }
     </script>
     <script type="module">
         const cfg = window.FIREBASE_CONFIG;
-        if (cfg && cfg.apiKey) {
-            const V = 'https://www.gstatic.com/firebasejs/10.14.1/';
-            const { initializeApp } = await import(V + 'firebase-app.js');
-            const A = await import(V + 'firebase-auth.js');
-            const F = await import(V + 'firebase-firestore.js');
-            const app = initializeApp(cfg), auth = A.getAuth(app), db = F.getFirestore(app);
-            const col = () => F.collection(db, 'users', auth.currentUser.uid, 'history');
-            window.Cloud = {
-                async signIn() {
-                    const p = new A.GoogleAuthProvider();
-                    try { await A.signInWithPopup(auth, p); }
-                    catch (e) {
-                        if (e.code === 'auth/popup-blocked') await A.signInWithRedirect(auth, p);
-                        else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') alert('تعذر تسجيل الدخول: ' + e.code);
+        (async () => {
+            if (!(cfg && cfg.apiKey)) return window.onAuthChanged(null);
+            try {
+                const V = 'https://www.gstatic.com/firebasejs/10.14.1/';
+                const { initializeApp } = await import(V + 'firebase-app.js');
+                const A = await import(V + 'firebase-auth.js');
+                const F = await import(V + 'firebase-firestore.js');
+                const app = initializeApp(cfg), auth = A.getAuth(app), db = F.getFirestore(app);
+                const col = () => F.collection(db, 'users', auth.currentUser.uid, 'history');
+                const qcol = () => F.collection(db, 'questions');
+                const who = u => u.displayName || (u.email || '').split('@')[0] || 'عضو';
+                window.Cloud = {
+                    async signIn() {
+                        const p = new A.GoogleAuthProvider();
+                        try { await A.signInWithPopup(auth, p); }
+                        catch (e) {
+                            if (e.code === 'auth/popup-blocked') await A.signInWithRedirect(auth, p);
+                            else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') alert('تعذر تسجيل الدخول: ' + e.code);
+                        }
+                    },
+                    emailSignIn: (e, p) => A.signInWithEmailAndPassword(auth, e, p),
+                    async emailSignUp(n, e, p) {
+                        const c = await A.createUserWithEmailAndPassword(auth, e, p);
+                        await A.updateProfile(c.user, { displayName: n });
+                        window.onAuthChanged(auth.currentUser);
+                    },
+                    resetPassword: e => A.sendPasswordResetEmail(auth, e),
+                    signOut: () => A.signOut(auth),
+                    add: e => { const { id, ...r } = e; return F.addDoc(col(), r); },
+                    async list() { const s = await F.getDocs(F.query(col(), F.orderBy('at', 'desc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                    remove: id => F.deleteDoc(F.doc(db, 'users', auth.currentUser.uid, 'history', id)),
+                    async clear() { const s = await F.getDocs(col()); await Promise.all(s.docs.map(d => F.deleteDoc(d.ref))); },
+                    qa: {
+                        async list() { const s = await F.getDocs(F.query(qcol(), F.orderBy('at', 'desc'), F.limit(50))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                        async ask(text, name) {
+                            if (!auth.currentUser) await A.signInAnonymously(auth);
+                            const u = auth.currentUser;
+                            return F.addDoc(qcol(), { text, uid: u.uid, name: name || (u.isAnonymous ? 'زائر' : who(u)), photo: u.photoURL || '', at: Date.now(), answers: 0 });
+                        },
+                        async answers(qid) { const s = await F.getDocs(F.query(F.collection(db, 'questions', qid, 'answers'), F.orderBy('at', 'asc'))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                        async answer(qid, text) {
+                            const u = auth.currentUser, b = F.writeBatch(db);
+                            b.set(F.doc(F.collection(db, 'questions', qid, 'answers')), { text, uid: u.uid, name: who(u), photo: u.photoURL || '', at: Date.now() });
+                            b.update(F.doc(db, 'questions', qid), { answers: F.increment(1) });
+                            await b.commit();
+                        },
+                        delQ: qid => F.deleteDoc(F.doc(db, 'questions', qid)),
+                        async delA(qid, aid) {
+                            const b = F.writeBatch(db);
+                            b.delete(F.doc(db, 'questions', qid, 'answers', aid));
+                            b.update(F.doc(db, 'questions', qid), { answers: F.increment(-1) });
+                            await b.commit();
+                        }
                     }
-                },
-                signOut: () => A.signOut(auth),
-                add: e => { const { id, ...r } = e; return F.addDoc(col(), r); },
-                async list() { const s = await F.getDocs(F.query(col(), F.orderBy('at', 'desc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
-                remove: id => F.deleteDoc(F.doc(db, 'users', auth.currentUser.uid, 'history', id)),
-                async clear() { const s = await F.getDocs(col()); await Promise.all(s.docs.map(d => F.deleteDoc(d.ref))); }
-            };
-            A.onAuthStateChanged(auth, u => window.onAuthChanged(u));
-        } else { window.onAuthChanged(null); }
+                };
+                A.onAuthStateChanged(auth, u => window.onAuthChanged(u));
+            } catch (e) { window.Cloud = undefined; window.onAuthChanged(null); }
+        })();
     </script>
 </body>
 </html>
