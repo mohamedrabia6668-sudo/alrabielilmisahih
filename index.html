@@ -241,54 +241,174 @@
         .h-res { font-size: .88rem; white-space: pre-line; background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; margin: 6px 0; direction: rtl; }
         .h-act { display: flex; gap: 8px; margin-top: 8px; }
         .h-act .del { border-color: var(--danger); color: var(--danger); }
-        .gate { position: fixed; inset: 0; z-index: 3000; background: var(--primary); overflow-y: auto; padding: 20px 16px; display: flex; }
+        /* ===== شاشة الدخول ===== */
+        .gate { position: fixed; inset: 0; z-index: 3000; background: var(--primary); overflow-y: auto; display: flex; flex-direction: column; }
         .gate[hidden] { display: none; }
-        .gate-card { margin: auto; width: 100%; max-width: 400px; background: var(--card-bg); border-radius: 18px; padding: 26px 22px; text-align: center; }
-        .gate-logo { width: 84px; height: 84px; border-radius: 20px; object-fit: cover; margin-bottom: 10px; }
-        .gate-card h1 { font-size: 1.6rem; margin: 0 0 6px; color: var(--ink); }
-        .gate-card p { margin: 0 0 18px; color: var(--muted); font-size: .92rem; }
-        .gate-card input { margin-bottom: 10px; }
-        .gate-btn { width: 100%; min-height: 48px; border-radius: 10px; font-weight: 700; font-size: .98rem; cursor: pointer; border: 1.5px solid var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .gate-top { text-align: center; color: #fff; padding: 36px 20px 68px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 280'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.1' stroke-width='1.4'%3E%3Cpath id='p' d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(1.45)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(1.95)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(2.5)'/%3E%3Cpath d='M0-40C25-62 70-48 78-8S52 58 4 60-72 38-70 0-22-24 0-40z' transform='translate(190 140) scale(3.1)'/%3E%3C/g%3E%3C/svg%3E") no-repeat center -30px / 560px; }
+        .gate-logo { width: 92px; height: 92px; border-radius: 26px; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+        .gate-top h1 { font-size: 2rem; margin: 14px 0 6px; color: #fff; }
+        .gate-top p { margin: 0 auto; opacity: .82; font-size: .92rem; max-width: 300px; }
+        .gate-sheet { flex: 1; background: var(--card-bg); border-radius: 28px 28px 0 0; margin-top: -32px; padding: 22px 22px 28px; width: 100%; max-width: 480px; align-self: center; position: relative; }
+        .gate-tabs { display: flex; background: #e9eee0; border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+        .gate-tabs button { flex: 1; min-height: 40px; border: none; border-radius: 9px; background: transparent; font-weight: 700; color: var(--muted); cursor: pointer; }
+        .gate-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.14); }
+        .gf { position: relative; margin-bottom: 10px; }
+        .gf > i { position: absolute; inset-inline-start: 14px; top: 50%; transform: translateY(-50%); color: var(--primary-light); pointer-events: none; }
+        .gf input { padding-inline-start: 42px; padding-inline-end: 42px; margin: 0; }
+        .gf .eye { position: absolute; inset-inline-end: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer; padding: 10px; }
+        .gate-err { min-height: 1.2em; color: var(--danger); font-size: .85rem; margin: 2px 0 8px; }
+        .gate-btn { width: 100%; min-height: 50px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; border: 1.5px solid var(--primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .gate-btn.main { background: var(--primary); color: #fff; }
         .gate-btn.google { background: #fff; color: var(--ink); border-color: var(--border); }
-        .gate-btn.ghost { background: transparent; color: var(--primary); }
-        .gate-or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .82rem; margin: 6px 0 12px; }
+        .gate-link { display: block; margin: 10px auto 0; background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; font-size: .88rem; }
+        .gate-or { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .82rem; margin: 14px 0; }
         .gate-or::before, .gate-or::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-        .gate-tabs { display: flex; background: #eef1e6; border-radius: 10px; padding: 4px; margin-bottom: 12px; }
-        .gate-tabs button { flex: 1; min-height: 38px; border: none; border-radius: 8px; background: transparent; font-weight: 700; color: var(--muted); cursor: pointer; }
-        .gate-tabs button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
-        .gate-err { min-height: 1.2em; color: var(--danger); font-size: .85rem; margin-bottom: 8px; }
-        .gate-link { background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; margin-bottom: 10px; font-size: .88rem; }
-        .q-item, .a-item { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
-        .q-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--muted); }
-        .q-meta strong { color: var(--ink); font-size: .92rem; }
-        .q-text { margin: 8px 0; white-space: pre-wrap; line-height: 1.8; color: var(--ink); }
-        .q-acts { display: flex; gap: 8px; margin-top: 6px; }
-        .q-acts .del { border-color: var(--danger); color: var(--danger); }
-        .q-ans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
-        .a-item { background: var(--accent-soft); border-color: #c5dc4a; }
-        .q-ans textarea { margin: 8px 0; }
+        .gate-guest { display: block; width: 100%; margin-top: 14px; min-height: 46px; border: none; border-radius: 12px; background: var(--accent-soft); color: var(--ink); font-weight: 700; cursor: pointer; }
+        .gate-help { display: block; margin: 14px auto 0; background: none; border: none; color: var(--muted); font-size: .85rem; cursor: pointer; }
+        /* ===== تواصل معنا ===== */
+        .hdr-btn { width: 42px; height: 42px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.55); background: transparent; color: #fff; cursor: pointer; font-size: 16px; }
+        .sheet { position: fixed; inset: 0; z-index: 4000; background: rgba(20,35,31,.55); display: flex; align-items: flex-end; justify-content: center; }
+        .sheet[hidden] { display: none; }
+        .sheet-p { background: var(--card-bg); width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; border-radius: 24px 24px 0 0; padding: 18px 18px 26px; animation: sheetUp .22s ease; }
+        @keyframes sheetUp { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+        .sheet-h { display: flex; justify-content: space-between; align-items: center; }
+        .sheet-h h3 { margin: 0; font-size: 1.3rem; color: var(--ink); }
+        .sheet-x { width: 36px; height: 36px; border-radius: 50%; border: none; background: #e9eee0; cursor: pointer; }
+        .ctypes { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+        .ctypes button { min-height: 38px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--border); background: #fff; font-weight: 600; cursor: pointer; color: var(--ink); }
+        .ctypes button.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .csend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 16px; }
+        .csend button { min-height: 50px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; display: flex; gap: 8px; align-items: center; justify-content: center; color: #fff; font-size: 1rem; }
+        .csend .wa { background: #1faa59; }
+        .csend .ml { background: var(--primary); }
+        .ctiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .ctile { display: flex; gap: 10px; align-items: center; padding: 11px; background: #fff; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--ink); min-width: 0; }
+        .ctile.w2 { grid-column: 1 / -1; }
+        .ctile > i { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--primary); font-size: 17px; flex-shrink: 0; }
+        .ctile b { display: block; font-size: .9rem; }
+        .ctile small { display: block; color: var(--muted); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; }
+        /* ===== المساعد الذكي (دردشة) ===== */
+        .chat-card { padding: 0; overflow: hidden; }
+        .chat-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--primary); color: #fff; }
+        .chat-head .av { background: var(--accent); color: var(--ink); }
+        .chat-head strong { font-family: 'Reem Kufi', sans-serif; font-size: 1.1rem; display: block; }
+        .chat-head small { opacity: .8; font-size: .78rem; }
+        .chat-body { padding: 14px; min-height: 320px; max-height: 58vh; overflow-y: auto; background: #f1f4ea; }
+        .welcome { text-align: center; padding: 10px 2px 4px; }
+        .welcome .big { width: 64px; height: 64px; border-radius: 20px; background: var(--primary); color: var(--accent); display: grid; place-items: center; font-size: 26px; margin: 0 auto 12px; }
+        .welcome h3 { margin: 0 0 6px; font-size: 1.3rem; color: var(--ink); }
+        .welcome p { margin: 0 0 16px; color: var(--muted); font-size: .88rem; }
+        .sugg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .sugg button { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 11px 12px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; font-weight: 700; color: var(--ink); font-size: .87rem; text-align: start; }
+        .sugg button i { color: var(--primary-light); font-size: 16px; margin-bottom: 2px; }
+        .sugg button small { font-weight: 400; color: var(--muted); font-size: .75rem; }
+        .sugg button:hover { border-color: var(--primary); background: var(--accent-soft); }
+        .cm { display: flex; gap: 8px; margin-bottom: 12px; align-items: flex-end; }
+        .cm.bot, .cm.err { flex-direction: row-reverse; justify-content: flex-start; }
+        .cm-av { width: 30px; height: 30px; border-radius: 9px; background: var(--primary); color: var(--accent); display: grid; place-items: center; font-size: 13px; flex-shrink: 0; }
+        .cm-b { max-width: 84%; padding: 10px 14px; border-radius: 16px; line-height: 1.9; white-space: pre-wrap; font-size: .94rem; word-break: break-word; }
+        .cm.user .cm-b { background: var(--primary); color: #fff; border-end-end-radius: 4px; }
+        .cm.bot .cm-b { background: #fff; border: 1px solid var(--border); color: var(--ink); border-end-start-radius: 4px; }
+        .cm-b.err { background: #fbeaea; color: var(--danger); border: 1px solid #efc9c9; }
+        .dots i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--primary-light); margin: 0 2px; animation: blink 1s infinite; }
+        .dots i:nth-child(2) { animation-delay: .15s; } .dots i:nth-child(3) { animation-delay: .3s; }
+        @keyframes blink { 0%, 60%, 100% { opacity: .25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+        .chat-bar { padding: 10px 12px 12px; background: #fff; border-top: 1px solid var(--border); }
+        .chat-bar .ai-status { margin: 0 0 6px; color: var(--danger); }
+        .chat-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); border: 1px solid #c5dc4a; border-radius: 999px; padding: 4px 12px 4px 5px; font-size: .82rem; margin-bottom: 8px; max-width: 100%; }
+        .chat-chip[hidden] { display: none; }
+        .chat-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+        .chat-chip button { border: none; background: var(--primary); color: #fff; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; line-height: 1; }
+        .chat-in { display: flex; align-items: flex-end; gap: 8px; }
+        .chat-in textarea { flex: 1; resize: none; border-radius: 22px; padding: 11px 16px; min-height: 46px; max-height: 120px; }
+        .rbtn { width: 46px; height: 46px; border-radius: 50%; border: none; display: grid; place-items: center; font-size: 17px; cursor: pointer; flex-shrink: 0; }
+        .rbtn.attach { background: #e9eee0; color: var(--primary); }
+        .rbtn.send { background: var(--primary); color: var(--accent); }
+        .rbtn.send i, #qaAsk i { transform: scaleX(-1); }
+        /* ===== الأسئلة والإجابات ===== */
+        .av { width: 40px; height: 40px; border-radius: 12px; background: var(--primary); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-family: 'Reem Kufi', sans-serif; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; }
+        .av img { width: 100%; height: 100%; object-fit: cover; }
+        .composer { display: flex; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+        .cbody { flex: 1; min-width: 0; }
+        .composer textarea { border: none; background: transparent; padding: 6px 0; min-height: 60px; resize: none; box-shadow: none !important; }
+        .cfoot { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--border); padding-top: 8px; }
+        .cfoot input { border: none; background: #f1f4ea; border-radius: 10px; min-height: 38px; font-size: .88rem; flex: 1; }
+        .cfoot input[hidden] { display: none; }
+        .cnt { font-size: .75rem; color: var(--muted); margin-inline-start: auto; }
+        #qaAsk { width: auto; margin: 0; min-height: 40px; padding: 0 20px; border-radius: 999px; }
+        .qfilters { display: flex; gap: 8px; margin: 16px 0 12px; overflow-x: auto; }
+        .qfilters button { flex-shrink: 0; min-height: 36px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--border); background: #fff; font-weight: 600; color: var(--ink); cursor: pointer; }
+        .qfilters button.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .qcard { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+        .qhead { display: flex; gap: 10px; align-items: center; }
+        .qhead .who { flex: 1; min-width: 0; }
+        .qhead strong { display: block; color: var(--ink); font-size: .95rem; }
+        .qhead small { color: var(--muted); font-size: .78rem; }
+        .qbody { margin: 10px 0; line-height: 1.9; white-space: pre-wrap; color: var(--ink); word-break: break-word; }
+        .qfoot { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .qpill { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--primary); background: transparent; color: var(--primary); font-weight: 600; font-size: .85rem; cursor: pointer; }
+        .qpill.has { background: var(--accent-soft); }
+        .qpill.del { border-color: var(--danger); color: var(--danger); padding: 0 11px; }
+        .qthread { margin-top: 12px; border-inline-start: 3px solid var(--accent); padding-inline-start: 12px; }
+        .qthread[hidden] { display: none; }
+        .acard { background: #f1f4ea; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+        .areply { display: flex; gap: 8px; align-items: flex-end; margin-top: 8px; }
+        .areply textarea { flex: 1; border-radius: 20px; min-height: 44px; padding: 10px 14px; resize: none; }
+        .qempty { text-align: center; padding: 28px 10px; color: var(--muted); }
+        .qempty i { display: block; font-size: 34px; color: var(--primary-light); margin-bottom: 10px; }
+        @media (max-width: 360px) {
+            header { font-size: 1rem; padding: 0 10px; }
+            .site-logo { width: 32px; height: 32px; }
+            .header-actions { gap: 6px; }
+            .hdr-btn, .menu-toggle-btn, .auth-btn { width: auto; min-width: 38px; height: 38px; min-height: 38px; }
+        }
     </style>
 </head>
 <body>
     <div id="authGate" class="gate" hidden>
-        <div class="gate-card">
+        <div class="gate-top">
             <img src="logo.png" class="gate-logo" alt="">
             <h1>الربيع للمساحة</h1>
-            <p>حاسبات مساحية، مساعد ذكي، ومجتمع أسئلة وإجابات</p>
-            <button class="gate-btn google" onclick="Cloud.signIn()"><i class="fab fa-google"></i> المتابعة بحساب جوجل</button>
-            <div class="gate-or">أو بالبريد الإلكتروني</div>
+            <p>حاسبات مساحية دقيقة، مساعد ذكي، ومجتمع مهندسين</p>
+        </div>
+        <div class="gate-sheet">
             <div class="gate-tabs">
                 <button id="gtLogin" class="on" onclick="gateMode('login')">دخول</button>
                 <button id="gtSignup" onclick="gateMode('signup')">إنشاء حساب</button>
             </div>
-            <input id="gName" placeholder="الاسم" autocomplete="name" hidden>
-            <input id="gEmail" type="email" placeholder="البريد الإلكتروني" autocomplete="email" dir="ltr">
-            <input id="gPass" type="password" placeholder="كلمة السر (6 حروف على الأقل)" autocomplete="current-password" dir="ltr" onkeydown="if (event.key === 'Enter') gateSubmit()">
+            <div class="gf" id="gfName" hidden><i class="fas fa-user"></i><input id="gName" placeholder="الاسم" autocomplete="name"></div>
+            <div class="gf"><i class="fas fa-envelope"></i><input id="gEmail" type="email" placeholder="البريد الإلكتروني" autocomplete="email"></div>
+            <div class="gf"><i class="fas fa-lock"></i><input id="gPass" type="password" placeholder="كلمة السر (6 حروف على الأقل)" autocomplete="current-password" onkeydown="if (event.key === 'Enter') gateSubmit()"><button type="button" class="eye" onclick="togglePass()" aria-label="إظهار كلمة السر"><i class="fas fa-eye"></i></button></div>
             <div id="gErr" class="gate-err"></div>
             <button id="gSubmit" class="gate-btn main" onclick="gateSubmit()">دخول</button>
             <button class="gate-link" onclick="gateReset()">نسيت كلمة السر؟</button>
-            <button class="gate-btn ghost" onclick="gateGuest()">الدخول كزائر</button>
+            <div class="gate-or">أو</div>
+            <button class="gate-btn google" onclick="Cloud.signIn()"><i class="fab fa-google"></i> المتابعة بحساب جوجل</button>
+            <button class="gate-guest" onclick="gateGuest()">تصفح كزائر</button>
+            <button class="gate-help" onclick="openContact()"><i class="fas fa-headset"></i> محتاج مساعدة؟ تواصل معنا</button>
+        </div>
+    </div>
+    <div id="contactSheet" class="sheet" hidden onclick="if (event.target === this) closeContact()">
+        <div class="sheet-p">
+            <div class="sheet-h"><h3>تواصل معنا</h3><button class="sheet-x" onclick="closeContact()" aria-label="إغلاق"><i class="fas fa-times"></i></button></div>
+            <p class="ai-note" style="margin: 4px 0 0;">شكوى، مقترح، سؤال أو استفسار؟ اكتب رسالتك وهنرد عليك.</p>
+            <div class="ctypes">
+                <button onclick="cPick('شكوى', this)">شكوى</button>
+                <button onclick="cPick('مقترح', this)">مقترح</button>
+                <button class="on" onclick="cPick('سؤال', this)">سؤال</button>
+                <button onclick="cPick('استفسار', this)">استفسار</button>
+            </div>
+            <textarea id="cText" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
+            <div class="csend">
+                <button class="wa" onclick="cWA()"><i class="fab fa-whatsapp"></i> واتساب</button>
+                <button class="ml" onclick="cMail()"><i class="fas fa-envelope"></i> إيميل</button>
+            </div>
+            <div class="ctiles">
+                <a class="ctile" href="tel:01096605335"><i class="fas fa-phone"></i><span><b>اتصال</b><small>01096605335</small></span></a>
+                <a class="ctile" href="https://wa.me/201121573708" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i><span><b>واتساب</b><small>01121573708</small></span></a>
+                <a class="ctile w2" href="mailto:mohamedrabia6668@gmail.com"><i class="fas fa-envelope"></i><span><b>البريد الإلكتروني</b><small>mohamedrabia6668@gmail.com</small></span></a>
+                <a class="ctile w2" href="https://www.facebook.com/share/1KT4WBSfzm/" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i><span><b>فيسبوك</b><small>صفحتنا على فيسبوك</small></span></a>
+            </div>
         </div>
     </div>
 
@@ -300,6 +420,7 @@
             <span>الربيع للمساحة</span>
         </div>
         <div class="header-actions">
+            <button class="hdr-btn" onclick="openContact()" aria-label="تواصل معنا"><i class="fas fa-headset"></i></button>
             <button id="authBtn" class="auth-btn" onclick="authClick()" hidden></button>
             <button class="menu-toggle-btn" onclick="toggleMenu()" title="القائمة الرئيسية">
                 <i class="fas fa-bars"></i>
@@ -325,6 +446,7 @@
         <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> تحليل اللوحات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-history', this); renderHistory()"><i class="fas fa-history"></i> سجل العمليات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-qa', this); renderQA()"><i class="fas fa-comments"></i> الأسئلة والإجابات</button>
+        <button class="drawer-nav-btn" onclick="toggleMenu(); openContact()"><i class="fas fa-headset"></i> تواصل معنا (شكاوى ومقترحات)</button>
         <button id="installBtn" class="drawer-nav-btn" onclick="installApp()" hidden><i class="fas fa-download"></i> تثبيت التطبيق</button>
     </div>
 
@@ -583,10 +705,23 @@
                 <div class="card">
                     <h2><i class="fas fa-comments"></i> الأسئلة والإجابات</h2>
                     <p id="qaInfo" class="ai-note"></p>
-                    <textarea id="qaText" rows="3" maxlength="1000" placeholder="اكتب سؤالك المساحي هنا..."></textarea>
-                    <input id="qaName" placeholder="اسمك (اختياري)" style="margin-top: 8px;" hidden>
-                    <button id="qaAsk" class="btn-calc" onclick="askQ()"><i class="fas fa-paper-plane"></i> نشر السؤال</button>
-                    <div id="qaList" style="margin-top: 16px;"></div>
+                    <div class="composer">
+                        <div id="qaAv"></div>
+                        <div class="cbody">
+                            <textarea id="qaText" rows="2" maxlength="1000" placeholder="اسأل سؤالك المساحي..." oninput="qaCount()"></textarea>
+                            <div class="cfoot">
+                                <input id="qaName" placeholder="اسمك (اختياري)" hidden>
+                                <span class="cnt" id="qaCnt">0/1000</span>
+                                <button id="qaAsk" class="btn-calc" onclick="askQ()"><i class="fas fa-paper-plane"></i> نشر</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qfilters" id="qaFilters">
+                        <button class="on" onclick="setQF('all', this)">الكل</button>
+                        <button onclick="setQF('open', this)">بدون إجابة</button>
+                        <button onclick="setQF('mine', this)">أسئلتي</button>
+                    </div>
+                    <div id="qaList"></div>
                 </div>
             </div>
 
@@ -602,22 +737,36 @@
 
             <!-- 8. تحليل اللوحات -->
             <div id="tab-ai" class="section">
-                <div class="card">
-                    <h2><i class="fas fa-microchip"></i> المساعد الذكي للمساحة</h2>
-                    <p class="ai-note">اسأل أي سؤال في المساحة (شرح، قوانين، حسابات)، أو ارفع لوحة (صورة أو PDF أو DXF) وهقراها وأجاوب عنها. ملفات DWG لازم تتحول الأول (Save As ← DXF أو Plot ← PDF). محتاج تسجيل دخول بحساب.</p>
-                    <input type="file" id="fileUpload" onchange="pickAiFile(this)">
-                    <div id="aiStatus" class="ai-status"></div>
-                    <div class="ai-quick">
-                        <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟', true)">اشرح اللوحة</button>
-                        <button onclick="sendAi('استخرج كل المناسيب والأطوال والميول والأقطار الظاهرة في اللوحة في قائمة مرتبة.', true)">استخرج الأرقام</button>
-                        <button onclick="sendAi('إيه القوانين المساحية اللي أحتاجها للشغل على اللوحة دي؟ اشرح كل قانون بمثال من أرقام اللوحة.', true)">قوانين اللوحة</button>
-                        <button onclick="sendAi('اشرح الفرق بين H.I و R.L وإزاي أحسب منسوب نقطة بالميزانية بمثال.')">ميزانية بالمثال</button>
-                        <button onclick="sendAi('إزاي أحسب ميل ماسورة صرف ومنسوب القاع عند كل مسافة؟ اشرح بمثال.')">ميل الصرف</button>
+                <div class="card chat-card">
+                    <div class="chat-head">
+                        <div class="av"><i class="fas fa-ruler-combined"></i></div>
+                        <div><strong>المساعد الذكي للمساحة</strong><small>شرح، قوانين، حسابات وقراءة اللوحات</small></div>
                     </div>
-                    <div id="aiChat" class="ai-chat"></div>
-                    <div class="ai-send">
-                        <textarea id="aiInput" rows="2" placeholder="اكتب سؤالك عن اللوحة..."></textarea>
-                        <button class="btn-calc" onclick="sendAi()">إرسال</button>
+                    <div class="chat-body" id="aiBody">
+                        <div id="aiWelcome" class="welcome">
+                            <div class="big"><i class="fas fa-ruler-combined"></i></div>
+                            <h3>اسألني في أي حاجة في المساحة</h3>
+                            <p>أو ارفع لوحة (صورة أو PDF أو DXF) وأنا أقراها وأجاوب عنها. ملفات DWG حوّلها الأول لـ PDF أو DXF.</p>
+                            <div class="sugg">
+                                <button onclick="sendAi('اشرح اللوحة دي بالتفصيل: إيه عناصرها وإيه أهم الأرقام فيها؟', true)"><i class="fas fa-file-alt"></i>اشرح اللوحة<small>ارفع لوحة الأول</small></button>
+                                <button onclick="sendAi('استخرج كل المناسيب والأطوال والميول والأقطار الظاهرة في اللوحة في قائمة مرتبة.', true)"><i class="fas fa-list-ol"></i>استخرج الأرقام<small>مناسيب وأطوال وميول</small></button>
+                                <button onclick="sendAi('إيه القوانين المساحية اللي أحتاجها للشغل على اللوحة دي؟ اشرح كل قانون بمثال من أرقام اللوحة.', true)"><i class="fas fa-calculator"></i>قوانين اللوحة<small>بأمثلة من لوحتك</small></button>
+                                <button onclick="sendAi('اشرح الفرق بين H.I و R.L وإزاي أحسب منسوب نقطة بالميزانية بمثال.')"><i class="fas fa-layer-group"></i>الميزانية بالمثال<small>H.I و R.L</small></button>
+                                <button onclick="sendAi('إزاي أحسب ميل ماسورة صرف ومنسوب القاع عند كل مسافة؟ اشرح بمثال.')"><i class="fas fa-chart-line"></i>ميل الصرف<small>ومنسوب القاع</small></button>
+                                <button onclick="sendAi('اشرح طريقة حساب مساحة قطعة أرض من الإحداثيات بمثال.')"><i class="fas fa-draw-polygon"></i>مساحة بالإحداثيات<small>بمثال محلول</small></button>
+                            </div>
+                        </div>
+                        <div id="aiChat"></div>
+                    </div>
+                    <div class="chat-bar">
+                        <div id="aiStatus" class="ai-status"></div>
+                        <div id="aiChip" class="chat-chip" hidden><i class="fas fa-paperclip"></i><span></span><button onclick="aiRemove()" aria-label="إزالة الملف">×</button></div>
+                        <div class="chat-in">
+                            <input type="file" id="fileUpload" onchange="pickAiFile(this)" hidden>
+                            <button class="rbtn attach" onclick="document.getElementById('fileUpload').click()" aria-label="إرفاق لوحة"><i class="fas fa-paperclip"></i></button>
+                            <textarea id="aiInput" rows="1" placeholder="اكتب سؤالك..." oninput="aiGrow(this)"></textarea>
+                            <button class="rbtn send" onclick="sendAi()" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1170,12 +1319,19 @@
         let aiFile = null, aiHistory = [], aiBusy = false;
         function aiStatus(t) { document.getElementById('aiStatus').textContent = t; }
         function aiAdd(cls, text) {
-            const d = document.createElement('div');
-            d.className = 'ai-msg ' + cls; d.textContent = text;
-            const box = document.getElementById('aiChat');
-            box.appendChild(d); d.scrollIntoView({ block: 'end', behavior: 'smooth' });
-            return d;
+            document.getElementById('aiWelcome').hidden = true;
+            const row = document.createElement('div');
+            row.className = 'cm ' + cls;
+            if (cls !== 'user') { const av = document.createElement('div'); av.className = 'cm-av'; av.innerHTML = '<i class="fas fa-ruler-combined"></i>'; row.appendChild(av); }
+            const b = document.createElement('div');
+            b.className = 'cm-b'; b.textContent = text; row.appendChild(b);
+            document.getElementById('aiChat').appendChild(row);
+            const body = document.getElementById('aiBody'); body.scrollTop = body.scrollHeight;
+            return b;
         }
+        function aiChip(n) { const c = document.getElementById('aiChip'); c.hidden = !n; c.querySelector('span').textContent = n || ''; }
+        function aiRemove() { aiFile = null; aiErr = ''; document.getElementById('fileUpload').value = ''; aiChip(''); aiStatus(''); }
+        function aiGrow(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
         function fileToB64(f) {
             return new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result.split(',')[1]); r.onerror = no; r.readAsDataURL(f); });
         }
@@ -1231,7 +1387,7 @@
         async function pickAiFile(input) {
             const f = input.files[0];
             if (!f) return;
-            aiFile = null; aiErr = ''; aiHistory = []; document.getElementById('aiChat').innerHTML = '';
+            aiFile = null; aiErr = ''; aiHistory = []; document.getElementById('aiChat').innerHTML = ''; document.getElementById('aiWelcome').hidden = false; aiChip('');
             try {
                 const kind = await sniffKind(f);
                 if (kind === 'image') {
@@ -1248,7 +1404,7 @@
                     aiErr = 'الصيغة دي مش مدعومة. ارفع صورة أو PDF أو DXF.';
                 }
             } catch (e) { aiErr = 'تعذر قراءة الملف. جرّب ملف تاني.'; }
-            aiStatus(aiErr || (aiFile && aiFile.text ? 'تم قراءة نصوص وأبعاد ملف DXF. اسأل عنها.' : 'تم رفع اللوحة. اسأل أو اختار من الأزرار.'));
+            aiStatus(aiErr); aiChip(aiFile ? f.name : '');
         }
         async function sendAi(q, needFile) {
             const inp = document.getElementById('aiInput');
@@ -1256,10 +1412,10 @@
             if (!q || aiBusy) return;
             if (needFile && !aiFile) return aiStatus(aiErr || 'ارفع اللوحة الأول.');
             if (window.Cloud && !window.isRegistered) { aiStatus('سجّل دخول بحساب علشان تستخدم المساعد الذكي.'); return showGate(); }
-            inp.value = ''; aiBusy = true;
+            inp.value = ''; inp.style.height = 'auto'; aiBusy = true;
             aiHistory.push({ role: 'user', content: q });
             aiAdd('user', q);
-            const wait = aiAdd('bot', 'جاري التحليل...');
+            const wait = aiAdd('bot', ''); wait.innerHTML = '<span class="dots"><i></i><i></i><i></i></span>';
             try {
                 const res = await callAi();
                 if (res.status === 401) { showGate(); throw new Error('سجّل دخول بحساب علشان تستخدم المساعد الذكي.'); }
@@ -1269,7 +1425,7 @@
                 aiHistory.push({ role: 'assistant', content: data.text });
                 while (aiHistory.length > 20) aiHistory.splice(0, 2);
             } catch (e) {
-                wait.className = 'ai-msg err'; wait.textContent = e.message;
+                wait.className = 'cm-b err'; wait.textContent = e.message;
                 aiHistory.pop();
             }
             aiBusy = false;
@@ -1374,7 +1530,7 @@
             gateM = m;
             document.getElementById('gtLogin').className = m === 'login' ? 'on' : '';
             document.getElementById('gtSignup').className = m === 'signup' ? 'on' : '';
-            document.getElementById('gName').hidden = m !== 'signup';
+            document.getElementById('gfName').hidden = m !== 'signup';
             document.getElementById('gSubmit').textContent = m === 'signup' ? 'إنشاء الحساب' : 'دخول';
             document.getElementById('gErr').textContent = '';
         }
@@ -1408,47 +1564,81 @@
         function gateGuest() { sessionStorage.setItem(GUEST_KEY, '1'); hideGate(); }
         function doSignOut() { sessionStorage.removeItem(GUEST_KEY); Cloud.signOut(); }
 
-        let qaItems = [];
-        const qDate = t => new Date(t).toLocaleString('ar-EG', { dateStyle: 'medium', timeStyle: 'short' });
+        function togglePass() {
+            const i = document.getElementById('gPass'), show = i.type === 'password';
+            i.type = show ? 'text' : 'password';
+            document.querySelector('.eye i').className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+        }
+        let cType = 'سؤال';
+        function openContact() { document.getElementById('contactSheet').hidden = false; }
+        function closeContact() { document.getElementById('contactSheet').hidden = true; }
+        function cPick(t, btn) { cType = t; document.querySelectorAll('.ctypes button').forEach(b => b.className = b === btn ? 'on' : ''); }
+        function cMsg() {
+            const u = window.currentUser, m = document.getElementById('cText').value.trim();
+            return 'السلام عليكم، (' + cType + ') من موقع الربيع للمساحة:\n' + m + ((u && !u.isAnonymous) ? '\n\nالاسم: ' + (u.displayName || u.email) : '');
+        }
+        function cWA() { window.open('https://wa.me/201121573708?text=' + encodeURIComponent(cMsg()), '_blank'); }
+        function cMail() { location.href = 'mailto:mohamedrabia6668@gmail.com?subject=' + encodeURIComponent(cType + ' - الربيع للمساحة') + '&body=' + encodeURIComponent(cMsg()); }
+
+        let qaItems = [], qFilter = 'all';
+        function ago(t) {
+            const s = (Date.now() - t) / 1000;
+            if (s < 60) return 'الآن';
+            const m = s / 60; if (m < 60) return 'منذ ' + Math.floor(m) + ' دقيقة';
+            const h = m / 60; if (h < 24) return 'منذ ' + Math.floor(h) + ' ساعة';
+            const d = h / 24; if (d < 30) return 'منذ ' + Math.floor(d) + ' يوم';
+            return new Date(t).toLocaleDateString('ar-EG');
+        }
+        const avHtml = (name, photo) => '<div class="av">' + ((photo && /^https:\/\//.test(photo)) ? '<img src="' + esc(photo) + '" alt="" referrerpolicy="no-referrer">' : esc(String(name || '؟').trim().charAt(0) || '؟')) + '</div>';
+        function qaCount() { document.getElementById('qaCnt').textContent = document.getElementById('qaText').value.length + '/1000'; }
+        function setQF(f, btn) { qFilter = f; document.querySelectorAll('#qaFilters button').forEach(b => b.className = b === btn ? 'on' : ''); paintQA(); }
         async function renderQA() {
             const box = document.getElementById('qaList');
-            if (!window.Cloud) { box.innerHTML = '<div class="f-empty">الأسئلة والإجابات غير متاحة حالياً.</div>'; return; }
-            const u = window.currentUser;
-            document.getElementById('qaInfo').textContent = window.isRegistered
+            if (!window.Cloud) { box.innerHTML = '<div class="qempty"><i class="fas fa-comments"></i>الأسئلة والإجابات غير متاحة حالياً.</div>'; return; }
+            const u = window.currentUser, reg = window.isRegistered;
+            document.getElementById('qaInfo').textContent = reg
                 ? 'أهلاً ' + (u.displayName || u.email) + '، تقدر تسأل وتجاوب على أسئلة الناس.'
                 : 'أنت داخل كزائر: تقدر تسأل، والإجابة للأعضاء المسجلين فقط.';
-            document.getElementById('qaName').hidden = !!window.isRegistered;
-            box.textContent = 'جاري التحميل...';
-            try { qaItems = await window.Cloud.qa.list(); } catch (e) { box.textContent = 'تعذر تحميل الأسئلة.'; return; }
-            const me = u && u.uid;
-            box.innerHTML = qaItems.length ? qaItems.map((q, i) =>
-                '<div class="q-item"><div class="q-meta"><strong>' + esc(q.name) + '</strong><span>' + esc(qDate(q.at)) + '</span></div>' +
-                '<div class="q-text">' + esc(q.text) + '</div><div class="q-acts">' +
-                '<button class="f-btn" onclick="toggleAns(' + i + ')">الإجابات (' + (q.answers || 0) + ')</button>' +
-                (q.uid === me ? '<button class="f-btn del" onclick="delQ(' + i + ')">حذف</button>' : '') +
-                '</div><div class="q-ans" id="qa-' + i + '" hidden></div></div>').join('')
-                : '<div class="f-empty">لسه مفيش أسئلة. كن أول من يسأل!</div>';
+            document.getElementById('qaName').hidden = !!reg;
+            document.getElementById('qaAv').innerHTML = avHtml(reg ? (u.displayName || u.email) : 'ز', reg ? u.photoURL : '');
+            box.innerHTML = '<div class="qempty"><i class="fas fa-spinner fa-spin"></i>جاري التحميل...</div>';
+            try { qaItems = await window.Cloud.qa.list(); } catch (e) { box.innerHTML = '<div class="qempty">تعذر تحميل الأسئلة.</div>'; return; }
+            paintQA();
+        }
+        function paintQA() {
+            const box = document.getElementById('qaList'), me = window.currentUser && window.currentUser.uid;
+            const list = qaItems.map((q, i) => ({ q, i })).filter(({ q }) => qFilter === 'all' || (qFilter === 'open' && !(q.answers > 0)) || (qFilter === 'mine' && q.uid === me));
+            box.innerHTML = list.length ? list.map(({ q, i }) =>
+                '<div class="qcard"><div class="qhead">' + avHtml(q.name, q.photo) + '<div class="who"><strong>' + esc(q.name) + '</strong><small>' + esc(ago(q.at)) + '</small></div></div>' +
+                '<div class="qbody">' + esc(q.text) + '</div><div class="qfoot">' +
+                '<button class="qpill' + (q.answers > 0 ? ' has' : '') + '" onclick="toggleAns(' + i + ')"><i class="fas fa-comment-dots"></i> ' + (q.answers > 0 ? q.answers + ' إجابة' : 'أجب') + '</button>' +
+                (q.uid === me ? '<button class="qpill del" onclick="delQ(' + i + ')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                '</div><div class="qthread" id="qa-' + i + '" hidden></div></div>').join('')
+                : '<div class="qempty"><i class="fas fa-comments"></i>' + (qFilter === 'all' ? 'لسه مفيش أسئلة. كن أول من يسأل!' : 'مفيش نتائج هنا.') + '</div>';
         }
         async function toggleAns(i) {
             const el = document.getElementById('qa-' + i);
             if (!el.hidden) { el.hidden = true; return; }
             el.hidden = false; await renderAns(i);
         }
-        function qCount(i) { document.getElementById('qa-' + i).parentElement.querySelector('.f-btn').textContent = 'الإجابات (' + (qaItems[i].answers || 0) + ')'; }
+        function qCount(i) {
+            const b = document.getElementById('qa-' + i).parentElement.querySelector('.qpill'), n = qaItems[i].answers || 0;
+            b.className = 'qpill' + (n > 0 ? ' has' : '');
+            b.innerHTML = '<i class="fas fa-comment-dots"></i> ' + (n > 0 ? n + ' إجابة' : 'أجب');
+        }
         async function renderAns(i) {
             const el = document.getElementById('qa-' + i), q = qaItems[i];
-            el.textContent = 'جاري التحميل...';
+            el.innerHTML = '<div class="qempty"><i class="fas fa-spinner fa-spin"></i></div>';
             let list = [];
             try { list = await window.Cloud.qa.answers(q.id); } catch (e) { el.textContent = 'تعذر تحميل الإجابات.'; return; }
             const me = window.currentUser && window.currentUser.uid;
-            el.innerHTML = (list.length ? list.map(a =>
-                '<div class="a-item"><div class="q-meta"><strong>' + esc(a.name) + '</strong><span>' + esc(qDate(a.at)) + '</span></div>' +
-                '<div class="q-text">' + esc(a.text) + '</div>' +
-                (a.uid === me ? '<div class="q-acts"><button class="f-btn del" onclick="delA(' + i + ',\'' + esc(a.id) + '\')">حذف</button></div>' : '') + '</div>').join('')
-                : '<div class="f-empty">مفيش إجابات لسه.</div>') +
+            el.innerHTML = list.map(a =>
+                '<div class="acard"><div class="qhead">' + avHtml(a.name, a.photo) + '<div class="who"><strong>' + esc(a.name) + '</strong><small>' + esc(ago(a.at)) + '</small></div>' +
+                (a.uid === me ? '<button class="qpill del" onclick="delA(' + i + ',\'' + esc(a.id) + '\')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                '</div><div class="qbody">' + esc(a.text) + '</div></div>').join('') +
                 (window.isRegistered
-                    ? '<textarea id="ans-' + i + '" rows="2" maxlength="2000" placeholder="اكتب إجابتك..."></textarea><button class="btn-calc" onclick="answerQ(' + i + ')">إرسال الإجابة</button>'
-                    : '<div class="ai-note">سجّل دخول بحساب علشان تقدر تجاوب. <button class="f-btn" onclick="showGate()">دخول / إنشاء حساب</button></div>');
+                    ? '<div class="areply"><textarea id="ans-' + i + '" rows="1" maxlength="2000" placeholder="اكتب إجابتك..."></textarea><button class="rbtn send" onclick="answerQ(' + i + ')" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button></div>'
+                    : '<div class="ai-note">سجّل دخول بحساب علشان تقدر تجاوب. <button class="qpill" onclick="showGate()">دخول / إنشاء حساب</button></div>');
         }
         async function askQ() {
             const t = document.getElementById('qaText'), btn = document.getElementById('qaAsk'), text = t.value.trim();
@@ -1456,7 +1646,7 @@
             btn.disabled = true;
             try {
                 await window.Cloud.qa.ask(text, window.isRegistered ? '' : (document.getElementById('qaName').value.trim() || 'زائر'));
-                t.value = ''; await renderQA();
+                t.value = ''; qaCount(); await renderQA();
             } catch (e) { alert('تعذر نشر السؤال: ' + (e.code || e.message)); }
             btn.disabled = false;
         }
