@@ -64,36 +64,42 @@ module.exports = async (req, res) => {
     contents,
     generationConfig: lv ? { maxOutputTokens: 8000, temperature: 0, responseMimeType: 'application/json' } : { maxOutputTokens: 1500 }
   });
-  const gen = async (model) => {
+  const errs = [];
+  const gen = async (model, ms) => {
     const b = JSON.parse(body);
-    if (/2\.5/.test(model)) b.generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    if (/gemini-2\.5/.test(model)) b.generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    let r, data;
     try {
-      const r = await fetch(base + '/' + model + ':generateContent', {
+      r = await fetch(base + '/' + model + ':generateContent', {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
         body: JSON.stringify(b),
-        signal: AbortSignal.timeout(24000)
+        signal: AbortSignal.timeout(ms)
       });
-      return { r, data: await r.json().catch(() => ({})) };
+      data = await r.json().catch(() => ({}));
     } catch (e) {
-      return { r: { ok: false, status: 504 }, data: { error: { message: 'انتهت مهلة النموذج' } } };
+      r = { ok: false, status: 504 }; data = { error: { message: 'انتهت المهلة (' + Math.round(ms / 1000) + ' ث)' } };
     }
+    if (!r.ok) errs.push(model + ' → ' + r.status + ': ' + String((data.error && data.error.message) || '').slice(0, 160));
+    return { r, data };
   };
   try {
     if (!key) return res.status(500).json({ error: 'GEMINI_API_KEY غير مضاف في فرسل' });
-    const first = (process.env.GEMINI_MODEL || '').trim() || 'gemini-2.5-flash-lite';
-    const tried = [first];
-    let out = await gen(first);
-    // بديل واحد سريع بدل البحث في قائمة الموديلات (كان بياخد وقت ويعدّي مهلة الخادم)
-    if (!out.r.ok && out.r.status !== 429 && out.r.status !== 400) {
-      const alt = first === 'gemini-2.5-flash' ? 'gemini-2.0-flash' : 'gemini-2.5-flash';
-      tried.push(alt);
-      out = await gen(alt);
+    const envModel = (process.env.GEMINI_MODEL || '').trim();
+    const chain = [envModel, 'gemini-flash-lite-latest', 'gemini-flash-latest'].filter((m, i, arr) => m && arr.indexOf(m) === i);
+    let out;
+    const t0 = Date.now();
+    for (const m of chain) {
+      const left = 55000 - (Date.now() - t0);
+      if (left < 6000) break;
+      out = await gen(m, Math.min(30000, left));
+      if (out.r.ok || out.r.status === 429) break;
     }
+    if (!out) return res.status(504).json({ error: 'انتهى وقت الخادم قبل الرد' });
     const { r, data } = out;
     if (!r.ok) {
-      const msg = ((data.error && data.error.message) || ('status ' + r.status)) + ' [الموديلات المجرّبة: ' + tried.join(', ') + ']';
-      console.error('gemini error', r.status, msg);
+      const msg = errs.join(' | ');
+      console.error('gemini error', msg);
       return res.status(r.status === 429 ? 429 : 502).json({ error: msg });
     }
     const parts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
