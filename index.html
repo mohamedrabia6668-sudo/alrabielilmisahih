@@ -1280,7 +1280,7 @@
             }
         };
 
-        const formulaCats = ['الميزانية والمناسيب', 'الميول والمنحدرات', 'الصرف والترع', 'الإحداثيات والمضلعات', 'قياس المسافات', 'المنحنيات', 'الكميات', 'التطبيق والحمالات والكاب'];
+        const formulaCats = ['الميزانية والمناسيب', 'الميول والمنحدرات', 'الصرف والترع', 'الإحداثيات والمضلعات', 'قياس المسافات', 'المنحنيات', 'الكميات'];
         const formulasData = [
             { c:0, t:'منسوب سطح الميزان', e:'Height of Instrument', f:'H.I = BM + B.S', a:'منسوب سطح الميزان (H.I) = منسوب النقطة الثابتة (BM) + القراءة الخلفية (B.S)', d:'القراءة الخلفية هي قراءة القامة على النقطة الثابتة.', x:'منسوب النقطة الثابتة (BM) = 100.000 م ، القراءة الخلفية (B.S) = 1.532 م\nمنسوب سطح الميزان (H.I) = 100.000 + 1.532 = 101.532 م' },
             { c:0, t:'منسوب نقطة مرصودة', e:'Reduced Level of a point', f:'R.L = H.I − F.S', a:'منسوب النقطة (R.L) = منسوب سطح الميزان (H.I) − القراءة الأمامية (F.S)', d:'القراءة الأمامية هي قراءة القامة على النقطة المراد معرفة منسوبها.', x:'منسوب سطح الميزان (H.I) = 101.532 ، القراءة الأمامية (F.S) = 2.145\nمنسوب النقطة (R.L) = 101.532 − 2.145 = 99.387 م' },
@@ -1320,10 +1320,6 @@
             { c:6, t:'حجم الحفر', e:'Excavation volume', f:'V = W × H × L', a:'الحجم (V) = العرض (W) × متوسط العمق (H) × الطول (L)', d:'', x:'العرض (W) = 1.2 م ، العمق (H) = 2.5 م ، الطول (L) = 50 م\nالحجم (V) = 1.2 × 2.5 × 50 = 150 م³' },
             { c:6, t:'الحفر والردم', e:'Cut and fill', f:'Cut/Fill = Existing Level − Design Level', a:'الحفر أو الردم = المنسوب الموجود − المنسوب التصميمي', d:'الناتج الموجب حفر، والسالب ردم.', x:'الموجود 12.400 ، التصميمي 11.900 ← +0.500 م (حفر)\nالموجود 12.400 ، التصميمي 12.700 ← −0.300 م (ردم)' },
             { c:6, t:'الكميات بطريقة متوسط المساحات', e:'Average end area', f:'V = ((A₁ + A₂) ÷ 2) × L', a:'الحجم (V) = [ (المساحة الأولى A₁ + المساحة الثانية A₂) ÷ 2 ] × المسافة بين القطاعين (L)', d:'', x:'المساحة الأولى (A₁) = 12 م² ، المساحة الثانية (A₂) = 18 م² ، المسافة (L) = 20 م\nالحجم (V) = ((12 + 18) ÷ 2) × 20 = 300 م³' },
-
-            { c:7, t:'منسوب التطبيق وقراءة القامة', e:'Deck level and rod reading', f:'Deck = Top of Concrete − Thickness\nRod = H.I − Deck', a:'منسوب التطبيق = منسوب أعلى الخرسانة − سمك الخرسانة\nقراءة القامة = منسوب سطح الميزان (H.I) − منسوب التطبيق', d:'', x:'منسوب أعلى الخرسانة = 25.000 ، سمك الخرسانة = 0.20 م ، منسوب سطح الميزان (H.I) = 27.300\nمنسوب التطبيق = 25.000 − 0.20 = 24.800 م\nقراءة القامة = 27.300 − 24.800 = 2.500 م' },
-            { c:7, t:'منسوب العرق والحمالات', e:'Joists and beams level', f:'Level(next) = Level(prev) − Thickness(prev)', a:'منسوب العنصر التالي = منسوب العنصر السابق − سمك العنصر السابق', d:'كل عنصر تحت السابق بمقدار سمك السابق.', x:'منسوب التطبيق = 24.800 ، سمك لوح الكونتر = 1.8 سم\nمنسوب العرق = 24.800 − 0.018 = 24.782 م\nقراءة القامة = 27.300 − 24.782 = 2.518 م' },
-            { c:7, t:'منسوب الكاب', e:'Drop (cap) level', f:'Cap Deck = Slab Deck − Drop', a:'منسوب تطبيق الكاب = منسوب تطبيق السقف الرئيسي − مقدار الانخفاض', d:'الكاب أوطى من السقف الرئيسي، فيُطرح الانخفاض.', x:'منسوب التطبيق = 24.800 ، مقدار الانخفاض = 15 سم\nمنسوب تطبيق الكاب = 24.800 − 0.15 = 24.650 م\nقراءة القامة = 27.300 − 24.650 = 2.650 م' }
         ];
         let isArabic = true;
         function renderFormulas() {
@@ -1430,7 +1426,7 @@
         }
         function dxfSummary(txt) {
             txt = txt.replace(/\\U\+([0-9A-Fa-f]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
-            const L = txt.split(/\r?\n/), counts = {}, texts = [], seen = new Set(), layers = [], inserts = {}, ext = {};
+            let pos = 0; const nl = txt.length, nextLine = () => { if (pos >= nl) return null; let e = txt.indexOf('\n', pos); if (e < 0) e = nl; const r = txt.slice(pos, e).trim(); pos = e + 1; return r; }, counts = {}, texts = [], seen = new Set(), layers = [], inserts = {}, ext = {};
             let sec = '', ent = null, hv = '';
             const clean = t => t.replace(/\\P/g, ' ').replace(/\\~/g, ' ').replace(/\\S([^;^]*)[\^\/#]([^;]*);/g, '$1/$2').replace(/\\[A-Za-z][^;]*;/g, '').replace(/[{}]/g, '').replace(/%%[cC]/g, 'Ø').replace(/%%[dD]/g, '°').replace(/%%[pP]/g, '±').replace(/\s+/g, ' ').trim();
             const flush = () => {
@@ -1444,8 +1440,7 @@
                     if (!seen.has(key)) { seen.add(key); texts.push((ent.layer || '-') + ' | ' + t + ' | ' + (isNaN(ent.x) ? '' : Math.round(ent.x)) + ',' + (isNaN(ent.y) ? '' : Math.round(ent.y))); }
                 }
             };
-            for (let i = 0; i + 1 < L.length; i += 2) {
-                const c = L[i].trim(), v = L[i + 1].trim();
+            for (let c, v; (c = nextLine()) !== null && (v = nextLine()) !== null;) {
                 if (c === '0') {
                     flush(); ent = null;
                     if (v === 'SECTION') sec = '?';
@@ -1483,7 +1478,7 @@
                 try { return { mediaType: 'image/jpeg', data: await pdfFirstPageJpeg(f) }; }
                 catch (e) { if (f.size <= 2.5 * 1024 * 1024) return { mediaType: 'application/pdf', data: await fileToB64(f) }; throw new Error('ملف الـ PDF كبير (أكتر من 2.5 ميجا). صدّر صفحة واحدة منه كصورة أو PDF أصغر.'); }
             }
-            if (kind === 'dxf') { if (f.size > 80 * 1024 * 1024) throw new Error('ملف DXF كبير جداً.'); return { mediaType: 'text/plain', text: dxfSummary(await readDxfText(f)) }; }
+            if (kind === 'dxf') { if (f.size > 150 * 1024 * 1024) throw new Error('ملف DXF كبير جداً (أكتر من 150 ميجا). صدّر جزء من اللوحة أو PDF.'); return { mediaType: 'text/plain', text: dxfSummary(await readDxfText(f)) }; }
             if (kind === 'bdxf') throw new Error('ملف DXF ثنائي (Binary). من الأوتوكاد احفظه DXF نصي (ASCII) أو ارفع PDF.');
             if (kind === 'dwg') throw new Error('ملف DWG مش بيتقرأ مباشرة. من الأوتوكاد اعمل Save As ← DXF، أو Plot ← PDF، وارفعه.');
             throw new Error('الصيغة دي مش مدعومة. ارفع صورة أو PDF أو DXF.');
