@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
   const contents = messages.map((m, i) => {
     const parts = [{ text: String(m.content) }];
     if (i === 0 && hasFile) {
-      if (isText) parts.unshift({ text: 'محتوى مستخرج من ملف DXF لوحة مساحية (عدد العناصر والنصوص والأبعاد):\n' + String(file.text).slice(0, 120000) });
+      if (isText) parts.unshift({ text: 'محتوى مستخرج من ملف DXF لوحة مساحية (عدد العناصر والنصوص والأبعاد):\n' + String(file.text).slice(0, 60000) });
       else parts.unshift({ inlineData: { mimeType: fileMime, data: file.data } });
     }
     return { role: m.role === 'assistant' ? 'model' : 'user', parts };
@@ -61,36 +61,33 @@ module.exports = async (req, res) => {
   const body = JSON.stringify({
     systemInstruction: { parts: [{ text: lv ? SYSTEM_LV : SYSTEM }] },
     contents,
-    generationConfig: lv ? { maxOutputTokens: 8000, temperature: 0, responseMimeType: 'application/json' } : { maxOutputTokens: 2000 }
+    generationConfig: lv ? { maxOutputTokens: 8000, temperature: 0, responseMimeType: 'application/json' } : { maxOutputTokens: 1500 }
   });
   const gen = async (model) => {
-    const r = await fetch(base + '/' + model + ':generateContent', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
-      body
-    });
-    return { r, data: await r.json().catch(() => ({})) };
+    const b = JSON.parse(body);
+    if (/2\.5/.test(model)) b.generationConfig.thinkingConfig = { thinkingBudget: 0 };
+    try {
+      const r = await fetch(base + '/' + model + ':generateContent', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+        body: JSON.stringify(b),
+        signal: AbortSignal.timeout(24000)
+      });
+      return { r, data: await r.json().catch(() => ({})) };
+    } catch (e) {
+      return { r: { ok: false, status: 504 }, data: { error: { message: 'انتهت مهلة النموذج' } } };
+    }
   };
   try {
     if (!key) return res.status(500).json({ error: 'GEMINI_API_KEY غير مضاف في فرسل' });
-    const tried = [];
     const first = (process.env.GEMINI_MODEL || '').trim() || 'gemini-2.5-flash-lite';
-    tried.push(first);
+    const tried = [first];
     let out = await gen(first);
+    // بديل واحد سريع بدل البحث في قائمة الموديلات (كان بياخد وقت ويعدّي مهلة الخادم)
     if (!out.r.ok && out.r.status !== 429 && out.r.status !== 400) {
-      const lr = await fetch(base + '?pageSize=200', { headers: { 'x-goog-api-key': key } });
-      const ld = await lr.json().catch(() => ({}));
-      const ver = n => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
-      const list = (ld.models || [])
-        .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /flash/.test(m.name) && !/(image|tts|live|audio|exp|preview|robotics|computer)/.test(m.name))
-        .map(m => m.name.replace('models/', ''))
-        .filter(n => n !== first)
-        .sort((x, y) => ver(y) - ver(x) || x.length - y.length);
-      for (const name of list.slice(0, 3)) {
-        tried.push(name);
-        out = await gen(name);
-        if (out.r.ok || out.r.status === 429) break;
-      }
+      const alt = first === 'gemini-2.5-flash' ? 'gemini-2.0-flash' : 'gemini-2.5-flash';
+      tried.push(alt);
+      out = await gen(alt);
     }
     const { r, data } = out;
     if (!r.ok) {
