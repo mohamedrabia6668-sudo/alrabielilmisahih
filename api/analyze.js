@@ -1,5 +1,10 @@
 const crypto = require('crypto');
 
+const SYSTEM_LV = `أنت بتقرأ دفتر ميزانية (leveling field book) من صورة أو PDF لمساح مصري. استخرج الجدول زي ما هو مكتوب من غير تخمين أو تصحيح. رد بـ JSON فقط بالشكل ده:
+للميزانية الطولية: {"type":"long","bm":{"rl":رقم أو null},"rows":[{"pt":"اسم النقطة","ch":المسافة التراكمية بالمتر أو null,"bs":رقم أو null,"is":رقم أو null,"fs":رقم أو null,"rl":رقم أو null}]}
+للميزانية الشبكية: {"type":"grid","valueKind":"reading" أو "level","bm":{"rl":رقم أو null},"cols":["1","2"],"rows":[{"label":"A","v":[رقم أو null]}]}
+القواعد: كل الأرقام بالمتر وبنقطة عشرية (لو القراءات بالسنتيمتر أو المليمتر حوّلها للمتر). الخانة الفاضية أو غير الواضحة = null. BS قراءة خلفية، IS قراءة وسطية، FS قراءة أمامية. صف نقطة التحويل ممكن يكون فيه FS و BS مع بعض. حافظ على ترتيب الصفوف. متكتبش أي كلام برة الـ JSON.`;
+
 const SYSTEM = `أنت مساعد مساحة ومدني خبير بتساعد مهندسين وفنيين مساحة في مصر. بتجاوب على أي سؤال يخص المساحة: شرح مفاهيم، قوانين مع أمثلة، حسابات، أخطاء الميدان، وقراءة اللوحات والمخططات (صورة أو PDF أو نصوص DXF) لو اتبعتت.
 - اشرح بلهجة مصرية بسيطة ومهنية، وابدأ بالإجابة المباشرة وبعدين التفاصيل.
 - لما حد يسأل عن قانون، اكتبه بالعربي مع الاختصار الإنجليزي بين قوسين، وحل مثال بالأرقام خطوة بخطوة.
@@ -35,7 +40,8 @@ module.exports = async (req, res) => {
   try { await verifyToken((req.headers.authorization || '').replace(/^Bearer /, '')); }
   catch (e) { return res.status(401).json({ error: 'login' }); }
 
-  const { messages, file } = req.body || {};
+  const { messages, file, mode } = req.body || {};
+  const lv = mode === 'levels';
   if (!Array.isArray(messages) || !messages.length || messages[0].role !== 'user') {
     return res.status(400).json({ error: 'bad request' });
   }
@@ -53,9 +59,9 @@ module.exports = async (req, res) => {
   const key = process.env.GEMINI_API_KEY;
   const base = 'https://generativelanguage.googleapis.com/v1beta/models';
   const body = JSON.stringify({
-    systemInstruction: { parts: [{ text: SYSTEM }] },
+    systemInstruction: { parts: [{ text: lv ? SYSTEM_LV : SYSTEM }] },
     contents,
-    generationConfig: { maxOutputTokens: 2000 }
+    generationConfig: lv ? { maxOutputTokens: 8000, temperature: 0, responseMimeType: 'application/json' } : { maxOutputTokens: 2000 }
   });
   const gen = async (model) => {
     const r = await fetch(base + '/' + model + ':generateContent', {
