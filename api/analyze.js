@@ -36,6 +36,7 @@ async function verifyToken(tok) {
 }
 
 module.exports = async (req, res) => {
+  if (req.method === 'GET') return res.json({ ok: true, hasKey: !!process.env.GEMINI_API_KEY, model: (process.env.GEMINI_MODEL || '').trim() || 'gemini-2.5-flash-lite' });
   if (req.method !== 'POST') return res.status(405).json({ error: 'method' });
   try { await verifyToken((req.headers.authorization || '').replace(/^Bearer /, '')); }
   catch (e) { return res.status(401).json({ error: 'login' }); }
