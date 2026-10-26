@@ -1494,6 +1494,7 @@
                 if (!res.ok) {
                     if (res.status === 429) throw new Error('وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني، أو كمّل بكرة.');
                     if (res.status === 413) throw new Error('الملف كبير على الإرسال. صغّره (صفحة واحدة أو صورة أصغر) وجرّب تاني.');
+                    if (data.error && [502, 503, 504].includes(res.status)) throw new Error('رد الخادم: ' + data.error);
                     if ([502, 503, 504].includes(res.status) || /timeout|FUNCTION_INVOCATION/i.test(raw)) throw new Error('التحليل أخد وقت أطول من المسموح على الخادم. جرّب ملف أصغر (صفحة واحدة أو جزء من اللوحة) أو سؤال أقصر.');
                     throw new Error('حصل خطأ في التحليل (' + res.status + ')' + (data.error ? ': ' + data.error : '.'));
                 }
@@ -1512,7 +1513,7 @@
             aiStatus('جاري تجهيز الملف...');
             try { aiFile = await aiPrepFile(f); }
             catch (e) { aiErr = e.message || 'تعذر قراءة الملف. جرّب ملف تاني.'; }
-            aiStatus(aiErr); aiChip(aiFile ? f.name : '');
+            aiStatus(aiErr || (aiFile && aiFile.text ? 'تم قراءة الملف: ' + aiFile.text.split('\n').length + ' سطر نصوص وأبعاد (' + Math.round(aiFile.text.length / 1024) + ' ك.ب)' + (aiFile.text.split('\n').length < 8 ? ' — الملف فيه نصوص قليلة جداً' : '') : '')); aiChip(aiFile ? f.name : '');
             input.value = '';
         }
         async function sendAi(q, needFile) {
@@ -1526,7 +1527,8 @@
             aiAdd('user', q);
             const wait = aiAdd('bot', ''); wait.innerHTML = '<span class="dots"><i></i><i></i><i></i></span>';
             try {
-                const data = await aiPost({ file: aiFile, messages: aiHistory }, 100000, s => { if (s >= 5) wait.innerHTML = '<span class="dots"><i></i><i></i><i></i></span> <small>' + s + ' ث' + (s >= 30 ? ' — الملفات الكبيرة بتاخد وقت' : '') + '</small>'; });
+                const kb = Math.round(JSON.stringify({ file: aiFile, messages: aiHistory }).length / 1024);
+                const data = await aiPost({ file: aiFile, messages: aiHistory }, 70000, s => { wait.innerHTML = '<span class="dots"><i></i><i></i><i></i></span> <small>' + (s < 2 ? 'بيتبعت للخادم ' : 'مستني رد الخادم ') + s + ' ث — حجم المرسل ' + kb + ' ك.ب</small>'; });
                 wait.textContent = data.text;
                 aiHistory.push({ role: 'assistant', content: data.text });
                 while (aiHistory.length > 20) aiHistory.splice(0, 2);
