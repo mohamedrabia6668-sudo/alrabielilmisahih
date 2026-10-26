@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="الربيع">
     <title>الربيع للمساحة | حاسبة مناسيب وميول وإحداثيات للمساحين</title>
-    <meta name="description" content="أدوات مساحية مجانية: حساب ميول الطرق والرامبات، مناسيب الصرف والترع، الميزانية بأنواعها، إحداثياتك GPS، والقوانين المساحية مع أمثلة محلولة.">
+    <meta name="description" content="أدوات مساحية مجانية: حساب ميول الطرق والرامبات، مناسيب الصرف والترع، الميزانية والتوقيع المساحي، الإحداثيات، والقوانين المساحية مع أمثلة محلولة.">
     <meta name="robots" content="index, follow">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_EG">
@@ -144,34 +144,14 @@
         input:focus, select:focus, textarea:focus {
             outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(217,242,61,.65);
         }
+        .hi-field, #l_hi_display { }
         .hi-field { background: var(--accent-soft); padding: 12px; border-radius: 10px; border: 1.5px solid #c5dc4a; }
+        .bm-box { background: #f2f5ea; padding: 14px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--border); }
+        #l_hi_display {
+            background: var(--accent); color: var(--ink) !important; border-radius: 10px; padding: 10px;
+            font-size: 1.25rem !important; font-weight: 700 !important; margin-bottom: 0;
+        }
 
-        .lv-ta { min-height: 120px; direction: ltr; font-family: monospace; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; }
-        .pf-in { width: 100%; min-width: 64px; min-height: 38px; padding: 4px; text-align: center; border: 1px solid var(--border); border-radius: 6px; }
-        .gn-wrap { display: flex; gap: 8px; align-items: flex-start; margin: 14px 0; }
-        .north { display: flex; flex-direction: column; align-items: center; color: var(--primary); }
-        .north svg { transition: transform .2s; }
-        .gv-scroll { overflow-x: auto; flex: 1; }
-        .gv { display: grid; direction: ltr; width: max-content; margin: 0 auto; }
-        .gl { display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.3rem; color: var(--ink); }
-        .gl.t { height: 44px; }
-        .gc { position: relative; width: 96px; height: 96px; }
-        .gc::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; background: var(--primary-light); }
-        .gc::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; margin-left: -2px; background: var(--primary-light); }
-        .gn { position: absolute; top: 50%; left: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 3px dashed #7aa56a; background: #fff; z-index: 1; display: flex; }
-        .gn input { width: 100%; border: 0; background: transparent; text-align: center; font-weight: 700; font-size: .85rem; padding: 0; min-height: 0; border-radius: 50%; }
-        .lv-types { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-        .lv-t { text-align: right; font-family: inherit; background: #fff; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; }
-        .lv-t.on { border-color: var(--primary); background: var(--accent-soft); }
-        .lv-t b { display: block; color: var(--ink); font-size: .98rem; }
-        .lv-t em { display: block; font-style: normal; direction: ltr; text-align: right; color: var(--primary-light); font-size: .78rem; }
-        .lv-t small { display: block; color: var(--muted); margin-top: 4px; line-height: 1.4; }
-        .lv-hint { background: #f2f5ea; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; font-size: .88rem; line-height: 1.7; }
-        .cs-sec { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px; background: #fff; }
-        .cs-sec h4 { margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
-        .form-group[hidden] { display: none; }
-        .lv-panel[hidden] { display: none; }
-        .lv-ok { color: #1f7a3a; font-weight: 800; } .lv-bad { color: var(--danger); font-weight: 800; }
         .btn-calc {
             width: 100%; min-height: 50px; padding: 12px; background: var(--primary); color: #fff;
             border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 6px;
@@ -382,6 +362,53 @@
             .header-actions { gap: 6px; }
             .hdr-btn, .menu-toggle-btn, .auth-btn { width: auto; min-width: 38px; height: 38px; min-height: 38px; }
         }
+        .lb-up { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 6px; }
+        .lb-up button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 8px; background: #fff; border: 1.5px dashed var(--primary-light); border-radius: 14px; cursor: pointer; color: var(--ink); text-align: center; }
+        .lb-up button i { font-size: 22px; color: var(--primary); }
+        .lb-up button small { color: var(--muted); font-size: .76rem; }
+        .lb-up button:hover { background: var(--accent-soft); }
+        .lb-tpl { font-size: .82rem; color: var(--muted); margin: 6px 0; }
+        .lb-tpl a { color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline; }
+        .ai-status.bad { color: var(--danger); }
+        .lb-long[hidden], .lb-grid[hidden] { display: none; }
+        .lb-scroll { overflow-x: auto; margin: 10px 0; border: 1px solid var(--border); border-radius: 12px; background: #fff; }
+        .lb-t { border: none; border-radius: 0; margin: 0; min-width: 100%; }
+        .lb-t th, .lb-t td { padding: 4px; border-left: 1px solid var(--border); }
+        .lb-t input { min-height: 38px; padding: 4px 6px; text-align: center; min-width: 64px; border-radius: 7px; border-width: 1px; }
+        .lb-t.res td { padding: 8px 6px; white-space: nowrap; }
+        .lb-t td:first-child input { min-width: 84px; }
+        .lb-x { width: 30px; height: 30px; border-radius: 50%; border: none; background: #fbeaea; color: var(--danger); font-size: 18px; cursor: pointer; }
+        .lb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 4px; }
+        .lb-chip { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; font-size: .82rem; color: var(--muted); }
+        .lb-chip b { display: block; font-size: 1.02rem; color: var(--ink); }
+        .lb-chip.ok { background: var(--accent-soft); border-color: #c5dc4a; }
+        .lb-chip.bad { background: #fbeaea; border-color: #efc9c9; }
+        .lb-chip.bad b { color: var(--danger); }
+        .lb-h { margin: 18px 0 6px; font-size: 1.05rem; color: var(--ink); }
+        .lb-chart { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 8px; overflow-x: auto; direction: ltr; }
+        .lb-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin: 8px 2px 12px; }
+        .lb-legend i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; margin-inline-end: 5px; vertical-align: middle; }
+        .lb-bar { height: 12px; border-radius: 6px; margin: 10px 0 2px; }
+        td.rl { background: var(--accent-soft); font-weight: 700; }
+        .kind { font-size: .66rem; background: var(--primary); color: var(--accent); border-radius: 6px; padding: 1px 6px; margin-inline-start: 4px; }
+        .gd-ctrl { display: flex; align-items: center; gap: 8px; margin: 12px 0; flex-wrap: wrap; font-weight: 600; }
+        .gd-ctrl b { min-width: 22px; text-align: center; }
+        .gd-step { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--primary); background: #fff; color: var(--primary); font-size: 20px; cursor: pointer; line-height: 1; }
+        .gd-panel { background: #fff; border: 1.5px solid var(--primary); border-radius: 14px; padding: 12px; margin: 12px 0; }
+        .gd-panel.hint { border-style: dashed; border-color: var(--border); color: var(--muted); text-align: center; font-size: .9rem; }
+        .gd-title { margin-bottom: 8px; color: var(--ink); }
+        .gd-title b { font-family: 'Reem Kufi', sans-serif; font-size: 1.35rem; }
+        .tag { font-size: .72rem; border-radius: 8px; padding: 2px 8px; color: #fff; margin-inline-start: 6px; }
+        .tag.st { background: #1f8a4c; } .tag.en { background: #c0392b; }
+        .gd-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .gd-row:last-child { margin-bottom: 0; }
+        .gd-btn { flex: 1; min-height: 44px; border-radius: 10px; border: 1.5px solid var(--primary); background: #fff; color: var(--primary); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .gd-btn.main { background: var(--primary); color: #fff; }
+        .gd-btn.del, .f-btn.del { border-color: var(--danger); color: var(--danger); }
+        .gd-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+        .lb-check { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: .9rem; font-weight: 600; }
+        .lb-check input { width: 20px; height: 20px; min-height: 0; }
+        .kind.end { background: #c0392b; color: #fff; }
     </style>
 </head>
 <body>
@@ -458,11 +485,13 @@
         <button class="drawer-nav-btn active" onclick="openTab('tab-home', this)"><i class="fas fa-home"></i> الرئيسية</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-roads', this)"><i class="fas fa-road"></i> الطرق والرامبات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-sewage', this)"><i class="fas fa-water"></i> الصرف والترع</button>
-        <button class="drawer-nav-btn" onclick="openTab('tab-level', this)"><i class="fas fa-ruler-combined"></i> الميزانية (Leveling)</button>
-        <button class="drawer-nav-btn" onclick="openTab('tab-gps', this)"><i class="fas fa-location-crosshairs"></i> إحداثياتي (GPS)</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-level', this)"><i class="fas fa-ruler-combined"></i> الميزانية والرفع</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-levelbook', this)"><i class="fas fa-file-excel"></i> ميزانية من ملف</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-cogo', this)"><i class="fas fa-draw-polygon"></i> الإحداثيات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-formwork', this)"><i class="fas fa-layer-group"></i> التطبيق والحمالات والكاب</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-notebook', this)"><i class="fas fa-edit"></i> ملاحظات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-formulas', this)"><i class="fas fa-book-open"></i> القوانين</button>
-        <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> مساعدك الذكي</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> المساعد الذكي</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-history', this); renderHistory()"><i class="fas fa-history"></i> سجل العمليات</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-qa', this); renderQA()"><i class="fas fa-comments"></i> الأسئلة والإجابات</button>
         <button class="drawer-nav-btn" onclick="toggleMenu(); openContact()"><i class="fas fa-headset"></i> تواصل معنا (شكاوى ومقترحات)</button>
@@ -476,7 +505,7 @@
             <div id="tab-home" class="section active">
                 <div class="card hero-home">
                     <h1>مرحباً بك في تطبيق الربيع للمساحة</h1>
-                    <p>أداتك الهندسية المتكاملة لحسابات الميدان، الميول، والشبكات بدقة متناهية.</p>
+                    <p>أداتك الهندسية المتكاملة لحسابات الميدان، الميول، الشبكات، والميزانية بدقة متناهية.</p>
                     
                     <div class="quick-grid">
                         <div class="quick-card" onclick="openTabFromCard('tab-roads')">
@@ -491,13 +520,18 @@
                         </div>
                         <div class="quick-card" onclick="openTabFromCard('tab-level')">
                             <i class="fas fa-ruler-combined"></i>
-                            <h3>الميزانية (Leveling)</h3>
-                            <span>طولية، عرضية، شبكية، تبادلية + حفر وردم</span>
+                            <h3>الميزانية والرفع</h3>
+                            <span>H.I والتوقيع المساحي</span>
                         </div>
-                        <div class="quick-card" onclick="openTabFromCard('tab-gps')">
-                            <i class="fas fa-location-crosshairs"></i>
-                            <h3>إحداثياتي (GPS)</h3>
-                            <span>موقعك الحالي بخط الطول والعرض و UTM</span>
+                        <div class="quick-card" onclick="openTabFromCard('tab-cogo')">
+                            <i class="fas fa-draw-polygon"></i>
+                            <h3>الإحداثيات</h3>
+                            <span>حسابات التوتال ستيشن</span>
+                        </div>
+                        <div class="quick-card" onclick="openTabFromCard('tab-formwork')">
+                            <i class="fas fa-layer-group"></i>
+                            <h3>التطبيق والحمالات والكاب</h3>
+                            <span>مناسيب وقراءات القامة للسقف الرئيسي والكاب</span>
                         </div>
                         <div class="quick-card" onclick="openTabFromCard('tab-notebook')">
                             <i class="fas fa-edit"></i>
@@ -596,101 +630,84 @@
                 </div>
             </div>
 
-            <!-- 3. الميزانية (Leveling) -->
+            <!-- 3. الميزانية والرفع -->
             <div id="tab-level" class="section">
                 <div class="card">
-                    <h2><i class="fas fa-ruler-combined"></i> الميزانية (Leveling)</h2>
-                    <div class="lv-types">
-                        <button class="lv-t on" data-t="pf" onclick="lvSwitch('pf')"><b>طولية / تفاضلية</b><em>Profile / Differential</em><small>مناسيب نقاط على خط، مع قفل وحفر وردم</small></button>
-                        <button class="lv-t" data-t="cs" onclick="lvSwitch('cs')"><b>عرضية</b><em>Cross-Section</em><small>قطاعات عمودية على المحور، مساحات وحجوم</small></button>
-                        <button class="lv-t" data-t="gr" onclick="lvSwitch('gr')"><b>شبكية</b><em>Grid / Block</em><small>أرض مربعات، حفر وردم ومنسوب متوازن</small></button>
-                        <button class="lv-t" data-t="rc" onclick="lvSwitch('rc')"><b>تبادلية</b><em>Reciprocal</em><small>عبور عائق (نهر/ترعة) بدقة</small></button>
-                        <button class="lv-t" data-t="so" onclick="lvSwitch('so')" style="grid-column:span 2;"><b>التوقيع بالميزانية</b><em>Setting-out</em><small>قراءة القامة المطلوبة لمنسوب تصميمي</small></button>
-                    </div>
-
-                    <div id="lvp-pf" class="lv-panel">
-                        <div class="lv-hint"><b>اكتب بالترتيب:</b> منسوب الـ BM، ثم الصف الأول BS فقط، وبعدها كل نقطة بقراءة IS (وسطية) أو FS (أمامية).</div>
+                    <h2><i class="fas fa-ruler-combined"></i> الميزانية (الرفع والتوقيع المساحي)</h2>
+                    <div class="bm-box">
                         <div class="form-grid">
-                            <div class="form-group"><label>منسوب النقطة الثابتة (BM):</label><input type="number" id="pf_bm" step="any"></div>
-                            <div class="form-group"><label>طريقة الحساب:</label>
-                                <select id="pf_method"><option value="hi">ارتفاع الجهاز (HI - Height of Instrument)</option><option value="rf">الصعود والهبوط (Rise &amp; Fall)</option></select></div>
-                            <div class="form-group"><label>منسوب نقطة القفل المعلوم [اختياري] (Closing BM):</label><input type="number" id="pf_close" step="any"></div>
-                            <div class="form-group"><label>طول الخط (K) كم [اختياري]:</label><input type="number" id="pf_k" step="any"></div>
-                            <div class="form-group full-width"><label>معامل الدقة (C) مم/√كم — 12 دقة عالية، 24 عادية:</label><input type="number" id="pf_c" step="any" value="12"></div>
+                            <div class="form-group"><label>منسوب النقطة الثابتة (BM):</label><input type="number" id="l_bm" step="any"></div>
+                            <div class="form-group"><label>قراءة القامة الخلفية (B.S):</label><input type="number" id="l_bs" step="any"></div>
                         </div>
-                        <small style="color:var(--muted);display:block;margin-bottom:10px;">الصف الأول: قراءة خلفية (BS) على الـ BM فقط. نقطة التحويل (CP): اكتب أمامية (FS) وخلفية (BS) في نفس الصف. المنسوب التصميمي اختياري لإظهار الحفر والردم.</small>
-                        <div class="result-container"><table><thead><tr><th>النقطة (Point)</th><th>BS خلفية</th><th>IS وسطية</th><th>FS أمامية</th><th>منسوب التصميم</th></tr></thead><tbody id="pf_body"></tbody></table></div>
-                        <div style="display:flex;gap:10px;"><button class="btn-calc" style="background:var(--secondary);" onclick="pfAdd(1)"><i class="fas fa-plus"></i> صف</button><button class="btn-calc" style="background:var(--secondary);" onclick="pfDel()"><i class="fas fa-minus"></i> حذف آخر صف</button></div>
-                        <button class="btn-calc" onclick="calcProfile()"><i class="fas fa-calculator"></i> احسب المناسيب (RL)</button>
-                        <div id="pf_result" class="result-container"></div>
+                        <button class="btn-calc" style="background: var(--secondary);" onclick="calcHI()"><i class="fas fa-check-circle"></i> تعيين منسوب الجهاز (H.I)</button>
+                        <h3 id="l_hi_display" style="text-align:center; color:var(--primary); margin-top:12px; font-weight:800; font-size:1.1rem;">سطح الميزان = 0.000</h3>
                     </div>
-
-                    <div id="lvp-cs" class="lv-panel" hidden>
-                        <div class="lv-hint"><b>اكتب بالترتيب:</b> ١) نوع القيم ٢) المنسوب التصميمي ٣) لكل قطاع: رقم المحطة (Station) ثم بُعد كل نقطة عن المحور (سالب يسار، موجب يمين) وقراءتها.</div>
-                        <div class="form-grid">
-                            <div class="form-group"><label>نوع القيم المُدخلة:</label><select id="cs_mode" onchange="modeSw('cs')"><option value="rod">قراءات قامة (Rod Readings)</option><option value="lvl">مناسيب مباشرة (Levels)</option></select></div>
-                            <div class="form-group" id="cs_hi_g"><label>منسوب الجهاز (HI):</label><input type="number" id="cs_hi" step="any"></div>
-                            <div class="form-group full-width"><label>المنسوب التصميمي (Formation Level):</label><input type="number" id="cs_form" step="any"></div>
+                    <div class="form-grid">
+                        <div class="action-box" style="margin-top: 0; background: #fff;">
+                            <h4><i class="fas fa-arrow-up"></i> الرفع المساحي</h4>
+                            <div class="form-group"><label>قراءة القامة المرصودة:</label><input type="number" id="l_reading" step="any"></div>
+                            <div class="form-group mt-2"><label>اسم النقطة:</label><input type="text" id="l_pt_name_survey"></div>
+                            <button class="btn-calc" onclick="calcSurvey()">تسجيل المنسوب</button>
                         </div>
-                        <div id="cs_secs"></div>
-                        <div style="display:flex;gap:10px;"><button class="btn-calc" style="background:var(--secondary);" onclick="csAddSec()"><i class="fas fa-plus"></i> قطاع</button><button class="btn-calc" style="background:var(--secondary);" onclick="csDelSec()"><i class="fas fa-minus"></i> حذف آخر قطاع</button></div>
-                        <button class="btn-calc" onclick="calcCross()"><i class="fas fa-calculator"></i> احسب المساحات والحجوم</button>
-                        <div id="cs_result" class="result-container"></div>
+                        <div class="action-box" style="margin-top: 0; background: #fff;">
+                            <h4><i class="fas fa-bullseye"></i> التوقيع المساحي</h4>
+                            <div class="form-group"><label>المنسوب التصميمي:</label><input type="number" id="l_design_elev" step="any"></div>
+                            <div class="form-group mt-2"><label>اسم النقطة:</label><input type="text" id="l_pt_name_setout"></div>
+                            <button class="btn-calc btn-success" onclick="calcSetOut()">استنتاج القراءة</button>
+                        </div>
                     </div>
-
-                    <div id="lvp-gr" class="lv-panel" hidden>
-                        <div class="lv-hint"><b>اكتب بالترتيب:</b> ١) عدد الصفوف والأعمدة ثم "ارسم الشبكة" ٢) المسافات واتجاه الشمال ٣) القراءة في كل دايرة.</div>
-                        <div class="form-grid">
-                            <div class="form-group"><label>عدد الصفوف (A, B, C ...):</label><input type="number" id="gr_rows" value="3" min="2" max="26"></div>
-                            <div class="form-group"><label>عدد الأعمدة (1, 2, 3 ...):</label><input type="number" id="gr_cols" value="3" min="2" max="12"></div>
-                            <div class="form-group"><label>المسافة بين المحاور 1، 2، 3 (م):</label><input type="number" id="gr_dx" step="any"></div>
-                            <div class="form-group"><label>المسافة بين المحاور A، B، C (م):</label><input type="number" id="gr_dy" step="any"></div>
-                            <div class="form-group"><label>نوع القيم المُدخلة:</label><select id="gr_mode" onchange="modeSw('gr')"><option value="rod">قراءات قامة (Rod Readings)</option><option value="lvl">مناسيب مباشرة (Levels)</option></select></div>
-                            <div class="form-group" id="gr_hi_g"><label>منسوب الجهاز (HI):</label><input type="number" id="gr_hi" step="any"></div>
-                            <div class="form-group"><label>المنسوب التصميمي [اختياري = المتوازن]:</label><input type="number" id="gr_form" step="any"></div>
-                            <div class="form-group full-width"><label>اتجاه الشمال (North) بالدرجات عن أعلى الشبكة باتجاه عقارب الساعة:</label><input type="number" id="gr_north" value="0" step="any" oninput="gridNorth()"></div>
+                    <div class="result-container" id="levelResultContainer">
+                        <div id="printLevelArea">
+                            <table id="levelTable">
+                                <tr><th>العملية</th><th>النقطة</th><th>القامة</th><th>المنسوب</th></tr>
+                            </table>
                         </div>
-                        <button class="btn-calc" style="background:var(--secondary);" onclick="gridBuild()"><i class="fas fa-table-cells"></i> ارسم الشبكة</button>
-                        <div class="gn-wrap"><div class="north" title="الشمال"><svg id="gr_arrow" viewBox="0 0 40 52" width="40" height="52"><path d="M20 2 L32 34 L20 28 L8 34 Z" fill="currentColor"/></svg><b>N</b></div><div id="gr_canvas" class="gv-scroll"></div></div>
-                        <small style="color:var(--muted);display:block;margin-bottom:10px;">اكتب القراءة في الدايرة عند كل تقاطع (بدون HI تُعتبر مناسيب مباشرة). الحجم بطريقة متوسط الأركان (Average Corner Method).</small>
-                        <button class="btn-calc" onclick="calcGrid()"><i class="fas fa-calculator"></i> احسب الحفر والردم</button>
-                        <div id="gr_result" class="result-container"></div>
-                    </div>
-
-                    <div id="lvp-rc" class="lv-panel" hidden>
-                        <div class="lv-hint"><b>اكتب بالترتيب:</b> قراءتين من جهاز قريب من A، وقراءتين من جهاز قريب من B.</div>
-                        <div class="form-grid">
-                            <div class="form-group"><label>منسوب النقطة A [اختياري]:</label><input type="number" id="rc_a" step="any"></div>
-                            <div class="form-group"><label>&nbsp;</label><small style="color:var(--muted);">الجهاز الأول قريب من A، والثاني قريب من B.</small></div>
-                            <div class="form-group"><label>جهاز 1: قراءة على A (قريبة):</label><input type="number" id="rc_a1" step="any"></div>
-                            <div class="form-group"><label>جهاز 1: قراءة على B (بعيدة):</label><input type="number" id="rc_b1" step="any"></div>
-                            <div class="form-group"><label>جهاز 2: قراءة على A (بعيدة):</label><input type="number" id="rc_a2" step="any"></div>
-                            <div class="form-group"><label>جهاز 2: قراءة على B (قريبة):</label><input type="number" id="rc_b2" step="any"></div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('levelTable', 'الميزانية_والرفع')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                            <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printLevelArea', 'تقرير_الميزانية')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
                         </div>
-                        <button class="btn-calc" onclick="calcReciprocal()"><i class="fas fa-calculator"></i> احسب فرق المنسوب الحقيقي</button>
-                        <div id="rc_result" class="result-container"></div>
-                    </div>
-
-                    <div id="lvp-so" class="lv-panel" hidden>
-                        <div class="lv-hint"><b>اكتب بالترتيب:</b> منسوب الـ BM وقراءته الخلفية، ثم المنسوب المطلوب توقيعه.</div>
-                        <div class="form-grid">
-                            <div class="form-group"><label>منسوب النقطة الثابتة (BM):</label><input type="number" id="so_bm" step="any"></div>
-                            <div class="form-group"><label>القراءة الخلفية (BS):</label><input type="number" id="so_bs" step="any"></div>
-                            <div class="form-group full-width"><label>المنسوب المطلوب توقيعه (Design Level):</label><input type="number" id="so_design" step="any"></div>
-                        </div>
-                        <button class="btn-calc" onclick="calcSetOutLv()"><i class="fas fa-bullseye"></i> احسب قراءة القامة المطلوبة</button>
-                        <div id="so_result" class="result-container"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. إحداثياتي -->
-            <div id="tab-gps" class="section">
+            <!-- 4. الإحداثيات -->
+            <div id="tab-cogo" class="section">
                 <div class="card">
-                    <h2><i class="fas fa-location-crosshairs"></i> إحداثياتي (My Coordinates)</h2>
-                    <button class="btn-calc" onclick="getMyCoords()"><i class="fas fa-location-crosshairs"></i> حدد موقعي الآن</button>
-                    <small style="color:var(--muted);display:block;margin-top:10px;">لازم تسمح للمتصفح بالوصول للموقع، والصفحة تتفتح على https. الارتفاع من الـ GPS تقريبي ولا يصلح كمنسوب ميزانية.</small>
-                    <div id="gps_result" class="result-container"></div>
+                    <h2><i class="fas fa-draw-polygon"></i> حسابات الإحداثيات (COGO)</h2>
+                    <div class="form-grid">
+                        <div class="form-group"><label>إحداثي الشرق (Easting):</label><input type="number" id="c_e1" step="any"></div>
+                        <div class="form-group"><label>إحداثي الشمال (Northing):</label><input type="number" id="c_n1" step="any"></div>
+                        <div class="form-group"><label>المسافة الأفقية (متر):</label><input type="number" id="c_dist" step="any"></div>
+                        <div class="form-group"><label>الانحراف (Azimuth):</label><input type="number" id="c_angle" step="any"></div>
+                    </div>
+                    <button class="btn-calc" onclick="calcCOGO()"><i class="fas fa-map-marker-alt"></i> حساب الإحداثيات</button>
+                    <div id="c_result" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- 5. التطبيق والحمالات والكاب -->
+            <div id="tab-formwork" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-layer-group"></i> حساب مناسيب وقراءات السقف الرئيسي والكاب</h2>
+                    <div class="form-grid">
+                        <div class="form-group"><label>منسوب أعلى الخرسانة (السقف الرئيسي):</label><input type="number" id="fw_finish_elev" step="any"></div>
+                        <div class="form-group"><label>منسوب سطح الميزان (H.I):</label><input type="number" id="fw_hi" step="any"></div>
+                        <div class="form-group"><label>سمك الخرسانة (سم):</label><input type="number" id="fw_thick" step="any"></div>
+                        <div class="form-group"><label>لوح الكونتر (التطبيق) (سم) [اختياري]:</label><input type="number" id="fw_deck_thick" step="any"></div>
+                        <div class="form-group"><label>العرق (سم) [اختياري]:</label><input type="number" id="fw_beam_thick" step="any"></div>
+                        <div class="form-group"><label>الحمال العكسي (سم) [اختياري]:</label><input type="number" id="fw_cross_thick" step="any"></div>
+                        <div class="form-group full-width"><label>الحمال الأساسي (سم) [اختياري - يترك فارغاً إذا لم يوجد]:</label><input type="number" id="fw_main_thick" step="any"></div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+                    
+                    <h3 style="color: var(--secondary); font-size: 1rem; margin-bottom: 12px;"><i class="fas fa-level-down-alt"></i> بيانات الكاب (الجزء الأوطى - اختياري)</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width"><label>مقدار انخفاض الكاب عن السقف الرئيسي (سم):</label><input type="number" id="cap_drop" step="any"></div>
+                    </div>
+
+                    <button class="btn-calc" onclick="calcFormworkShoring()"><i class="fas fa-calculator"></i> احسب مناسيب وقراءات السقف والكاب</button>
+                    <div id="fw_result" class="result-container"></div>
                 </div>
             </div>
 
@@ -731,6 +748,38 @@
                 </div>
             </div>
 
+            <!-- ميزانية من ملف -->
+            <div id="tab-levelbook" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-file-excel"></i> ميزانية من ملف</h2>
+                    <p class="ai-note">اكتب الميزانية نقطة بنقطة أو ارفعها (Excel أو CSV أو صورة دفتر الميزان). الشبكية بتترسم بخطوطها وتسلسل النقاط واتجاه المسار، والطولية بتتحسب وتتصحح وتترسم قطاع طولي.</p>
+                    <div class="gate-tabs">
+                        <button id="lbT_long" class="on" onclick="lbSetType('long')">طولية</button>
+                        <button id="lbT_grid" onclick="lbSetType('grid')">شبكية</button>
+                    </div>
+                    <div class="lb-up">
+                        <button onclick="lbEl('lbFile').click()"><i class="fas fa-file-excel"></i><b>ملف Excel أو CSV</b><small>أسرع وأدق</small></button>
+                        <button onclick="lbEl('lbImg').click()"><i class="fas fa-camera"></i><b>صورة دفتر الميزان</b><small>بالذكاء الاصطناعي</small></button>
+                    </div>
+                    <input type="file" id="lbFile" accept=".xlsx,.xls,.csv,.txt,text/csv" hidden onchange="lbOnFile(this)">
+                    <input type="file" id="lbImg" accept="image/*,application/pdf" hidden onchange="lbOnImg(this)">
+                    <div class="lb-tpl">نموذج جاهز للتعبئة: <a onclick="lbTemplate('long')">طولية</a> · <a onclick="lbTemplate('grid')">شبكية</a></div>
+                    <div id="lbStatus" class="ai-status"></div>
+                    <div id="lbTable"></div>
+                    <div class="form-grid" style="margin-top: 14px;">
+                        <div class="form-group"><label>منسوب نقطة البداية (BM)</label><input type="number" step="any" id="lbRL0" inputmode="decimal"></div>
+                        <div class="form-group"><label>منسوب التصميم (اختياري)</label><input type="number" step="any" id="lbDesign" inputmode="decimal"></div>
+                        <div class="form-group"><label>منسوب نقطة النهاية / القفل المعلوم (اختياري)</label><input type="number" step="any" id="lbRLend" inputmode="decimal"></div>
+                        <div class="form-group lb-long"><label>طول الميزانية بالكم (لو مفيش مسافات)</label><input type="number" step="any" id="lbK" inputmode="decimal"></div>
+                        <div class="form-group lb-long"><label>معامل الدقة C (مم)</label><input type="number" step="any" id="lbC" value="12" inputmode="decimal"></div>
+                        <div class="form-group lb-grid" hidden><label>نوع القراءات</label><select id="lbKind"><option value="reading">قراءات قامة (ميزان)</option><option value="level">مناسيب جاهزة</option></select></div>
+                        <div class="form-group lb-grid" hidden><label>ضلع المربع بالمتر (للكميات)</label><input type="number" step="any" id="lbCell" inputmode="decimal"></div>
+                    </div>
+                    <button class="btn-calc" onclick="runLevelBook()"><i class="fas fa-calculator"></i> احسب الميزانية</button>
+                    <div id="lbOut"></div>
+                </div>
+            </div>
+
             <!-- الأسئلة والإجابات -->
             <div id="tab-qa" class="section">
                 <div class="card">
@@ -766,12 +815,12 @@
                 </div>
             </div>
 
-            <!-- 8. مساعدك الذكي -->
+            <!-- 8. تحليل اللوحات -->
             <div id="tab-ai" class="section">
                 <div class="card chat-card">
                     <div class="chat-head">
                         <div class="av"><i class="fas fa-ruler-combined"></i></div>
-                        <div><strong>مساعدك الذكي</strong><small>شرح، قوانين، حسابات وقراءة اللوحات</small></div>
+                        <div><strong>المساعد الذكي للمساحة</strong><small>شرح، قوانين، حسابات وقراءة اللوحات</small></div>
                     </div>
                     <div class="chat-body" id="aiBody">
                         <div id="aiWelcome" class="welcome">
@@ -833,7 +882,18 @@
         }
 
         function openTabFromCard(tabId) {
-            let targetBtn = document.querySelector('.drawer-nav-btn[onclick*="\'' + tabId + '\'"]');
+            let btnMap = {
+                'tab-roads': 1,
+                'tab-sewage': 2,
+                'tab-level': 3,
+                'tab-cogo': 4,
+                'tab-formwork': 5,
+                'tab-notebook': 6,
+                'tab-formulas': 7,
+                'tab-ai': 8
+            };
+            let btns = document.querySelectorAll('.drawer-nav-btn');
+            let targetBtn = btns[btnMap[tabId]];
             openTab(tabId, targetBtn);
         }
 
@@ -912,6 +972,107 @@
                 printWindow.print();
                 printWindow.close();
             }, 600);
+        }
+
+        // --- حساب التطبيق والحمالات والكاب بالتسلسل الهندسي الصحيح ---
+        function calcFormworkShoring() {
+            let finishElev = parseFloat(document.getElementById('fw_finish_elev').value);
+            let hi = parseFloat(document.getElementById('fw_hi').value);
+            let thickCm = parseFloat(document.getElementById('fw_thick').value);
+            let deckCm = parseFloat(document.getElementById('fw_deck_thick').value) || 0;
+            let beamCm = parseFloat(document.getElementById('fw_beam_thick').value) || 0;
+            let crossCm = parseFloat(document.getElementById('fw_cross_thick').value) || 0;
+            let mainCm = parseFloat(document.getElementById('fw_main_thick').value) || 0;
+
+            if(isNaN(finishElev) || isNaN(hi) || isNaN(thickCm)) {
+                return alert("يرجى إدخال بيانات السقف الرئيسي الأساسية.");
+            }
+
+            let thickM = thickCm / 100;
+            let html = `<div id="printFormworkArea">`;
+
+            // --- الجدول الأول: السقف الرئيسي ---
+            html += `<h4 style="color:var(--secondary); margin-bottom:8px;"><i class="fas fa-table"></i> جدول السقف الرئيسي</h4>`;
+            html += `<table id="exportMainTable">`;
+            html += `<tr><th>العنصر</th><th>المنسوب (م)</th><th>قراءة القامة (H.I)</th></tr>`;
+
+            // 1. التطبيق (لوح الكونتر)
+            let currElev = finishElev - thickM;
+            html += `<tr><td>التطبيق (لوح الكونتر)</td><td style="font-weight:800; color:var(--primary);">${exactNum(currElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - currElev)} م</td></tr>`;
+
+            let prevElev = currElev;
+            let prevThick = deckCm;
+
+            // 2. العرق
+            if(beamCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>العرق</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+                prevThick = beamCm;
+            }
+
+            // 3. الحمال العكسي
+            if(crossCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>الحمال العكسي</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+                prevThick = crossCm;
+            }
+
+            // 4. الحمال الأساسي
+            if(mainCm > 0) {
+                prevElev = prevElev - (prevThick / 100);
+                html += `<tr><td>الحمال الأساسي</td><td style="font-weight:800; color:var(--primary);">${exactNum(prevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - prevElev)} م</td></tr>`;
+            }
+
+            html += `</table>`;
+
+            // --- الجدول الثاني: الكاب (الجزء الأوطى - طرح الانخفاض) ---
+            let capDropCm = parseFloat(document.getElementById('cap_drop').value);
+
+            if(!isNaN(capDropCm) && capDropCm > 0) {
+                let slabDeck = finishElev - thickM;
+                let capDeckElev = slabDeck - (capDropCm / 100); // طرح الانخفاض لأنه أوطى بدقة
+
+                html += `<h4 style="color:var(--secondary); margin-bottom:8px; margin-top:20px;"><i class="fas fa-table"></i> جدول الكاب (الجزء الأوطى)</h4>`;
+                html += `<table id="exportCapTable">`;
+                html += `<tr><th>العنصر</th><th>المنسوب (م)</th><th>قراءة القامة (H.I)</th></tr>`;
+
+                // 1. التطبيق (كاب)
+                html += `<tr><td>التطبيق (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capDeckElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capDeckElev)} م</td></tr>`;
+
+                let capPrevElev = capDeckElev;
+                let capPrevThick = deckCm;
+
+                // 2. العرق (كاب)
+                if(beamCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>العرق (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                    capPrevThick = beamCm;
+                }
+
+                // 3. الحمال العكسي (كاب)
+                if(crossCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>الحمال العكسي (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                    capPrevThick = crossCm;
+                }
+
+                // 4. الحمال الأساسي (كاب)
+                if(mainCm > 0) {
+                    capPrevElev = capPrevElev - (capPrevThick / 100);
+                    html += `<tr><td>الحمال الأساسي (كاب)</td><td style="font-weight:800; color:var(--primary);">${exactNum(capPrevElev)} م</td><td style="font-weight:800; color:var(--success);">${exactNum(hi - capPrevElev)} م</td></tr>`;
+                }
+
+                html += `</table>`;
+            }
+
+            html += `</div>`;
+
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportMainTable', 'التطبيق_والحمالات')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printFormworkArea', 'تقرير_التطبيق_والحمالات')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+
+            document.getElementById('fw_result').innerHTML = html;
         }
 
         function toggleNetworkInputs() {
@@ -1079,194 +1240,55 @@
             document.getElementById('s_custom_result').innerHTML = html;
         }
 
-        // ===== الميزانية (Leveling) =====
-        const $ = id => document.getElementById(id);
-        const num = x => { const n = parseFloat(x); return isNaN(n) ? NaN : n; };
-        function lvSwitch(t) {
-            t = t || 'pf';
-            document.querySelectorAll('.lv-panel').forEach(p => p.hidden = p.id !== 'lvp-' + t);
-            document.querySelectorAll('.lv-t').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+        let currentHI = 0;
+        function calcHI() {
+            let bm = parseFloat(document.getElementById('l_bm').value);
+            let bs = parseFloat(document.getElementById('l_bs').value);
+            if(isNaN(bm) || isNaN(bs)) return alert("أدخل بيانات صحيحة.");
+            currentHI = bm + bs;
+            document.getElementById('l_hi_display').innerText = `سطح الميزان (H.I) = ${exactNum(currentHI)}`;
         }
-        function modeSw(x) { $(x + '_hi_g').hidden = $(x + '_mode').value !== 'rod'; }
-        function lvShow(id, html, tbl, name) {
-            $(id).innerHTML = '<div id="print_' + id + '">' + html + '</div><div style="display:flex;gap:10px;margin-top:10px;"><button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV(\'' + tbl + '\',\'' + name + '\')"><i class="fas fa-file-excel"></i> تصدير Excel</button><button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF(\'print_' + id + '\',\'' + name + '\')"><i class="fas fa-file-pdf"></i> تحميل PDF</button></div>';
+        function calcSurvey() {
+            if(currentHI === 0) return alert("حدد سطح الميزان أولاً.");
+            let reading = parseFloat(document.getElementById('l_reading').value);
+            let name = document.getElementById('l_pt_name_survey').value || "نقطة";
+            let elev = currentHI - reading;
+            addRowToTable('رفع', name, exactNum(reading), exactNum(elev), 'var(--primary)');
+            document.getElementById('l_reading').value = '';
         }
-        function pfAdd(n) {
-            for (let i = 0; i < n; i++) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = '<td><input class="pf-in" type="text"></td>' + '<td><input class="pf-in" type="number" step="any"></td>'.repeat(4);
-                $('pf_body').appendChild(tr);
-            }
+        function calcSetOut() {
+            if(currentHI === 0) return alert("حدد سطح الميزان أولاً.");
+            let designElev = parseFloat(document.getElementById('l_design_elev').value);
+            let name = document.getElementById('l_pt_name_setout').value || "توقيع";
+            let reading = currentHI - designElev;
+            addRowToTable('توقيع', name, exactNum(reading), exactNum(designElev), 'var(--success)');
+            document.getElementById('l_design_elev').value = '';
         }
-        function pfDel() { const b = $('pf_body'); if (b.children.length > 2) b.lastElementChild.remove(); }
-        function calcProfile() {
-            const bm = num($('pf_bm').value), method = $('pf_method').value;
-            if (isNaN(bm)) return alert('أدخل منسوب النقطة الثابتة (BM).');
-            const rows = [...document.querySelectorAll('#pf_body tr')].map(tr => { const i = tr.querySelectorAll('input'); return { n: i[0].value, bs: num(i[1].value), is: num(i[2].value), fs: num(i[3].value), d: num(i[4].value) }; })
-                .filter(r => !isNaN(r.bs) || !isNaN(r.is) || !isNaN(r.fs));
-            if (!rows.length || isNaN(rows[0].bs)) return alert('أول صف لازم يحتوي قراءة خلفية (BS) على الـ BM.');
-            let hi = bm + rows[0].bs, pRL = bm, pRd = rows[0].bs, sBS = rows[0].bs, sFS = 0, sRise = 0, sFall = 0, hasD = false, lastFS = false;
-            const out = [{ n: rows[0].n || 'BM', r: rows[0], hi, rl: bm, rise: 0, fall: 0 }];
-            for (let k = 1; k < rows.length; k++) {
-                const r = rows[k], rd = !isNaN(r.fs) ? r.fs : r.is;
-                if (isNaN(rd)) return alert('الصف رقم ' + (k + 1) + ' يحتاج قراءة وسطية (IS) أو أمامية (FS).');
-                let rl, rise = 0, fall = 0; const df = pRd - rd;
-                rl = method === 'hi' ? hi - rd : pRL + df;
-                if (df > 0) rise = df; else fall = -df;
-                sRise += rise; sFall += fall;
-                lastFS = !isNaN(r.fs);
-                if (lastFS) sFS += r.fs;
-                if (lastFS && !isNaN(r.bs)) { hi = rl + r.bs; pRd = r.bs; sBS += r.bs; } else pRd = rd;
-                out.push({ n: r.n || ('P' + k), r, hi: (lastFS && !isNaN(r.bs)) ? hi : null, rl, rise, fall });
-                pRL = rl;
-                if (!isNaN(r.d)) hasD = true;
-            }
-            const isHI = method === 'hi';
-            let h = '<table id="exp_pf"><tr><th>النقطة</th><th>BS</th><th>IS</th><th>FS</th>' + (isHI ? '<th>HI</th>' : '<th>صعود Rise</th><th>هبوط Fall</th>') + '<th>RL المنسوب</th>' + (hasD ? '<th>منسوب التصميم</th><th>حفر / ردم</th>' : '') + '</tr>';
-            const f = v => isNaN(v) ? '' : exactNum(v);
-            out.forEach((o, i) => {
-                h += '<tr><td>' + o.n + '</td><td>' + f(o.r.bs) + '</td><td>' + f(o.r.is) + '</td><td>' + f(o.r.fs) + '</td>' +
-                    (isHI ? '<td>' + (i === 0 || o.hi != null ? exactNum(i === 0 ? bm + o.r.bs : o.hi) : '') + '</td>' : '<td>' + (o.rise ? exactNum(o.rise) : '') + '</td><td>' + (o.fall ? exactNum(o.fall) : '') + '</td>') +
-                    '<td style="font-weight:800;color:var(--primary);">' + exactNum(o.rl) + '</td>';
-                if (hasD) { const dd = o.rl - o.r.d; h += '<td>' + f(o.r.d) + '</td><td>' + (isNaN(dd) ? '' : (Math.abs(dd) < 5e-4 ? 'على المنسوب' : (dd > 0 ? 'حفر ' : 'ردم ') + exactNum(Math.abs(dd)))) + '</td>'; }
-                h += '</tr>';
-            });
-            h += '</table>';
-            const last = out[out.length - 1].rl;
-            if (lastFS) {
-                const c1 = Math.abs((sBS - sFS) - (last - bm)) < 1e-6, c2 = Math.abs((sRise - sFall) - (last - bm)) < 1e-6;
-                h += '<div class="custom-result-box">مراجعة الحسابات: ΣBS − ΣFS = ' + exactNum(sBS - sFS) + ' | ΣRise − ΣFall = ' + exactNum(sRise - sFall) + ' | RLآخر − RLأول = ' + exactNum(last - bm) + '<br><span class="' + (c1 && c2 ? 'lv-ok">✓ الحسابات صحيحة' : 'lv-bad">✗ يوجد خطأ حسابي، راجع القراءات') + '</span></div>';
-            } else h += '<div class="custom-result-box">المراجعة الحسابية تحتاج آخر صف بقراءة أمامية (FS).</div>';
-            const cl = num($('pf_close').value), K = num($('pf_k').value), C = num($('pf_c').value);
-            if (!isNaN(cl) && lastFS) {
-                const e = (last - cl) * 1000;
-                h += '<div class="custom-result-box">خطأ القفل (Misclosure) = ' + exactNum(e) + ' مم';
-                if (!isNaN(K) && !isNaN(C) && K > 0) { const al = C * Math.sqrt(K); h += '<br>المسموح e = C√K = ' + exactNum(al) + ' مم<br><span class="' + (Math.abs(e) <= al ? 'lv-ok">✓ ضمن المسموح' : 'lv-bad">✗ أكبر من المسموح، أعد الرصد') + '</span>'; }
-                h += '</div>';
-            }
-            lvShow('pf_result', h, 'exp_pf', 'الميزانية_الطولية');
+        function addRowToTable(type, name, reading, elev, color) {
+            let table = document.getElementById('levelTable');
+            let row = table.insertRow(-1);
+            row.innerHTML = `<td><span style="color:${color}; font-weight:800;">${type}</span></td><td>${name}</td><td style="font-weight:800;">${reading}</td><td style="font-weight:800;">${elev}</td>`;
         }
-        function segArea(x1, h1, x2, h2) {
-            const dx = x2 - x1; let c = 0, f = 0;
-            if (h1 >= 0 && h2 >= 0) c = (h1 + h2) / 2 * dx;
-            else if (h1 <= 0 && h2 <= 0) f = -(h1 + h2) / 2 * dx;
-            else { const xc = dx * h1 / (h1 - h2), a1 = Math.abs(h1) * xc / 2, a2 = Math.abs(h2) * (dx - xc) / 2; if (h1 > 0) { c += a1; f += a2; } else { f += a1; c += a2; } }
-            return [c, f];
+
+        function calcCOGO() {
+            let e1 = parseFloat(document.getElementById('c_e1').value);
+            let n1 = parseFloat(document.getElementById('c_n1').value);
+            let dist = parseFloat(document.getElementById('c_dist').value);
+            let angle = parseFloat(document.getElementById('c_angle').value);
+            if(isNaN(e1) || isNaN(n1) || isNaN(dist) || isNaN(angle)) return alert("أدخل بيانات صحيحة.");
+            let rad = angle * Math.PI / 180;
+            let e2 = e1 + (dist * Math.sin(rad));
+            let n2 = n1 + (dist * Math.cos(rad));
+            
+            let html = `<div id="printCogoArea"><table id="exportCogoTable"><tr><th>النقطة</th><th>East</th><th>North</th></tr><tr><td>المعلومة</td><td>${exactNum(e1)}</td><td>${exactNum(n1)}</td></tr><tr style="background:#eff6ff;"><td>المطلوبة</td><td style="font-weight:800; color:var(--success);">${exactNum(e2)}</td><td style="font-weight:800; color:var(--success);">${exactNum(n2)}</td></tr></table>`;
+            html += `</div>`;
+            html += `<div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn-calc btn-success" style="flex:1;" onclick="exportTableToCSV('exportCogoTable', 'الإحداثيات_COGO')"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+                        <button class="btn-calc btn-pdf" style="flex:1;" onclick="exportElementToPDF('printCogoArea', 'تقرير_الإحداثيات')"><i class="fas fa-file-pdf"></i> تحميل PDF</button>
+                     </div>`;
+            
+            document.getElementById('c_result').innerHTML = html;
         }
-        function csPtRow(off) { return '<tr><td><input class="pf-in" type="number" step="any" value="' + off + '"></td><td><input class="pf-in" type="number" step="any"></td></tr>'; }
-        function csAddSec() {
-            const box = $('cs_secs'), prev = box.lastElementChild, st = prev ? (num(prev.querySelector('.cs-st').value) || 0) + 20 : 0, d = document.createElement('div');
-            d.className = 'cs-sec';
-            d.innerHTML = '<h4>قطاع — المحطة (Station): <input class="pf-in cs-st" style="max-width:110px;" type="number" step="any" value="' + st + '"></h4><table><thead><tr><th>البُعد عن المحور (م)</th><th>القراءة / المنسوب</th></tr></thead><tbody>' + csPtRow(-10) + csPtRow(0) + csPtRow(10) + '</tbody></table><div style="display:flex;gap:10px;"><button class="btn-calc" style="background:var(--secondary);min-height:40px;" onclick="csPt(this,1)">+ نقطة</button><button class="btn-calc" style="background:var(--secondary);min-height:40px;" onclick="csPt(this,-1)">− نقطة</button></div>';
-            box.appendChild(d);
-        }
-        function csPt(btn, d) { const tb = btn.closest('.cs-sec').querySelector('tbody'); if (d > 0) tb.insertAdjacentHTML('beforeend', csPtRow('')); else if (tb.children.length > 2) tb.lastElementChild.remove(); }
-        function csDelSec() { const b = $('cs_secs'); if (b.children.length > 1) b.lastElementChild.remove(); }
-        function calcCross() {
-            const rod = $('cs_mode').value === 'rod', hi = rod ? num($('cs_hi').value) : NaN, F = num($('cs_form').value);
-            if (isNaN(F)) return alert('أدخل المنسوب التصميمي.');
-            if (rod && isNaN(hi)) return alert('أدخل منسوب الجهاز (HI).');
-            const secs = [];
-            for (const sec of document.querySelectorAll('#cs_secs .cs-sec')) {
-                const st = num(sec.querySelector('.cs-st').value);
-                const pts = [...sec.querySelectorAll('tbody tr')].map(tr => { const i = tr.querySelectorAll('input'), o = num(i[0].value), v = num(i[1].value); return [o, rod ? hi - v : v]; }).filter(p => !isNaN(p[0]) && !isNaN(p[1])).sort((a, b) => a[0] - b[0]);
-                if (isNaN(st)) return alert('اكتب رقم المحطة لكل قطاع.');
-                if (pts.length < 2) return alert('القطاع عند المحطة ' + st + ' يحتاج نقطتين على الأقل بقراءاتهم.');
-                let cut = 0, fill = 0;
-                for (let i = 1; i < pts.length; i++) { const r = segArea(pts[i - 1][0], pts[i - 1][1] - F, pts[i][0], pts[i][1] - F); cut += r[0]; fill += r[1]; }
-                secs.push({ st, cut, fill });
-            }
-            if (secs.length < 2) return alert('أضف قطاعين على الأقل لحساب الحجوم.');
-            secs.sort((a, b) => a.st - b.st);
-            let tc = 0, tf = 0;
-            let h = '<table id="exp_cs"><tr><th>المحطة</th><th>مساحة الحفر م²</th><th>مساحة الردم م²</th><th>المسافة م</th><th>حجم الحفر م³</th><th>حجم الردم م³</th></tr>';
-            secs.forEach((s, i) => {
-                let L = '', vc = '', vf = '';
-                if (i > 0) { const d = s.st - secs[i - 1].st; L = exactNum(d); const c = (s.cut + secs[i - 1].cut) / 2 * d, f = (s.fill + secs[i - 1].fill) / 2 * d; tc += c; tf += f; vc = exactNum(c); vf = exactNum(f); }
-                h += '<tr><td>' + exactNum(s.st) + '</td><td>' + exactNum(s.cut) + '</td><td>' + exactNum(s.fill) + '</td><td>' + L + '</td><td>' + vc + '</td><td>' + vf + '</td></tr>';
-            });
-            h += '<tr><td colspan="4"><b>الإجمالي</b></td><td><b>' + exactNum(tc) + '</b></td><td><b>' + exactNum(tf) + '</b></td></tr></table>';
-            h += '<div class="custom-result-box">الصافي = ' + exactNum(Math.abs(tc - tf)) + ' م³ ' + (tc > tf ? '(زيادة حفر)' : tf > tc ? '(زيادة ردم)' : '(متوازن)') + '</div>';
-            lvShow('cs_result', h, 'exp_cs', 'الميزانية_العرضية');
-        }
-        function gridNorth() { $('gr_arrow').style.transform = 'rotate(' + (num($('gr_north').value) || 0) + 'deg)'; }
-        function gridBuild() {
-            const R = Math.min(26, Math.max(2, parseInt($('gr_rows').value) || 3)), C = Math.min(12, Math.max(2, parseInt($('gr_cols').value) || 3)), cv = $('gr_canvas'), old = {};
-            cv.querySelectorAll('input').forEach(i => old[i.dataset.r + '_' + i.dataset.c] = i.value);
-            cv.dataset.r = R; cv.dataset.c = C;
-            let h = '<div class="gv" style="grid-template-columns:44px repeat(' + C + ',96px)"><div></div>';
-            for (let j = 0; j < C; j++) h += '<div class="gl t">' + (j + 1) + '</div>';
-            for (let i = 0; i < R; i++) {
-                const L = String.fromCharCode(65 + i); h += '<div class="gl">' + L + '</div>';
-                for (let j = 0; j < C; j++) h += '<div class="gc"><span class="gn"><input type="number" step="any" data-r="' + i + '" data-c="' + j + '" placeholder="' + L + (j + 1) + '" value="' + (old[i + '_' + j] || '') + '"></span></div>';
-            }
-            cv.innerHTML = h + '</div>'; gridNorth();
-        }
-        function calcGrid() {
-            const rod = $('gr_mode').value === 'rod', hi = rod ? num($('gr_hi').value) : NaN, dx = num($('gr_dx').value), dy = num($('gr_dy').value);
-            if (rod && isNaN(hi)) return alert('أدخل منسوب الجهاز (HI).');
-            if (isNaN(dx) || isNaN(dy) || dx <= 0 || dy <= 0) return alert('أدخل أبعاد المربع.');
-            const cv = $('gr_canvas'), R = +cv.dataset.r || 0, Cn = +cv.dataset.c || 0;
-            if (R < 2 || Cn < 2) return alert('ارسم الشبكة الأول.');
-            const g = [];
-            for (let i = 0; i < R; i++) { g.push([]); for (let j = 0; j < Cn; j++) g[i].push(num(cv.querySelector('input[data-r="' + i + '"][data-c="' + j + '"]').value)); }
-            if (g.some(r => r.some(isNaN))) return alert('املا قراءة كل نقطة في الشبكة.');
-            const lv = g.map(r => r.map(x => isNaN(hi) ? x : hi - x)), A = dx * dy, means = [];
-            for (let i = 0; i < lv.length - 1; i++) for (let j = 0; j < lv[0].length - 1; j++) means.push((lv[i][j] + lv[i][j + 1] + lv[i + 1][j] + lv[i + 1][j + 1]) / 4);
-            const F0 = means.reduce((a, b) => a + b, 0) / means.length, Fin = num($('gr_form').value), F = isNaN(Fin) ? F0 : Fin;
-            let cut = 0, fill = 0; means.forEach(m => { const v = A * (m - F); if (v > 0) cut += v; else fill -= v; });
-            let h = '<div class="custom-result-box">اتجاه الشمال = ' + exactNum(num($('gr_north').value) || 0) + '° عن أعلى الشبكة<br>المنسوب المتوازن (Balanced Level) = ' + exactNum(F0) + '<br>المنسوب المستخدم = ' + exactNum(F) + '<br>المساحة الكلية = ' + exactNum(A * means.length) + ' م²<br>حجم الحفر = <span style="color:var(--primary)">' + exactNum(cut) + '</span> م³<br>حجم الردم = <span style="color:var(--primary)">' + exactNum(fill) + '</span> م³<br>الصافي = ' + exactNum(Math.abs(cut - fill)) + ' م³ ' + (Math.abs(cut - fill) < 5e-4 ? '(متوازن)' : cut > fill ? '(زيادة حفر)' : '(زيادة ردم)') + '</div>';
-            h += '<table id="exp_gr"><tr><th></th>' + lv[0].map((_, j) => '<th>' + (j + 1) + '</th>').join('') + '</tr>';
-            lv.forEach((r, i) => { h += '<tr><td><b>' + (i + 1) + '</b></td>' + r.map(x => { const d = x - F; return '<td>' + exactNum(x) + '<br><small>' + (Math.abs(d) < 5e-4 ? '0' : (d > 0 ? 'حفر ' : 'ردم ') + exactNum(Math.abs(d))) + '</small></td>'; }).join('') + '</tr>'; });
-            h += '</table>';
-            lvShow('gr_result', h, 'exp_gr', 'الميزانية_الشبكية');
-        }
-        function calcReciprocal() {
-            const a1 = num($('rc_a1').value), b1 = num($('rc_b1').value), a2 = num($('rc_a2').value), b2 = num($('rc_b2').value), ra = num($('rc_a').value);
-            if ([a1, b1, a2, b2].some(isNaN)) return alert('أدخل القراءات الأربع.');
-            const d1 = a1 - b1, d2 = a2 - b2, t = (d1 + d2) / 2, e = (d2 - d1) / 2;
-            let h = '<div class="custom-result-box">فرق المنسوب الحقيقي (B − A) = <span style="color:var(--primary)">' + exactNum(t) + '</span> م<br>فرق الجهاز 1 = ' + exactNum(d1) + ' | فرق الجهاز 2 = ' + exactNum(d2) + '<br>خطأ خط التسديد (Collimation) في القراءة البعيدة = ' + exactNum(e) + ' م';
-            if (!isNaN(ra)) h += '<br>منسوب B = <span style="color:var(--primary)">' + exactNum(ra + t) + '</span>';
-            $('rc_result').innerHTML = h + '</div>';
-        }
-        function calcSetOutLv() {
-            const bm = num($('so_bm').value), bs = num($('so_bs').value), d = num($('so_design').value);
-            if ([bm, bs, d].some(isNaN)) return alert('أدخل كل البيانات.');
-            const hi = bm + bs;
-            $('so_result').innerHTML = '<div class="custom-result-box">منسوب الجهاز (HI) = ' + exactNum(hi) + '<br>قراءة القامة المطلوبة = <span style="color:var(--success)">' + exactNum(hi - d) + '</span> م</div>';
-        }
-        // ===== إحداثياتي (GPS) =====
-        function toDMS(v, pos, neg) { const s = v >= 0 ? pos : neg; v = Math.abs(v); const d = Math.floor(v), m = Math.floor((v - d) * 60), x = ((v - d) * 60 - m) * 60; return d + '° ' + m + "' " + x.toFixed(2) + '" ' + s; }
-        function toUTM(lat, lon) {
-            const a = 6378137, f = 1 / 298.257223563, k0 = .9996, e2 = f * (2 - f), ep2 = e2 / (1 - e2);
-            const zone = Math.floor((lon + 180) / 6) + 1, l0 = ((zone - 1) * 6 - 180 + 3) * Math.PI / 180, p = lat * Math.PI / 180, l = lon * Math.PI / 180;
-            const N = a / Math.sqrt(1 - e2 * Math.sin(p) ** 2), T = Math.tan(p) ** 2, C = ep2 * Math.cos(p) ** 2, A = Math.cos(p) * (l - l0);
-            const M = a * ((1 - e2 / 4 - 3 * e2 ** 2 / 64 - 5 * e2 ** 3 / 256) * p - (3 * e2 / 8 + 3 * e2 ** 2 / 32 + 45 * e2 ** 3 / 1024) * Math.sin(2 * p) + (15 * e2 ** 2 / 256 + 45 * e2 ** 3 / 1024) * Math.sin(4 * p) - 35 * e2 ** 3 / 3072 * Math.sin(6 * p));
-            const E = k0 * N * (A + (1 - T + C) * A ** 3 / 6 + (5 - 18 * T + T * T + 72 * C - 58 * ep2) * A ** 5 / 120) + 500000;
-            let Nn = k0 * (M + N * Math.tan(p) * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A ** 4 / 24 + (61 - 58 * T + T * T + 600 * C - 330 * ep2) * A ** 6 / 720));
-            if (lat < 0) Nn += 1e7;
-            return { zone, hemi: lat >= 0 ? 'N' : 'S', E, N: Nn };
-        }
-        function getMyCoords() {
-            const box = $('gps_result');
-            if (!navigator.geolocation) { box.innerHTML = '<div class="custom-result-box">المتصفح ده لا يدعم تحديد الموقع.</div>'; return; }
-            box.innerHTML = '<div class="custom-result-box">جاري تحديد موقعك...</div>';
-            navigator.geolocation.getCurrentPosition(pos => {
-                const c = pos.coords, u = toUTM(c.latitude, c.longitude), ll = c.latitude.toFixed(7) + ', ' + c.longitude.toFixed(7);
-                box.innerHTML = '<table id="exp_gps"><tr><th>البند</th><th>القيمة</th></tr>' +
-                    '<tr><td>خط العرض Latitude</td><td>' + c.latitude.toFixed(7) + '°<br><small>' + toDMS(c.latitude, 'N', 'S') + '</small></td></tr>' +
-                    '<tr><td>خط الطول Longitude</td><td>' + c.longitude.toFixed(7) + '°<br><small>' + toDMS(c.longitude, 'E', 'W') + '</small></td></tr>' +
-                    '<tr><td>UTM (WGS84) المنطقة</td><td>' + u.zone + u.hemi + '</td></tr>' +
-                    '<tr><td>الشرق Easting</td><td>' + u.E.toFixed(2) + ' م</td></tr>' +
-                    '<tr><td>الشمال Northing</td><td>' + u.N.toFixed(2) + ' م</td></tr>' +
-                    '<tr><td>الدقة Accuracy</td><td>± ' + Math.round(c.accuracy) + ' م</td></tr>' +
-                    (c.altitude != null ? '<tr><td>الارتفاع (تقريبي)</td><td>' + c.altitude.toFixed(1) + ' م</td></tr>' : '') + '</table>' +
-                    '<div style="display:flex;gap:10px;"><button class="btn-calc btn-success" style="flex:1;" onclick="navigator.clipboard.writeText(\'' + ll + '\').then(()=>alert(\'تم النسخ\'))"><i class="fas fa-copy"></i> نسخ</button><a class="btn-calc" style="flex:1;text-decoration:none;" target="_blank" rel="noopener" href="https://www.google.com/maps?q=' + c.latitude + ',' + c.longitude + '"><i class="fas fa-map-location-dot"></i> فتح في الخريطة</a></div>';
-            }, err => {
-                box.innerHTML = '<div class="custom-result-box">' + (err.code === 1 ? 'تم رفض إذن الموقع. فعّله من إعدادات المتصفح وجرّب تاني.' : err.code === 3 ? 'انتهت مهلة التحديد. اطلع مكان مفتوح وجرّب تاني.' : 'تعذر تحديد الموقع.') + '</div>';
-            }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
-        }
-        pfAdd(5); gridBuild(); csAddSec(); csAddSec(); lvSwitch('pf');
 
         function saveFreeNotes() {
             let notes = document.getElementById('freeNotesArea').value;
@@ -1517,7 +1539,7 @@
             setTimeout(() => {
                 const sec = b.closest('.section');
                 if (!sec) return;
-                const res = Array.from(sec.querySelectorAll('.result-container, .custom-result-box, #r_custom_result, #s_custom_result'))
+                const res = Array.from(sec.querySelectorAll('.result-container, .custom-result-box, #r_custom_result, #s_custom_result, #l_hi_display'))
                     .map(x => x.innerText.trim()).filter(Boolean).join('\n');
                 if (!res) return;
                 const inputs = [];
@@ -1561,7 +1583,6 @@
             list.textContent = 'جاري التحميل...';
             let items = [];
             try { items = await H.list(); } catch (e) { list.textContent = 'تعذر تحميل السجل.'; return; }
-            items = items.filter(x => document.getElementById(x.sec));
             window._hItems = items;
             if (!items.length) { list.innerHTML = '<div class="f-empty">لسه مفيش عمليات محفوظة. أي حساب تعمله هيتسجل هنا.</div>'; return; }
             list.innerHTML = items.map((x, i) =>
@@ -1573,7 +1594,6 @@
         }
         function historyRestore(i) {
             const x = window._hItems[i];
-            if (!x || !document.getElementById(x.sec)) return;
             (x.inputs || []).forEach(p => {
                 const el = document.getElementById(p.id);
                 if (el) { el.value = p.v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
@@ -1725,6 +1745,406 @@
             try { await window.Cloud.qa.delA(qaItems[i].id, aid); qaItems[i].answers = Math.max(0, (qaItems[i].answers || 1) - 1); qCount(i); await renderAns(i); }
             catch (e) { alert('تعذر الحذف.'); }
         }
+        const lbNum = x => {
+            if (x === null || x === undefined || x === '') return null;
+            const t = String(x).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g, '.').replace(',', '.').trim();
+            return (t === '' || isNaN(+t)) ? null : +t;
+        };
+        const lbNorm = s => String(s).toLowerCase().replace(/[\s.\-_\/()]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي');
+        const LBH = {
+            pt: { ex: ['st', 'pt', 'no', 'sta'], inc: ['station', 'point', 'نقطه', 'محطه', 'رقم'] },
+            ch: { ex: ['ch', 'dist'], inc: ['chain', 'distance', 'مسافه', 'تراكم', 'كيلو'] },
+            bs: { ex: ['bs'], inc: ['backsight', 'خلفي'] },
+            is: { ex: ['is'], inc: ['intermediate', 'وسيط', 'وسط'] },
+            fs: { ex: ['fs'], inc: ['foresight', 'امامي'] },
+            rl: { ex: ['rl'], inc: ['level', 'منسوب', 'reduced'] }
+        };
+        function lbHeaderMap(row) {
+            const m = {};
+            row.forEach((c, i) => {
+                const n = lbNorm(c); if (!n) return;
+                for (const k in LBH) { if (m[k] !== undefined) continue; if (LBH[k].ex.includes(n) || LBH[k].inc.some(t => n.includes(t))) { m[k] = i; break; } }
+            });
+            return m;
+        }
+        function lbParseRaw(raw, forced) {
+            const rows = raw.map(r => r.map(c => (c === null || c === undefined) ? '' : c)).filter(r => r.some(c => String(c).trim() !== ''));
+            if (forced !== 'grid') {
+                for (let i = 0; i < Math.min(rows.length, 12); i++) {
+                    const m = lbHeaderMap(rows[i]);
+                    if (['bs', 'is', 'fs'].filter(k => m[k] !== undefined).length >= 2) {
+                        const out = [];
+                        for (let j = i + 1; j < rows.length; j++) {
+                            const r = rows[j], g = k => (m[k] !== undefined ? r[m[k]] : null);
+                            const o = { pt: m.pt !== undefined ? String(r[m.pt]).trim() : '', ch: lbNum(g('ch')), bs: lbNum(g('bs')), is: lbNum(g('is')), fs: lbNum(g('fs')), rl: lbNum(g('rl')) };
+                            if (o.bs === null && o.is === null && o.fs === null && o.rl === null) continue;
+                            out.push(o);
+                        }
+                        return { type: 'long', long: out };
+                    }
+                }
+                if (forced === 'long') return { type: 'long', long: [] };
+            }
+            const nCnt = r => r.slice(1).filter(c => lbNum(c) !== null).length;
+            const r0 = rows.findIndex(r => nCnt(r) >= 2);
+            if (r0 < 0) return { type: 'grid', grid: { cols: [], rows: [] } };
+            const isHead = r => { const v = r.slice(1).map(lbNum).filter(x => x !== null); return v.length >= 2 && lbNum(r[0]) === null && v.every(Number.isInteger) && v.every((x, i) => i === 0 || x - v[i - 1] === v[1] - v[0]); };
+            let hr = -1, d0 = r0;
+            if (isHead(rows[r0]) && rows[r0 + 1] && nCnt(rows[r0 + 1]) >= 1) { hr = r0; d0 = r0 + 1; }
+            else if (r0 > 0 && nCnt(rows[r0 - 1]) < 1) hr = r0 - 1;
+            const head = hr >= 0 ? rows[hr] : [], body = rows.slice(d0).filter(r => nCnt(r) >= 1);
+            const width = Math.max(...body.map(r => r.length)) - 1;
+            const cols = Array.from({ length: width }, (_, j) => (head[j + 1] != null && String(head[j + 1]).trim() !== '') ? String(head[j + 1]).trim() : String(j + 1));
+            return { type: 'grid', grid: { cols, rows: body.map((r, i) => ({ label: (r[0] != null && String(r[0]).trim() !== '') ? String(r[0]).trim() : String.fromCharCode(65 + i), v: cols.map((_, j) => lbNum(r[j + 1])) })) } };
+        }
+        function lbComputeLong(rows, rl0, rlEnd, Kkm, C) {
+            const out = []; let hi = null, rl = null, setup = 0, err = null;
+            for (let k = 0; k < rows.length; k++) {
+                const r = rows[k], bs = lbNum(r.bs), is = lbNum(r.is), fs = lbNum(r.fs);
+                const o = { pt: r.pt || String(k + 1), ch: lbNum(r.ch), bs, is, fs, hi: null, rl: null, kind: '', setup: 0 };
+                if (k === 0) {
+                    if (bs === null || rl0 === null) { err = 'الصف الأول لازم يكون فيه قراءة خلفية (BS)، ولازم تكتب منسوب نقطة البداية.'; break; }
+                    rl = rl0; hi = rl + bs; setup = 1; Object.assign(o, { rl, hi, kind: 'BM', setup }); out.push(o); continue;
+                }
+                if (is !== null) { rl = hi - is; Object.assign(o, { rl, kind: 'IS', setup }); out.push(o); continue; }
+                if (fs !== null) {
+                    rl = hi - fs; Object.assign(o, { rl, setup, kind: bs !== null ? 'CP' : 'FS' });
+                    if (bs !== null) { hi = rl + bs; setup++; o.hi = hi; }
+                    out.push(o); continue;
+                }
+                if (bs !== null) {
+                    const prev = out[out.length - 1];
+                    if (!prev) { err = 'قراءة خلفية من غير نقطة قبلها.'; break; }
+                    hi = prev.rl + bs; setup++; Object.assign(o, { rl: prev.rl, hi, kind: 'BS', setup }); out.push(o);
+                }
+            }
+            if (err) return { err };
+            const closing = out.slice().reverse().find(o => o.kind === 'FS' || o.kind === 'CP');
+            const n = setup - (out.length && out[out.length - 1].kind === 'CP' ? 1 : 0) || 1;
+            const first = out[0], withCh = out.length > 1 && out.every(o => o.ch !== null) && closing && closing.ch !== first.ch;
+            let K = withCh ? Math.abs(closing.ch - first.ch) / 1000 : Kkm;
+            let mis = null, allowed = null, ok = null;
+            if (closing && rlEnd !== null) {
+                mis = closing.rl - rlEnd;
+                if (K) { allowed = (C || 12) * Math.sqrt(K); ok = Math.abs(mis * 1000) <= allowed; }
+            }
+            out.forEach(o => {
+                let prop = 0;
+                if (mis !== null) {
+                    if (withCh) prop = (o.ch - first.ch) / (closing.ch - first.ch);
+                    else prop = o.kind === 'BM' ? 0 : (o.kind === 'CP' || o.kind === 'FS') ? o.setup / n : o.kind === 'BS' ? (o.setup - 1) / n : (o.setup - 0.5) / n;
+                }
+                o.corr = mis === null ? 0 : -mis * prop;
+                o.adj = o.rl + o.corr;
+            });
+            return { rows: out, mis, allowed, ok, setups: n, K, withCh, hasEnd: rlEnd !== null && !!closing };
+        }
+        const gdK = (i, j) => i + ',' + j;
+        function gdNew(m, n) { return { m, n, rowL: Array.from({ length: m }, (_, i) => String.fromCharCode(65 + i)), colL: Array.from({ length: n }, (_, j) => String(j + 1)), nodes: {}, start: null, end: null, sel: null }; }
+        const gdName = (g, i, j) => (/^\d+$/.test(g.rowL[i]) ? g.rowL[i] + '-' : g.rowL[i]) + g.colL[j];
+        function gdSorder(g) { const out = []; for (let i = 0; i < g.m; i++) { const js = [...Array(g.n).keys()]; if (i % 2) js.reverse(); js.forEach(j => out.push([i, j])); } return out; }
+        function gdSeq(g) {
+            return Object.keys(g.nodes).filter(k => g.nodes[k].r != null).map(k => Object.assign({ k }, g.nodes[k]))
+                .sort((a, b) => (a.ord == null ? 1e9 : a.ord) - (b.ord == null ? 1e9 : b.ord));
+        }
+        function gdFromMatrix(grid) {
+            const m = Math.max(2, grid.rows.length), n = Math.max(2, grid.cols.length), g = gdNew(m, n);
+            grid.rows.forEach((r, i) => { if (r.label) g.rowL[i] = String(r.label); });
+            grid.cols.forEach((c, j) => { if (c) g.colL[j] = String(c); });
+            let o = 1;
+            gdSorder(g).forEach(([i, j]) => { const row = grid.rows[i], v = row ? row.v[j] : null; if (v != null && !isNaN(v)) g.nodes[gdK(i, j)] = { r: +v, ord: o++ }; });
+            const seq = gdSeq(g); g.start = seq.length ? seq[0].k : null; g.end = seq.length ? seq[seq.length - 1].k : null;
+            return g;
+        }
+        function gdCompute(g, kind, rl0, rlEnd, design, cell) {
+            const seq = gdSeq(g);
+            if (!seq.length) return { err: 'اكتب قراءة نقطة واحدة على الأقل.' };
+            const startK = g.start || seq[0].k, endK = g.end || seq[seq.length - 1].k;
+            let hi = null;
+            if (kind === 'reading') {
+                const sn = g.nodes[startK];
+                if (rl0 === null) return { err: 'اكتب منسوب نقطة البداية.' };
+                if (!sn || sn.r == null) return { err: 'نقطة البداية لازم يكون ليها قراءة (القراءة الخلفية).' };
+                hi = rl0 + sn.r;
+            }
+            const rows = seq.map((x, idx) => { const [i, j] = x.k.split(',').map(Number); return { k: x.k, i, j, name: gdName(g, i, j), ord: x.ord, r: x.r, rl: kind === 'reading' ? hi - x.r : x.r, idx }; });
+            const sRow = rows.find(o => o.k === startK), eRow = rows.find(o => o.k === endK);
+            const sIdx = sRow ? sRow.idx : 0, eIdx = eRow ? eRow.idx : rows.length - 1;
+            const mis = (rlEnd !== null && eRow) ? eRow.rl - rlEnd : null;
+            rows.forEach(o => {
+                const f = (mis === null || eIdx <= sIdx || o.idx <= sIdx) ? 0 : Math.min(1, (o.idx - sIdx) / (eIdx - sIdx));
+                o.corr = mis === null ? 0 : -mis * f; o.adj = o.rl + o.corr; o.cf = design !== null ? o.adj - design : null;
+            });
+            const vals = rows.map(o => o.adj), min = Math.min(...vals), max = Math.max(...vals), avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+            let vol = null;
+            if (design !== null && cell) {
+                const mat = Array.from({ length: g.m }, () => Array(g.n).fill(null)); rows.forEach(o => mat[o.i][o.j] = o.cf); vol = 0;
+                for (let i = 0; i < g.m - 1; i++) for (let j = 0; j < g.n - 1; j++) { const c = [mat[i][j], mat[i][j + 1], mat[i + 1][j], mat[i + 1][j + 1]]; if (c.every(x => x !== null)) vol += cell * cell / 4 * (c[0] + c[1] + c[2] + c[3]); }
+            }
+            return { rows, hi, mis, startK, endK, startName: sRow ? sRow.name : '', endName: eRow ? eRow.name : '', min, max, avg, vol };
+        }
+        const LB = { type: 'long', long: [], g: gdNew(4, 4), shade: false, raw: null, ai: false, res: null };
+        const lbEl = id => document.getElementById(id);
+        const lbV = id => lbNum(lbEl(id).value);
+        const lbF = (v, d) => v == null ? '—' : (+v).toFixed(d == null ? 3 : d);
+        function lbStatus(t, bad) { const e = lbEl('lbStatus'); e.textContent = t || ''; e.className = 'ai-status' + (bad ? ' bad' : ''); }
+        function lbBlank() { return { pt: '', ch: null, bs: null, is: null, fs: null, rl: null }; }
+        function lbSetType(t, keep) {
+            LB.type = t;
+            lbEl('lbT_long').className = t === 'long' ? 'on' : ''; lbEl('lbT_grid').className = t === 'grid' ? 'on' : '';
+            document.querySelectorAll('.lb-long').forEach(e => e.hidden = t !== 'long');
+            document.querySelectorAll('.lb-grid').forEach(e => e.hidden = t !== 'grid');
+            if (!keep && LB.raw && !LB.ai) { const p = lbParseRaw(LB.raw, t); if (p.type === 'long') LB.long = p.long; else LB.g = gdFromMatrix(p.grid); }
+            lbRender(); lbEl('lbOut').innerHTML = '';
+        }
+        function lbRender() {
+            if (LB.type === 'grid') { gdRender(); return; }
+            const box = lbEl('lbTable');
+            if (!LB.long.length) LB.long = [Object.assign(lbBlank(), { pt: 'BM' }), lbBlank(), lbBlank()];
+            box.innerHTML = '<div class="lb-scroll"><table class="lb-t"><tr><th>النقطة</th><th>المسافة</th><th>BS</th><th>IS</th><th>FS</th><th></th></tr>' +
+                LB.long.map((r, i) => '<tr>' + ['pt', 'ch', 'bs', 'is', 'fs'].map(k => '<td><input ' + (k === 'pt' ? '' : 'inputmode="decimal" ') + 'value="' + esc(r[k] == null ? '' : r[k]) + '" oninput="lbSetL(' + i + ',\'' + k + '\',this.value)"></td>').join('') +
+                '<td><button class="lb-x" onclick="lbDel(' + i + ')" aria-label="حذف">×</button></td></tr>').join('') +
+                '</table></div><button class="f-btn" onclick="lbAdd()">+ إضافة صف</button>';
+        }
+        function lbSetL(i, k, v) { LB.long[i][k] = v; }
+        function lbDel(i) { LB.long.splice(i, 1); lbRender(); }
+        function lbAdd() { LB.long.push(lbBlank()); lbRender(); }
+        function lbApply(p) {
+            if (p.type === 'long') LB.long = p.long; else LB.g = gdFromMatrix(p.grid);
+            if (p.type === 'long' && p.long[0] && p.long[0].rl != null && lbEl('lbRL0').value === '') lbEl('lbRL0').value = p.long[0].rl;
+            lbSetType(p.type, true);
+            lbStatus('تم تحميل ' + (p.type === 'long' ? p.long.length + ' صف. راجع الجدول وصحّح أي رقم، وبعدين اضغط احسب.' : p.grid.rows.length + ' صف و' + p.grid.cols.length + ' عمود، ورتبت المسار تلقائياً (S) وعيّنت أول نقطة كبداية وآخر نقطة كنهاية. اضغط على أي نقطة لتعديلها.'));
+        }
+        function lbParseCSV(txt) {
+            const lines = txt.split(/\r?\n/), d = [',', ';', '\t'].map(c => [c, (lines[0] || '').split(c).length]).sort((a, b) => b[1] - a[1])[0][0];
+            return lines.map(line => { const out = []; let cur = '', q = false; for (const ch of line) { if (ch === '"') q = !q; else if (ch === d && !q) { out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out; });
+        }
+        function lbLoadXLSX() {
+            return window.XLSX ? Promise.resolve() : new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+        }
+        async function lbOnFile(input) {
+            const f = input.files[0]; if (!f) return;
+            lbStatus('جاري قراءة الملف...');
+            try {
+                let raw;
+                if (/\.(xlsx|xls|xlsm)$/i.test(f.name)) {
+                    await lbLoadXLSX();
+                    const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+                    raw = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '', raw: true });
+                } else raw = lbParseCSV(await f.text());
+                LB.raw = raw; LB.ai = false; lbApply(lbParseRaw(raw, null));
+            } catch (e) { lbStatus('تعذر قراءة الملف. تأكد إنه Excel أو CSV (ولازم نت لقراءة Excel).', true); }
+            input.value = '';
+        }
+        async function lbOnImg(input) {
+            const f = input.files[0]; if (!f) return; input.value = '';
+            if (window.Cloud && !window.isRegistered) { lbStatus('سجّل دخول بحساب علشان تستخدم قراءة الصور بالذكاء الاصطناعي.', true); return showGate(); }
+            lbStatus('جاري قراءة الدفتر بالذكاء الاصطناعي... ممكن ياخد دقيقة.');
+            try {
+                const head = String.fromCharCode(...new Uint8Array(await f.slice(0, 5).arrayBuffer()));
+                let file;
+                if (head === '%PDF-') { if (f.size > 3 * 1024 * 1024) throw new Error('ملف الـ PDF أكبر من 3 ميجا.'); file = { mediaType: 'application/pdf', data: await fileToB64(f) }; }
+                else file = { mediaType: 'image/jpeg', data: await shrinkImage(f) };
+                const u = window.currentUser, tok = (u && !u.isAnonymous) ? await u.getIdToken() : '';
+                const res = await fetch('/api/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok }, body: JSON.stringify({ mode: 'levels', file, messages: [{ role: 'user', content: 'استخرج جدول الميزانية من الملف.' }] }) });
+                if (res.status === 401) { showGate(); throw new Error('سجّل دخول بحساب الأول.'); }
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(res.status === 429 ? 'وصلت للحد المجاني حالياً. استنى دقيقة وجرّب تاني.' : (data.error || 'حصل خطأ في القراءة.'));
+                const j = JSON.parse(String(data.text).replace(/^\s*```(?:json)?/i, '').replace(/```\s*$/, '').trim());
+                LB.raw = null; LB.ai = true;
+                if (j.type === 'grid') {
+                    if (j.valueKind === 'level') lbEl('lbKind').value = 'level';
+                    lbApply({ type: 'grid', grid: { cols: (j.cols || []).map(String), rows: (j.rows || []).map(r => ({ label: String(r.label == null ? '' : r.label), v: (r.v || []).map(lbNum) })) } });
+                } else lbApply({ type: 'long', long: (j.rows || []).map(r => ({ pt: r.pt == null ? '' : String(r.pt), ch: lbNum(r.ch), bs: lbNum(r.bs), is: lbNum(r.is), fs: lbNum(r.fs), rl: lbNum(r.rl) })) });
+                if (j.bm && j.bm.rl != null && lbEl('lbRL0').value === '') lbEl('lbRL0').value = j.bm.rl;
+                lbStatus('تمت القراءة بالذكاء الاصطناعي. راجع كل رقم في الجدول مع الدفتر الأصلي لأن القراءة الآلية ممكن تغلط، وبعدين اضغط احسب.');
+            } catch (e) { lbStatus(e.message || 'تعذرت القراءة. جرّب صورة أوضح.', true); }
+        }
+        function lbDownload(name, rows) {
+            const csv = '\ufeff' + rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = name; a.click();
+        }
+        function lbTemplate(t) {
+            lbDownload(t === 'long' ? 'نموذج_ميزانية_طولية.csv' : 'نموذج_ميزانية_شبكية.csv', t === 'long'
+                ? [['Station', 'Chainage', 'BS', 'IS', 'FS', 'RL'], ['BM', 0, 1.5, '', '', 100], ['1', 20, '', 1.2, '', ''], ['2', 40, '', 1.8, '', ''], ['CP1', 60, 1.4, '', 1.0, ''], ['3', 80, '', 1.1, '', ''], ['BM2', 100, '', '', 0.9, '']]
+                : [['', '1', '2', '3'], ['A', 1.2, 1.3, 1.1], ['B', 1.4, 1.5, 1.25], ['C', 1.3, 1.35, 1.2]]);
+        }
+        function lbCSV() {
+            const R = LB.res; if (!R) return;
+            if (R.type === 'long') lbDownload('ميزانية_طولية.csv', [['النقطة', 'المسافة', 'BS', 'IS', 'FS', 'H.I', 'R.L', 'التصحيح (مم)', 'R.L بعد التصحيح']].concat(R.r.rows.map(o => [o.pt, o.ch == null ? '' : o.ch, o.bs == null ? '' : o.bs, o.is == null ? '' : o.is, o.fs == null ? '' : o.fs, lbF(o.hi), lbF(o.rl), (o.corr * 1000).toFixed(1), lbF(o.adj)])));
+            else lbDownload('ميزانية_شبكية.csv', [['التسلسل', 'النقطة', 'القراءة', 'R.L', 'التصحيح (مم)', 'R.L النهائي', 'حفر/ردم']].concat(R.r.rows.map(o => [o.ord, o.name, lbF(o.r), lbF(o.rl), (o.corr * 1000).toFixed(1), lbF(o.adj), o.cf === null ? '' : lbF(o.cf)])));
+        }
+        const lbMix = (a, b, t) => a.map((x, i) => Math.round(x + (b[i] - x) * t));
+        function lbHyps(t) {
+            const st = [[0, [43, 122, 120]], [.35, [143, 191, 90]], [.7, [232, 212, 77]], [1, [196, 115, 47]]];
+            t = Math.max(0, Math.min(1, t));
+            for (let i = 1; i < st.length; i++) if (t <= st[i][0]) return lbMix(st[i - 1][1], st[i][1], (t - st[i - 1][0]) / (st[i][0] - st[i - 1][0]));
+            return st[3][1];
+        }
+        const lbDiv = (v, m) => lbMix([248, 248, 240], v >= 0 ? [209, 96, 61] : [58, 124, 165], Math.min(1, Math.abs(v) / (m || 1)));
+        const lbRgb = c => 'rgb(' + c.join(',') + ')';
+        const lbTxt = c => (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) > 150 ? '#14231f' : '#fff';
+        function lbProfileSVG(pts, design) {
+            const W = 700, H = 320, L = 58, R = 16, T = 20, B = 42;
+            const xs = pts.map(p => p.x), ys = pts.map(p => p.y).concat(design != null ? [design] : []);
+            let x0 = Math.min(...xs), x1 = Math.max(...xs); if (x1 === x0) x1 = x0 + 1;
+            let y0 = Math.min(...ys), y1 = Math.max(...ys); if (y1 === y0) { y0 -= .5; y1 += .5; }
+            const pad = (y1 - y0) * .18; y0 -= pad; y1 += pad;
+            const X = v => L + (v - x0) / (x1 - x0) * (W - L - R), Y = v => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+            let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:520px" font-family="inherit">';
+            for (let i = 0; i <= 4; i++) { const v = y0 + (y1 - y0) * i / 4, y = Y(v); s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '" stroke="#d6ddca" stroke-dasharray="3 4"/><text x="' + (L - 6) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" fill="#5d6b64">' + v.toFixed(2) + '</text>'; }
+            s += '<polygon points="' + pts.map(p => X(p.x) + ',' + Y(p.y)).join(' ') + ' ' + X(pts[pts.length - 1].x) + ',' + (H - B) + ' ' + X(pts[0].x) + ',' + (H - B) + '" fill="rgba(18,69,63,.10)"/>';
+            if (design != null) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(design) + '" y2="' + Y(design) + '" stroke="#d1603d" stroke-width="2" stroke-dasharray="8 5"/><text x="' + (W - R - 4) + '" y="' + (Y(design) - 6) + '" text-anchor="end" font-size="11" fill="#d1603d" font-weight="700">منسوب التصميم ' + (+design).toFixed(3) + '</text>';
+            for (let i = 1; i < pts.length; i++) s += '<line x1="' + X(pts[i - 1].x) + '" y1="' + Y(pts[i - 1].y) + '" x2="' + X(pts[i].x) + '" y2="' + Y(pts[i].y) + '" stroke="' + (pts[i].y >= pts[i - 1].y ? '#2e8b57' : '#d1603d') + '" stroke-width="3.5" stroke-linecap="round"/>';
+            const stepL = Math.max(1, Math.ceil(pts.length / 8));
+            pts.forEach((p, i) => {
+                const big = p.kind === 'BM' || p.kind === 'CP' || p.kind === 'FS';
+                s += '<circle cx="' + X(p.x) + '" cy="' + Y(p.y) + '" r="' + (big ? 6 : 4) + '" fill="' + (p.kind === 'BM' ? '#d9f23d' : big ? '#e8a33d' : '#fff') + '" stroke="#12453f" stroke-width="2"/>';
+                if (pts.length <= 14 || big) s += '<text x="' + X(p.x) + '" y="' + (Y(p.y) - 11) + '" text-anchor="middle" font-size="10.5" fill="#14231f" font-weight="700">' + p.y.toFixed(3) + '</text>';
+                if (i % stepL === 0 || i === pts.length - 1) s += '<text x="' + X(p.x) + '" y="' + (H - B + 16) + '" text-anchor="middle" font-size="11" fill="#5d6b64">' + esc(p.label) + '</text>';
+            });
+            return s + '</svg>';
+        }
+        function lbLongHTML(r, design) {
+            const rows = r.rows;
+            let chips = '<div class="lb-chips"><div class="lb-chip">عدد المحطات<b>' + r.setups + '</b></div>';
+            if (r.hasEnd) {
+                chips += '<div class="lb-chip ' + (r.ok === false ? 'bad' : r.ok ? 'ok' : '') + '">خطأ القفل<b>' + (r.mis * 1000).toFixed(1) + ' مم</b></div>';
+                if (r.allowed != null) chips += '<div class="lb-chip">المسموح<b>' + r.allowed.toFixed(1) + ' مم</b></div><div class="lb-chip ' + (r.ok ? 'ok' : 'bad') + '">النتيجة<b>' + (r.ok ? 'مقبولة ✓' : 'مرفوضة ✗') + '</b></div>';
+                else chips += '<div class="lb-chip">المسموح<b>اكتب طول الميزانية</b></div>';
+                chips += '<div class="lb-chip">التصحيح<b>' + (r.withCh ? 'بالمسافة' : 'بالمحطات') + '</b></div>';
+            } else chips += '<div class="lb-chip">القفل<b>مفيش منسوب قفل: بدون تصحيح</b></div>';
+            chips += '</div>';
+            const pts = rows.filter(o => o.kind !== 'BS').map((o, i) => ({ x: r.withCh ? o.ch : i, y: o.adj, kind: o.kind, label: r.withCh ? String(o.ch) : o.pt }));
+            const tbl = '<div class="lb-scroll"><table class="lb-t res"><tr><th>النقطة</th><th>المسافة</th><th>BS</th><th>IS</th><th>FS</th><th>H.I</th><th>R.L</th><th>تصحيح (مم)</th><th>R.L النهائي</th></tr>' +
+                rows.map(o => '<tr><td>' + esc(o.pt) + (o.kind === 'BM' || o.kind === 'CP' ? '<span class="kind">' + o.kind + '</span>' : '') + '</td><td>' + lbF(o.ch, 1) + '</td><td>' + lbF(o.bs) + '</td><td>' + lbF(o.is) + '</td><td>' + lbF(o.fs) + '</td><td>' + lbF(o.hi) + '</td><td>' + lbF(o.rl) + '</td><td>' + (o.corr * 1000).toFixed(1) + '</td><td class="rl">' + lbF(o.adj) + '</td></tr>').join('') + '</table></div>';
+            return chips + '<h3 class="lb-h">القطاع الطولي</h3><div class="lb-chart">' + lbProfileSVG(pts, design) + '</div>' +
+                '<div class="lb-legend"><span><i style="background:#2e8b57"></i>صعود</span><span><i style="background:#d1603d"></i>هبوط</span><span>● أصفر: نقطة البداية</span><span>● برتقالي: نقطة تحويل / قفل</span></div>' +
+                '<h3 class="lb-h">جدول الميزانية</h3>' + tbl + '<button class="btn-calc btn-success" onclick="lbCSV()"><i class="fas fa-file-excel"></i> تصدير الجدول (Excel / CSV)</button>';
+        }
+        function runLevelBook() {
+            const out = lbEl('lbOut'); lbStatus('');
+            if (LB.type === 'grid') { gdRun(); return; }
+            const design = lbV('lbDesign');
+            if (LB.long.length < 2) { lbStatus('أضف صفين على الأقل (نقطة البداية ونقطة بعدها).', true); return; }
+            const r = lbComputeLong(LB.long, lbV('lbRL0'), lbV('lbRLend'), lbV('lbK'), lbV('lbC') || 12);
+            if (r.err) { lbStatus(r.err, true); out.innerHTML = ''; return; }
+            LB.res = { type: 'long', r }; out.innerHTML = lbLongHTML(r, design);
+            out.scrollIntoView({ behavior: 'smooth' });
+        }
+        function gdSVG(g, mode, res) {
+            const m = g.m, n = g.n, L = 58, T = 50, R = 36, B = 40;
+            const dx = Math.max(72, Math.min(112, 620 / (n - 1))), dy = Math.max(66, Math.min(92, dx));
+            const W = L + R + (n - 1) * dx, H = T + B + (m - 1) * dy, X = j => L + j * dx, Y = i => T + i * dy;
+            const byK = {}; if (res) res.rows.forEach(o => byK[o.k] = o);
+            const shade = res && LB.shade, seq = gdSeq(g);
+            let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:' + (n > 6 ? W : 560) + 'px" font-family="inherit"><defs><marker id="gdArr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#e8892d"/></marker></defs>';
+            for (let j = 0; j < n; j++) s += '<line x1="' + X(j) + '" y1="' + (T - 20) + '" x2="' + X(j) + '" y2="' + (H - B + 20) + '" stroke="#3d6f66" stroke-width="2.4" stroke-linecap="round"/><text x="' + X(j) + '" y="' + (T - 28) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#14231f">' + esc(g.colL[j]) + '</text>';
+            for (let i = 0; i < m; i++) s += '<line x1="' + (L - 20) + '" y1="' + Y(i) + '" x2="' + (W - R + 20) + '" y2="' + Y(i) + '" stroke="#3d6f66" stroke-width="2.4" stroke-linecap="round"/><text x="' + (L - 30) + '" y="' + (Y(i) + 5) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#14231f">' + esc(g.rowL[i]) + '</text>';
+            const pos = k => { const [i, j] = k.split(',').map(Number); return [X(j), Y(i)]; };
+            for (let q = 0; q + 1 < seq.length; q++) {
+                const [x1, y1] = pos(seq[q].k), [x2, y2] = pos(seq[q + 1].k), len = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / len, uy = (y2 - y1) / len, o1 = 30, o2 = 34;
+                if (len > o1 + o2) s += '<line x1="' + (x1 + ux * o1) + '" y1="' + (y1 + uy * o1) + '" x2="' + (x2 - ux * o2) + '" y2="' + (y2 - uy * o2) + '" stroke="#e8892d" stroke-width="3.2" stroke-linecap="round" marker-end="url(#gdArr)"/>';
+            }
+            for (let i = 0; i < m; i++) for (let j = 0; j < n; j++) {
+                const k = gdK(i, j), nd = g.nodes[k], x = X(j), y = Y(i), sel = mode === 'edit' && g.sel === k, rr = byK[k];
+                const val = mode === 'edit' ? (nd && nd.r != null ? nd.r : null) : (rr ? rr.adj : null);
+                const click = mode === 'edit' ? ' onclick="gdPick(' + i + ',' + j + ')" style="cursor:pointer"' : '';
+                s += '<g' + click + '><rect x="' + (x - 24) + '" y="' + (y - 20) + '" width="48" height="40" fill="transparent"/>';
+                if (val === null) s += '<circle cx="' + x + '" cy="' + y + '" r="' + (sel ? 13 : 9) + '" fill="#fff" stroke="' + (sel ? '#12453f' : '#7fb069') + '" stroke-width="' + (sel ? 3 : 2) + '"' + (sel ? '' : ' stroke-dasharray="3 2"') + '/>';
+                else {
+                    const tint = shade ? lbHyps((val - res.min) / ((res.max - res.min) || 1)) : null;
+                    s += '<rect x="' + (x - 30) + '" y="' + (y - 14) + '" width="60" height="28" rx="14" fill="' + (tint ? lbRgb(tint) : '#fff') + '" stroke="#12453f" stroke-width="2.2"/>';
+                    if (sel) s += '<rect x="' + (x - 34) + '" y="' + (y - 18) + '" width="68" height="36" rx="18" fill="none" stroke="#d9f23d" stroke-width="4"/><rect x="' + (x - 30) + '" y="' + (y - 14) + '" width="60" height="28" rx="14" fill="none" stroke="#12453f" stroke-width="2.2"/>';
+                    s += '<text x="' + x + '" y="' + (y + 4.5) + '" text-anchor="middle" font-size="12.5" font-weight="700" fill="' + (tint ? lbTxt(tint) : '#14231f') + '">' + (+val).toFixed(3) + '</text>';
+                    if (rr && rr.cf !== null) s += '<text x="' + x + '" y="' + (y + 28) + '" text-anchor="middle" font-size="11" font-weight="700" fill="' + (rr.cf >= 0 ? '#c4571f' : '#2f6f9e') + '">' + (rr.cf >= 0 ? '+' : '') + rr.cf.toFixed(3) + '</text>';
+                }
+                if (nd && nd.ord != null && val !== null) s += '<circle cx="' + (x + 30) + '" cy="' + (y - 14) + '" r="10" fill="#12453f"/><text x="' + (x + 30) + '" y="' + (y - 10) + '" text-anchor="middle" font-size="11" font-weight="700" fill="#d9f23d">' + nd.ord + '</text>';
+                const tags = [];
+                if ((res ? res.startK : g.start) === k) tags.push(['بداية', '#1f8a4c']);
+                if ((res ? res.endK : g.end) === k) tags.push(['نهاية', '#c0392b']);
+                tags.forEach((t, q) => s += '<rect x="' + (x - 22) + '" y="' + (y - 38 - q * 20) + '" width="44" height="17" rx="8" fill="' + t[1] + '"/><text x="' + x + '" y="' + (y - 25.5 - q * 20) + '" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff">' + t[0] + '</text>');
+                s += '</g>';
+            }
+            return s + '</svg>';
+        }
+        function gdRender() {
+            const g = LB.g;
+            lbEl('lbTable').innerHTML =
+                '<div class="gd-ctrl"><span>الصفوف</span><button class="gd-step" onclick="gdSize(-1,0)">−</button><b>' + g.m + '</b><button class="gd-step" onclick="gdSize(1,0)">+</button><span>الأعمدة</span><button class="gd-step" onclick="gdSize(0,-1)">−</button><b>' + g.n + '</b><button class="gd-step" onclick="gdSize(0,1)">+</button></div>' +
+                '<div class="lb-chart" id="gdCanvas"></div><div id="gdPanel"></div>' +
+                '<div class="gd-actions"><button class="f-btn" onclick="gdAuto()">ترتيب المسار تلقائياً (S)</button><button class="f-btn" onclick="gdClearOrd()">مسح التسلسل</button><button class="f-btn del" onclick="gdClearAll()">مسح كل القراءات</button></div>' +
+                '<p class="ai-note">اضغط على أي نقطة في الشبكة واكتب قراءتها: الموقع بيرقمها بالترتيب وبيرسم اتجاه المسار بالأسهم. حدد البداية والنهاية من نفس النافذة.</p>';
+            gdRefresh();
+        }
+        function gdRefresh() { lbEl('gdCanvas').innerHTML = gdSVG(LB.g, 'edit'); lbEl('gdPanel').innerHTML = gdPanelHTML(); }
+        function gdPanelHTML() {
+            const g = LB.g, k = g.sel;
+            if (!k) return '<div class="gd-panel hint">اضغط على نقطة في الشبكة علشان تكتب قراءتها.</div>';
+            const [i, j] = k.split(',').map(Number), nd = g.nodes[k] || {};
+            return '<div class="gd-panel"><div class="gd-title">النقطة <b>' + esc(gdName(g, i, j)) + '</b>' + (g.start === k ? ' <span class="tag st">بداية</span>' : '') + (g.end === k ? ' <span class="tag en">نهاية</span>' : '') + '</div>' +
+                '<div class="gd-row"><input id="gdRead" type="number" step="any" inputmode="decimal" placeholder="القراءة بالمتر" value="' + esc(nd.r == null ? '' : nd.r) + '" onkeydown="if (event.key === \'Enter\') gdSave()"><input id="gdOrd" type="number" inputmode="numeric" placeholder="رقم" title="رقم التسلسل" value="' + esc(nd.ord == null ? '' : nd.ord) + '" style="max-width:84px"></div>' +
+                '<div class="gd-row"><button class="gd-btn main" onclick="gdSave()">حفظ والتالي <i class="fas fa-arrow-left"></i></button></div>' +
+                '<div class="gd-row"><button class="gd-btn" onclick="gdMark(\'start\')"><i class="fas fa-flag"></i> بداية</button><button class="gd-btn" onclick="gdMark(\'end\')"><i class="fas fa-flag-checkered"></i> نهاية</button><button class="gd-btn del" onclick="gdDelNode()">مسح</button></div></div>';
+        }
+        function gdFocus() { setTimeout(() => { const e = lbEl('gdRead'); if (e) e.focus(); }, 40); }
+        function gdPick(i, j) { LB.g.sel = gdK(i, j); gdRefresh(); gdFocus(); }
+        function gdNextOrd() { const o = Object.values(LB.g.nodes).map(n => n.ord).filter(x => x != null); return o.length ? Math.max(...o) + 1 : 1; }
+        function gdSetOrd(k, ord) {
+            const g = LB.g, nd = g.nodes[k], old = nd.ord;
+            Object.keys(g.nodes).forEach(o => { if (o !== k && g.nodes[o].ord === ord) g.nodes[o].ord = old; });
+            nd.ord = ord;
+        }
+        function gdSave() {
+            const g = LB.g, k = g.sel; if (!k) return;
+            const v = lbNum(lbEl('gdRead').value); let ord = lbNum(lbEl('gdOrd').value);
+            if (v === null) { delete g.nodes[k]; if (g.start === k) g.start = null; if (g.end === k) g.end = null; }
+            else {
+                const nd = g.nodes[k] || (g.nodes[k] = { r: null, ord: null }); nd.r = v;
+                gdSetOrd(k, ord !== null ? ord : (nd.ord != null ? nd.ord : gdNextOrd()));
+                const so = gdSorder(g), at = so.findIndex(([i, j]) => gdK(i, j) === k);
+                const nx = so.slice(at + 1).concat(so.slice(0, at)).find(([i, j]) => !g.nodes[gdK(i, j)]);
+                if (nx) g.sel = gdK(nx[0], nx[1]);
+            }
+            gdRefresh(); gdFocus();
+        }
+        function gdMark(t) { const g = LB.g; g[t] = g[t] === g.sel ? null : g.sel; gdRefresh(); }
+        function gdDelNode() { const g = LB.g, k = g.sel; if (!k) return; delete g.nodes[k]; if (g.start === k) g.start = null; if (g.end === k) g.end = null; gdRefresh(); }
+        function gdAuto() { const g = LB.g; let o = 1; gdSorder(g).forEach(([i, j]) => { const nd = g.nodes[gdK(i, j)]; if (nd) nd.ord = o++; }); gdRefresh(); }
+        function gdClearOrd() { Object.values(LB.g.nodes).forEach(n => n.ord = null); gdRefresh(); }
+        function gdClearAll() { if (!confirm('تمسح كل القراءات؟')) return; const g = LB.g; g.nodes = {}; g.start = g.end = g.sel = null; lbEl('lbOut').innerHTML = ''; gdRefresh(); }
+        function gdSize(dm, dn) {
+            const g = LB.g, m = Math.max(2, Math.min(20, g.m + dm)), n = Math.max(2, Math.min(20, g.n + dn)), h = gdNew(m, n);
+            for (let i = 0; i < Math.min(m, g.m); i++) h.rowL[i] = g.rowL[i];
+            for (let j = 0; j < Math.min(n, g.n); j++) h.colL[j] = g.colL[j];
+            Object.keys(g.nodes).forEach(k => { const [i, j] = k.split(',').map(Number); if (i < m && j < n) h.nodes[k] = g.nodes[k]; });
+            ['start', 'end', 'sel'].forEach(t => { if (g[t] && h.nodes[g[t]] !== undefined || (t === 'sel' && g[t])) { const [i, j] = g[t].split(',').map(Number); if (i < m && j < n) h[t] = g[t]; } });
+            LB.g = h; lbEl('lbOut').innerHTML = ''; gdRender();
+        }
+        function gdRun() {
+            const r = gdCompute(LB.g, lbEl('lbKind').value, lbV('lbRL0'), lbV('lbRLend'), lbV('lbDesign'), lbV('lbCell'));
+            if (r.err) { lbStatus(r.err, true); lbEl('lbOut').innerHTML = ''; return; }
+            LB.res = { type: 'grid2', r }; gdShow(); lbEl('lbOut').scrollIntoView({ behavior: 'smooth' });
+        }
+        function gdShade(on) { LB.shade = on; gdShow(); }
+        function gdShow() {
+            const r = LB.res.r, g = LB.g;
+            let chips = '<div class="lb-chips"><div class="lb-chip">المسار<b>' + esc(r.startName) + ' ← ' + esc(r.endName) + '</b></div><div class="lb-chip">عدد النقاط<b>' + r.rows.length + '</b></div>';
+            if (r.hi != null) chips += '<div class="lb-chip">H.I<b>' + r.hi.toFixed(3) + '</b></div>';
+            chips += '<div class="lb-chip">أقل / أعلى<b>' + r.min.toFixed(3) + ' / ' + r.max.toFixed(3) + '</b></div><div class="lb-chip">المتوسط<b>' + r.avg.toFixed(3) + '</b></div>';
+            if (r.mis != null) chips += '<div class="lb-chip bad">فرق القفل<b>' + (r.mis * 1000).toFixed(1) + ' مم</b>تم توزيعه على المسار</div>';
+            if (r.vol != null) chips += '<div class="lb-chip ' + (r.vol >= 0 ? 'ok' : '') + '">صافي الكمية<b>' + Math.abs(r.vol).toFixed(1) + ' م³ ' + (r.vol >= 0 ? 'حفر' : 'ردم') + '</b></div>';
+            chips += '</div>';
+            const tbl = '<div class="lb-scroll"><table class="lb-t res"><tr><th>#</th><th>النقطة</th><th>القراءة</th><th>R.L</th><th>تصحيح (مم)</th><th>R.L النهائي</th>' + (r.rows[0].cf !== null ? '<th>حفر/ردم</th>' : '') + '</tr>' +
+                r.rows.map(o => '<tr><td>' + o.ord + '</td><td>' + esc(o.name) + (o.k === r.startK ? '<span class="kind">بداية</span>' : '') + (o.k === r.endK ? '<span class="kind end">نهاية</span>' : '') + '</td><td>' + lbF(o.r) + '</td><td>' + lbF(o.rl) + '</td><td>' + (o.corr * 1000).toFixed(1) + '</td><td class="rl">' + lbF(o.adj) + '</td>' + (o.cf !== null ? '<td>' + (o.cf >= 0 ? '+' : '') + lbF(o.cf) + '</td>' : '') + '</tr>').join('') + '</table></div>';
+            lbEl('lbOut').innerHTML = chips + '<h3 class="lb-h">الشبكة واتجاه المسار</h3>' +
+                '<label class="lb-check"><input type="checkbox" ' + (LB.shade ? 'checked' : '') + ' onchange="gdShade(this.checked)"> تظليل النقاط بالألوان حسب المنسوب</label>' +
+                '<div class="lb-chart">' + gdSVG(g, 'res', r) + '</div>' +
+                '<div class="lb-legend"><span><i style="background:#e8892d"></i>اتجاه المسار</span><span>الرقم الصغير = ترتيب النقطة</span><span>القيمة = المنسوب النهائي</span></div>' +
+                (LB.shade ? '<div class="lb-bar" style="background:linear-gradient(90deg,' + [0, .35, .7, 1].map(t => lbRgb(lbHyps(t))).join(',') + ')"></div><div class="lb-legend"><span>' + r.min.toFixed(3) + ' (أقل)</span><span style="margin-inline-start:auto">' + r.max.toFixed(3) + ' (أعلى)</span></div>' : '') +
+                '<h3 class="lb-h">جدول النقاط بالتسلسل</h3>' + tbl + '<button class="btn-calc btn-success" onclick="lbCSV()"><i class="fas fa-file-excel"></i> تصدير الجدول (Excel / CSV)</button>';
+        }
+        lbSetType('long', true);
         paintAuth(null);
     </script>
     <script>
