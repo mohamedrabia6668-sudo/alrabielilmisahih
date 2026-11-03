@@ -433,7 +433,11 @@
         .loc-item small { display: block; color: var(--muted); font-size: .78rem; }
         .loc-item b { display: block; font-size: 1.02rem; color: var(--ink); word-break: break-all; }
         .loc-item select { min-height: 38px; padding: 4px 8px; margin-top: 2px; }
-    </style>
+            .offbar { background: #8a3a1f; color: #fff; font-size: .8rem; padding: 6px 12px; text-align: center; flex-shrink: 0; line-height: 1.5; }
+        .offbar[hidden], .toast[hidden] { display: none; }
+        .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 64px; z-index: 5000; background: var(--ink); color: #fff; padding: 10px 14px; border-radius: 12px; font-size: .88rem; display: flex; gap: 12px; align-items: center; max-width: 92vw; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+        .toast button { background: var(--accent); color: var(--ink); border: none; border-radius: 8px; padding: 6px 12px; font-weight: 700; cursor: pointer; }
+</style>
 </head>
 <body>
     <div id="authGate" class="gate" hidden>
@@ -498,6 +502,7 @@
             </button>
         </div>
     </header>
+    <div id="offBar" class="offbar" hidden><i class="fas fa-plane"></i> أنت بدون إنترنت: الحاسبات والإحداثيات شغالة عادي، والمساعد الذكي والأسئلة والدخول محتاجين نت.</div>
 
     <!-- القائمة الجانبية المنسدلة -->
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
@@ -1520,6 +1525,7 @@
             const inp = document.getElementById('aiInput');
             q = (q || inp.value).trim();
             if (!q || aiBusy) return;
+            if (!navigator.onLine) { aiStatus('المساعد الذكي محتاج إنترنت. باقي التطبيق شغال بدون نت.'); return; }
             if (needFile && !aiFile) return aiStatus(aiErr || 'ارفع اللوحة الأول.');
             if (window.Cloud && !window.isRegistered) { aiStatus('سجّل دخول بحساب علشان تستخدم المساعد الذكي.'); return showGate(); }
             inp.value = ''; inp.style.height = 'auto'; aiBusy = true; aiStatus('');
@@ -1551,7 +1557,7 @@
         const HLS = 'rabia_history';
         const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
         const H = {
-            cloud: () => !!(window.Cloud && window.isRegistered),
+            cloud: () => !!(window.Cloud && window.isRegistered && navigator.onLine),
             local() { try { return JSON.parse(localStorage.getItem(HLS) || '[]'); } catch (e) { return []; } },
             saveLocal(a) { try { localStorage.setItem(HLS, JSON.stringify(a.slice(0, 100))); } catch (e) {} },
             async add(e) { if (H.cloud()) return window.Cloud.add(e); const a = H.local(); a.unshift(Object.assign({ id: 'l' + e.at }, e)); H.saveLocal(a); },
@@ -1582,7 +1588,7 @@
             const b = document.getElementById('authBtn');
             if (!window.Cloud) { b.hidden = true; return; }
             b.hidden = false;
-            b.innerHTML = (u && !u.isAnonymous) ? (u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer">' : '<i class="fas fa-user"></i>') : '<i class="fab fa-google"></i> دخول';
+            b.innerHTML = (u && !u.isAnonymous) ? (u.photoURL ? '<img src="' + esc(u.photoURL) + '" alt="" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">' : '<i class="fas fa-user"></i>') : '<i class="fab fa-google"></i> دخول';
         }
         function authClick() {
             if (window.isRegistered) { openTab('tab-history', document.querySelector('.drawer-nav-btn[onclick*="tab-history"]')); renderHistory(); }
@@ -1595,7 +1601,7 @@
                 hideGate();
                 const loc = H.local();
                 if (loc.length) { try { for (const e of loc.reverse()) await window.Cloud.add(e); H.saveLocal([]); } catch (e) {} }
-            } else if (window.Cloud && !sessionStorage.getItem(GUEST_KEY)) showGate();
+            } else if (window.Cloud && navigator.onLine && !sessionStorage.getItem(GUEST_KEY)) showGate();
             if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
             if (document.getElementById('tab-qa').classList.contains('active')) renderQA();
         };
@@ -1695,12 +1701,13 @@
             const d = h / 24; if (d < 30) return 'منذ ' + Math.floor(d) + ' يوم';
             return new Date(t).toLocaleDateString('ar-EG');
         }
-        const avHtml = (name, photo) => '<div class="av">' + ((photo && /^https:\/\//.test(photo)) ? '<img src="' + esc(photo) + '" alt="" referrerpolicy="no-referrer">' : esc(String(name || '؟').trim().charAt(0) || '؟')) + '</div>';
+        const avHtml = (name, photo) => '<div class="av">' + ((photo && /^https:\/\//.test(photo)) ? '<img src="' + esc(photo) + '" alt="" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">' : esc(String(name || '؟').trim().charAt(0) || '؟')) + '</div>';
         function qaCount() { document.getElementById('qaCnt').textContent = document.getElementById('qaText').value.length + '/1000'; }
         function setQF(f, btn) { qFilter = f; document.querySelectorAll('#qaFilters button').forEach(b => b.className = b === btn ? 'on' : ''); paintQA(); }
         async function renderQA() {
             const box = document.getElementById('qaList');
             if (!window.Cloud) { box.innerHTML = '<div class="qempty"><i class="fas fa-comments"></i>الأسئلة والإجابات غير متاحة حالياً.</div>'; return; }
+            if (!navigator.onLine) { box.innerHTML = '<div class="qempty"><i class="fas fa-plane"></i>الأسئلة والإجابات محتاجة إنترنت.</div>'; return; }
             const u = window.currentUser, reg = window.isRegistered;
             document.getElementById('qaInfo').textContent = reg
                 ? 'أهلاً ' + (u.displayName || u.email) + '، تقدر تسأل وتجاوب على أسئلة الناس.'
@@ -1747,6 +1754,7 @@
                     : '<div class="ai-note">سجّل دخول بحساب علشان تقدر تجاوب. <button class="qpill" onclick="showGate()">دخول / إنشاء حساب</button></div>');
         }
         async function askQ() {
+            if (!navigator.onLine) { alert('العملية دي محتاجة إنترنت.'); return; }
             const t = document.getElementById('qaText'), btn = document.getElementById('qaAsk'), text = t.value.trim();
             if (!text) return;
             btn.disabled = true;
@@ -1757,16 +1765,19 @@
             btn.disabled = false;
         }
         async function answerQ(i) {
+            if (!navigator.onLine) { alert('العملية دي محتاجة إنترنت.'); return; }
             const t = document.getElementById('ans-' + i), text = t.value.trim();
             if (!text) return;
             try { await window.Cloud.qa.answer(qaItems[i].id, text); qaItems[i].answers = (qaItems[i].answers || 0) + 1; qCount(i); await renderAns(i); }
             catch (e) { alert('تعذر إرسال الإجابة: ' + (e.code || e.message)); }
         }
         async function delQ(i) {
+            if (!navigator.onLine) { alert('العملية دي محتاجة إنترنت.'); return; }
             if (!confirm('تمسح السؤال ده؟')) return;
             try { await window.Cloud.qa.delQ(qaItems[i].id); renderQA(); } catch (e) { alert('تعذر الحذف.'); }
         }
         async function delA(i, aid) {
+            if (!navigator.onLine) { alert('العملية دي محتاجة إنترنت.'); return; }
             if (!confirm('تمسح الإجابة دي؟')) return;
             try { await window.Cloud.qa.delA(qaItems[i].id, aid); qaItems[i].answers = Math.max(0, (qaItems[i].answers || 1) - 1); qCount(i); await renderAns(i); }
             catch (e) { alert('تعذر الحذف.'); }
@@ -2037,6 +2048,7 @@
         }
         async function lbOnImg(input) {
             const f = input.files[0]; if (!f) return; input.value = '';
+            if (!navigator.onLine) return lbStatus('قراءة الصورة بالذكاء الاصطناعي محتاجة إنترنت.', true);
             if (LB.type === 'cross') return lbStatus('قراءة الصورة بالذكاء الاصطناعي مش متاحة للعرضية. استخدم ملف Excel أو CSV أو اكتب القراءات.', true);
             if (window.Cloud && !window.isRegistered) { lbStatus('سجّل دخول بحساب علشان تستخدم قراءة الصور بالذكاء الاصطناعي.', true); return showGate(); }
             lbStatus('جاري قراءة الدفتر بالذكاء الاصطناعي...');
@@ -2360,7 +2372,29 @@
         paintAuth(null);
     </script>
     <script>
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+        function appToast(text, label, fn) {
+            const t = document.getElementById('appToast'); t.innerHTML = '<span></span>'; t.firstChild.textContent = text;
+            if (label) { const b = document.createElement('button'); b.textContent = label; b.onclick = fn; t.appendChild(b); }
+            t.hidden = false; setTimeout(() => { t.hidden = true; }, label ? 12000 : 6000);
+        }
+        function netUI() { document.getElementById('offBar').hidden = navigator.onLine; }
+        async function flushLocal() {
+            if (!(window.Cloud && window.isRegistered && navigator.onLine)) return;
+            const loc = H.local(); if (!loc.length) return;
+            try { for (const e of loc.slice().reverse()) await window.Cloud.add(e); H.saveLocal([]); } catch (e) {}
+        }
+        window.addEventListener('online', () => { netUI(); flushLocal(); });
+        window.addEventListener('offline', netUI); netUI();
+        if ('serviceWorker' in navigator) {
+            const had = !!navigator.serviceWorker.controller;
+            navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(reg => { if (navigator.onLine && reg.active) setTimeout(() => reg.active.postMessage({ type: 'PREFETCH' }), 2500); }).catch(() => {});
+            navigator.serviceWorker.addEventListener('message', ev => {
+                const d = ev.data || {};
+                if (d.type === 'OFFLINE_READY' && !localStorage.getItem('rabia_off_ok')) { try { localStorage.setItem('rabia_off_ok', '1'); } catch (e) {} appToast('التطبيق جاهز للعمل بدون إنترنت ✓'); }
+                if (d.type === 'OFFLINE_PARTIAL') appToast('لسه بجهّز ملفات العمل بدون إنترنت. خليك أونلاين شوية وافتح التطبيق تاني.');
+            });
+            navigator.serviceWorker.addEventListener('controllerchange', () => { if (had) appToast('اتحدّث التطبيق لنسخة جديدة.', 'تحديث الآن', () => location.reload()); });
+        }
         let deferredInstall = null;
         window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; document.getElementById('installBtn').hidden = false; });
         window.addEventListener('appinstalled', () => { document.getElementById('installBtn').hidden = true; });
@@ -2432,5 +2466,6 @@
             } catch (e) { window.Cloud = undefined; window.onAuthChanged(null); }
         })();
     </script>
+    <div id="appToast" class="toast" hidden></div>
 </body>
 </html>
