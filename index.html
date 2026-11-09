@@ -437,6 +437,41 @@
         .offbar[hidden], .toast[hidden] { display: none; }
         .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 64px; z-index: 5000; background: var(--ink); color: #fff; padding: 10px 14px; border-radius: 12px; font-size: .88rem; display: flex; gap: 12px; align-items: center; max-width: 92vw; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
         .toast button { background: var(--accent); color: var(--ink); border: none; border-radius: 8px; padding: 6px 12px; font-weight: 700; cursor: pointer; }
+        footer { display: none; }
+        .botnav { display: flex; background: #fff; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 90; }
+        .botnav button { flex: 1; background: none; border: none; padding: 7px 2px 5px; display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--muted); font-size: .7rem; font-weight: 600; cursor: pointer; min-height: 58px; }
+        .botnav button i { font-size: 18px; width: 46px; height: 28px; border-radius: 14px; display: grid; place-items: center; }
+        .botnav button.on { color: var(--primary); }
+        .botnav button.on i { background: var(--accent); color: var(--ink); }
+        .vd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .vd-card { position: relative; border-radius: 14px; overflow: hidden; background: #0d1f1c; aspect-ratio: 9 / 13; cursor: pointer; }
+        .vd-card img { width: 100%; height: 100%; object-fit: cover; opacity: .9; display: block; }
+        .vd-t { position: absolute; inset: auto 0 0 0; padding: 28px 10px 10px; background: linear-gradient(transparent, rgba(0,0,0,.85)); color: #fff; font-size: .82rem; font-weight: 700; line-height: 1.5; }
+        .vd-m { position: absolute; top: 8px; inset-inline-start: 8px; background: rgba(0,0,0,.6); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: .7rem; }
+        .vd-p { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.88); color: var(--primary); display: grid; place-items: center; }
+        .vd-x { position: absolute; top: 6px; inset-inline-end: 6px; width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(192,57,43,.9); color: #fff; cursor: pointer; }
+        .vv { position: fixed; inset: 0; z-index: 1500; background: #000; }
+        .vv[hidden] { display: none; }
+        .vv-feed { height: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; overscroll-behavior: contain; }
+        .vv-slide { height: 100%; scroll-snap-align: start; scroll-snap-stop: always; position: relative; background: #000; overflow: hidden; }
+        .vv-slide iframe, .vv-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .vv-thumb { object-fit: cover; opacity: .75; }
+        .vv-info { position: absolute; right: 14px; left: 86px; bottom: 26px; color: #fff; z-index: 2; text-shadow: 0 1px 6px rgba(0,0,0,.8); pointer-events: none; }
+        .vv-info b { display: block; font-size: 1rem; line-height: 1.6; }
+        .vv-tag { display: inline-block; margin-top: 6px; background: var(--accent); color: var(--ink); border-radius: 999px; padding: 2px 10px; font-size: .72rem; font-weight: 700; text-shadow: none; }
+        .vv-acts { position: absolute; left: 10px; bottom: 30px; display: flex; flex-direction: column; gap: 16px; z-index: 3; }
+        .vv-act { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; color: #fff; font-size: .74rem; font-weight: 700; cursor: pointer; text-shadow: 0 1px 4px rgba(0,0,0,.7); }
+        .vv-act i { width: 48px; height: 48px; border-radius: 50%; background: rgba(0,0,0,.5); display: grid; place-items: center; font-size: 20px; }
+        .vv-act.on i { color: #ff4d6a; }
+        .vv-act.sv.on i { color: var(--accent); }
+        .vv-top { position: absolute; top: 12px; right: 12px; left: 12px; display: flex; justify-content: space-between; z-index: 4; pointer-events: none; }
+        .vv-top button { width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; border: none; font-size: 18px; cursor: pointer; pointer-events: auto; }
+        .vv-ud { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 3; }
+        .vv-ud button { width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,.45); color: #fff; border: none; cursor: pointer; }
+        .cm-list { max-height: 46vh; overflow-y: auto; margin: 10px 0; }
+        .vd-form input, .vd-form select { margin-bottom: 10px; }
+        .rp-list button { display: block; width: 100%; text-align: start; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: #fff; margin-bottom: 8px; font-weight: 600; cursor: pointer; color: var(--ink); font-size: .95rem; }
+        .rp-list button:active { background: var(--accent-soft); }
 </style>
 </head>
 <body>
@@ -461,6 +496,7 @@
             <button class="gate-btn google" onclick="Cloud.signIn()"><i class="fab fa-google"></i> المتابعة بحساب جوجل</button>
             <button class="gate-guest" onclick="gateGuest()">تصفح كزائر</button>
             <button class="gate-help" onclick="openContact()"><i class="fas fa-headset"></i> محتاج مساعدة؟ تواصل معنا</button>
+            <button class="gate-help" onclick="window.open('legal.html', '_blank')">بالمتابعة إنت موافق على <u>الشروط وسياسة الخصوصية</u></button>
         </div>
     </div>
     <div id="contactSheet" class="sheet" hidden onclick="if (event.target === this) closeContact()">
@@ -521,8 +557,11 @@
         <button class="drawer-nav-btn" onclick="openTab('tab-formulas', this)"><i class="fas fa-book-open"></i> القوانين</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-ai', this)"><i class="fas fa-microchip"></i> المساعد الذكي</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-history', this); renderHistory()"><i class="fas fa-history"></i> سجل العمليات</button>
+        <button class="drawer-nav-btn" onclick="openTab('tab-videos', this); renderVideos()"><i class="fas fa-play-circle"></i> فيديوهات تعليمية</button>
         <button class="drawer-nav-btn" onclick="openTab('tab-qa', this); renderQA()"><i class="fas fa-comments"></i> الأسئلة والإجابات</button>
         <button class="drawer-nav-btn" onclick="toggleMenu(); openContact()"><i class="fas fa-headset"></i> تواصل معنا (شكاوى ومقترحات)</button>
+        <button id="admBtn" class="drawer-nav-btn" hidden onclick="openTab('tab-admin', this); admRender()"><i class="fas fa-shield-alt"></i> الإشراف والبلاغات</button>
+        <button class="drawer-nav-btn" onclick="window.open('legal.html', '_blank')"><i class="fas fa-file-contract"></i> الخصوصية والشروط</button>
         <button id="installBtn" class="drawer-nav-btn" onclick="installApp()" hidden><i class="fas fa-download"></i> تثبيت التطبيق</button>
     </div>
 
@@ -536,6 +575,11 @@
                     <p>أداتك الهندسية المتكاملة لحسابات الميدان، الميول، الشبكات، والميزانية بدقة متناهية.</p>
                     
                     <div class="quick-grid">
+                        <div class="quick-card" onclick="openTab('tab-videos', null); renderVideos()">
+                            <i class="fas fa-play-circle"></i>
+                            <h3>فيديوهات تعليمية</h3>
+                            <span>شروحات الأجهزة والحسابات</span>
+                        </div>
                         <div class="quick-card" onclick="openTabFromCard('tab-roads')">
                             <i class="fas fa-road"></i>
                             <h3>الطرق والرامبات</h3>
@@ -829,6 +873,27 @@
                 </div>
             </div>
 
+            <!-- الإشراف -->
+            <div id="tab-admin" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-shield-alt"></i> الإشراف والبلاغات</h2>
+                    <p class="ai-note">البلاغات المفتوحة من المستخدمين. احذف المحتوى المخالف أو تجاهل البلاغ.</p>
+                    <div id="admList"></div>
+                </div>
+            </div>
+
+            <!-- فيديوهات تعليمية -->
+            <div id="tab-videos" class="section">
+                <div class="card">
+                    <h2><i class="fas fa-play-circle"></i> فيديوهات تعليمية</h2>
+                    <p class="ai-note">شروحات الأجهزة والحسابات المساحية بالفيديو. اضغط على أي فيديو وانزل بإصبعك للتالي.</p>
+                    <div id="vdAdmin" hidden><button class="btn-calc" onclick="vdOpenAdd()"><i class="fas fa-plus"></i> إضافة فيديو</button></div>
+                    <input id="vdSearch" placeholder="ابحث في الفيديوهات..." oninput="vdPaint()" style="margin-top: 10px;">
+                    <div class="qfilters" id="vdCats"></div>
+                    <div id="vdGrid" class="vd-grid"></div>
+                </div>
+            </div>
+
             <!-- الأسئلة والإجابات -->
             <div id="tab-qa" class="section">
                 <div class="card">
@@ -903,6 +968,13 @@
     </div>
 
     <!-- التوقيع البسيط فى الواجهة بالموقع -->
+        <nav id="botNav" class="botnav">
+        <button data-n="home" class="on" onclick="openTab('tab-home', null)"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+        <button data-n="videos" onclick="openTab('tab-videos', null); renderVideos()"><i class="fas fa-play-circle"></i><span>فيديوهات</span></button>
+        <button data-n="tools" onclick="toggleMenu()"><i class="fas fa-th-large"></i><span>الأدوات</span></button>
+        <button data-n="qa" onclick="openTab('tab-qa', null); renderQA()"><i class="fas fa-comments"></i><span>الأسئلة</span></button>
+        <button data-n="me" onclick="authClick()"><i class="fas fa-user"></i><span>حسابي</span></button>
+    </nav>
     <footer>
         الربيع للمساحة
     </footer>
@@ -921,6 +993,7 @@
             document.querySelectorAll('.drawer-nav-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
+            if (typeof navMark === 'function') navMark(tabId);
             if(btn) btn.classList.add('active');
             
             const drawer = document.getElementById('sideDrawer');
@@ -1596,6 +1669,8 @@
         }
         window.onAuthChanged = async u => {
             window.currentUser = u; window.isRegistered = !!(u && !u.isAnonymous);
+            window.isAdmin = !!(u && !u.isAnonymous && u.email === VD_ADMIN && u.emailVerified);
+            { const ab = document.getElementById('admBtn'); if (ab) ab.hidden = !window.isAdmin; }
             paintAuth(u);
             if (window.isRegistered) {
                 hideGate();
@@ -1604,11 +1679,12 @@
             } else if (window.Cloud && navigator.onLine && !sessionStorage.getItem(GUEST_KEY)) showGate();
             if (document.getElementById('tab-history').classList.contains('active')) renderHistory();
             if (document.getElementById('tab-qa').classList.contains('active')) renderQA();
+            if (document.getElementById('tab-videos').classList.contains('active')) renderVideos();
         };
         async function renderHistory() {
             const u = window.currentUser, box = document.getElementById('historyUser');
             if (window.Cloud) {
-                box.innerHTML = window.isRegistered ? '<span>' + esc(u.displayName || u.email) + '<br><small>' + esc(u.email || '') + '</small></span><button class="f-btn" onclick="doSignOut()">تسجيل الخروج</button>'
+                box.innerHTML = window.isRegistered ? '<span>' + esc(u.displayName || u.email) + '<br><small>' + esc(u.email || '') + '</small></span><button class="f-btn" onclick="doSignOut()">تسجيل الخروج</button><button class="f-btn del" onclick="doDeleteAccount()">حذف حسابي</button>'
                     : '<span>سجلك محفوظ على الجهاز ده بس. سجّل دخول بجوجل علشان يتحفظ في حسابك ويظهر على أي جهاز.</span><button class="f-btn" onclick="showGate()">دخول / إنشاء حساب</button>';
             } else box.innerHTML = '<span>السجل محفوظ على الجهاز ده فقط.</span>';
             const list = document.getElementById('historyList');
@@ -1725,7 +1801,8 @@
                 '<div class="qcard"><div class="qhead">' + avHtml(q.name, q.photo) + '<div class="who"><strong>' + esc(q.name) + '</strong><small>' + esc(ago(q.at)) + '</small></div></div>' +
                 '<div class="qbody">' + esc(q.text) + '</div><div class="qfoot">' +
                 '<button class="qpill' + (q.answers > 0 ? ' has' : '') + '" onclick="toggleAns(' + i + ')"><i class="fas fa-comment-dots"></i> ' + (q.answers > 0 ? q.answers + ' إجابة' : 'أجب') + '</button>' +
-                (q.uid === me ? '<button class="qpill del" onclick="delQ(' + i + ')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                ((q.uid === me || window.isAdmin) ? '<button class="qpill del" onclick="delQ(' + i + ')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                (q.uid !== me ? '<button class="qpill" onclick="rptQ(' + i + ')" aria-label="إبلاغ"><i class="fas fa-flag"></i></button>' : '') +
                 '</div><div class="qthread" id="qa-' + i + '" hidden></div></div>').join('')
                 : '<div class="qempty"><i class="fas fa-comments"></i>' + (qFilter === 'all' ? 'لسه مفيش أسئلة. كن أول من يسأل!' : 'مفيش نتائج هنا.') + '</div>';
         }
@@ -1744,10 +1821,12 @@
             el.innerHTML = '<div class="qempty"><i class="fas fa-spinner fa-spin"></i></div>';
             let list = [];
             try { list = await window.Cloud.qa.answers(q.id); } catch (e) { el.textContent = 'تعذر تحميل الإجابات.'; return; }
+            list.forEach(a => { ANS_T[a.id] = a.text; });
             const me = window.currentUser && window.currentUser.uid;
             el.innerHTML = list.map(a =>
                 '<div class="acard"><div class="qhead">' + avHtml(a.name, a.photo) + '<div class="who"><strong>' + esc(a.name) + '</strong><small>' + esc(ago(a.at)) + '</small></div>' +
-                (a.uid === me ? '<button class="qpill del" onclick="delA(' + i + ',\'' + esc(a.id) + '\')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                ((a.uid === me || window.isAdmin) ? '<button class="qpill del" onclick="delA(' + i + ',\'' + esc(a.id) + '\')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                (a.uid !== me ? '<button class="qpill" onclick="rptA(' + i + ',\'' + esc(a.id) + '\')" aria-label="إبلاغ"><i class="fas fa-flag"></i></button>' : '') +
                 '</div><div class="qbody">' + esc(a.text) + '</div></div>').join('') +
                 (window.isRegistered
                     ? '<div class="areply"><textarea id="ans-' + i + '" rows="1" maxlength="2000" placeholder="اكتب إجابتك..."></textarea><button class="rbtn send" onclick="answerQ(' + i + ')" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button></div>'
@@ -2369,6 +2448,202 @@
             else lbDownload('ميزانية_عرضية.csv', [['القطاع', 'المسافة', 'البعد', 'القراءة', 'R.L'].concat(d !== null ? ['حفر/ردم'] : [])].concat(R.r.secs.reduce((a, s) => a.concat(s.pts.map(p => [s.name, s.ch == null ? '' : s.ch, p.off, lbF(p.r), lbF(p.rl)].concat(d !== null ? [sg(p.cf)] : []))), [])));
         }
         lbSetHM('bm'); lbSetSM('write'); lbSetType('long', true); myPtsPaint();
+        const VD_ADMIN = 'mohamedrabia6668@gmail.com';
+        const VD_CATS = ['ميزان', 'توتال ستيشن', 'GPS', 'رفع مساحي', 'حسابات', 'نصائح ميدانية'];
+        let vdItems = [], vdCat = 'all', vdLiked = new Set(), vdSaved = new Set(), vdList = [], vdIdx = 0, vdObs = null, vdCmtI = null, vdLoaded = false;
+        const vdEl = id => document.getElementById(id);
+        const vdThumb = id => 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg';
+        function vdParse(u) {
+            const t = String(u || '').trim(), m = t.match(/(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|live\/)|[?&]v=)([\w-]{11})/);
+            return m ? m[1] : (/^[\w-]{11}$/.test(t) ? t : null);
+        }
+        function navMark(id) {
+            const m = { 'tab-home': 'home', 'tab-videos': 'videos', 'tab-qa': 'qa', 'tab-history': 'me' }, k = m[id] || 'tools';
+            document.querySelectorAll('#botNav button').forEach(b => b.className = b.dataset.n === k ? 'on' : '');
+        }
+        async function renderVideos() {
+            const grid = vdEl('vdGrid');
+            vdEl('vdAdmin').hidden = !window.isAdmin;
+            const msg = (ic, t) => { grid.innerHTML = '<div class="qempty" style="grid-column:1/-1"><i class="fas ' + ic + '"></i>' + t + '</div>'; };
+            if (!window.Cloud) return msg('fa-play-circle', 'الفيديوهات غير متاحة حالياً.');
+            if (!navigator.onLine) return msg('fa-plane', 'الفيديوهات محتاجة إنترنت.');
+            grid.innerHTML = '<div class="qempty" style="grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i>جاري التحميل...</div>';
+            try {
+                vdItems = await window.Cloud.vid.list();
+                if (window.isRegistered) { const r = await Promise.all([window.Cloud.vid.myLikes(), window.Cloud.vid.mySaved()]); vdLiked = r[0]; vdSaved = r[1]; } else { vdLiked = new Set(); vdSaved = new Set(); }
+            } catch (e) { return msg('fa-exclamation-circle', 'تعذر تحميل الفيديوهات.'); }
+            vdLoaded = true;
+            vdEl('vdCats').innerHTML = [['all', 'الكل'], ['saved', 'المحفوظ']].concat(VD_CATS.map(c => [c, c])).map(c => '<button class="' + (vdCat === c[0] ? 'on' : '') + '" onclick="vdSetCat(\'' + c[0] + '\')">' + esc(c[1]) + '</button>').join('');
+            vdPaint();
+        }
+        function vdSetCat(c) { vdCat = c; vdEl('vdCats').querySelectorAll('button').forEach(b => b.className = b.textContent === (c === 'all' ? 'الكل' : c === 'saved' ? 'المحفوظ' : c) ? 'on' : ''); vdPaint(); }
+        function vdFiltered() {
+            const q = vdEl('vdSearch').value.trim().toLowerCase();
+            return vdItems.filter(v => (vdCat === 'all' || (vdCat === 'saved' ? vdSaved.has(v.id) : v.cat === vdCat)) && (!q || String(v.title).toLowerCase().includes(q)));
+        }
+        function vdPaint() {
+            const list = vdFiltered(), grid = vdEl('vdGrid');
+            if (!list.length) { grid.innerHTML = '<div class="qempty" style="grid-column:1/-1"><i class="fas fa-play-circle"></i>' + (vdItems.length ? 'مفيش نتائج هنا.' : (window.isAdmin ? 'أضف أول فيديو من الزرار فوق.' : 'لسه مفيش فيديوهات. قريباً!')) + '</div>'; return; }
+            grid.innerHTML = list.map((v, i) => '<div class="vd-card" onclick="vdOpen(' + i + ')"><img loading="lazy" src="' + vdThumb(esc(v.ytId)) + '" alt=""><span class="vd-m">' + esc(v.cat || '') + '</span><span class="vd-p"><i class="fas fa-play"></i></span>' +
+                (window.isAdmin ? '<button class="vd-x" onclick="event.stopPropagation(); vdDelete(\'' + esc(v.id) + '\')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') +
+                '<div class="vd-t">' + esc(v.title) + '</div></div>').join('');
+        }
+        function vdSlideHTML(v, i) {
+            return '<div class="vv-slide" data-i="' + i + '"><img class="vv-thumb" src="' + vdThumb(esc(v.ytId)) + '" alt=""><div class="vv-info"><b>' + esc(v.title) + '</b><span class="vv-tag">' + esc(v.cat || 'مساحة') + '</span></div>' +
+                '<div class="vv-acts"><button class="vv-act lk' + (vdLiked.has(v.id) ? ' on' : '') + '" onclick="vdLike(' + i + ')"><i class="fas fa-heart"></i><span>' + (v.likes || 0) + '</span></button>' +
+                '<button class="vv-act" onclick="vdCmt(' + i + ')"><i class="fas fa-comment-dots"></i><span id="vc-' + i + '">' + (v.comments || 0) + '</span></button>' +
+                '<button class="vv-act sv' + (vdSaved.has(v.id) ? ' on' : '') + '" onclick="vdSave(' + i + ')"><i class="fas fa-bookmark"></i><span>حفظ</span></button>' +
+                '<button class="vv-act" onclick="vdShare(' + i + ')"><i class="fas fa-share"></i><span>مشاركة</span></button>' +
+                '<button class="vv-act" onclick="rptVid(' + i + ')"><i class="fas fa-flag"></i><span>إبلاغ</span></button></div></div>';
+        }
+        function vdOpen(i) {
+            vdList = vdFiltered(); if (!vdList.length) return;
+            vdEl('vdFeed').innerHTML = vdList.map(vdSlideHTML).join('');
+            vdEl('vdViewer').hidden = false; document.body.style.overflow = 'hidden';
+            const feed = vdEl('vdFeed'); feed.scrollTop = i * feed.clientHeight;
+            if (vdObs) vdObs.disconnect();
+            vdObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) vdActivate(e.target); }), { root: feed, threshold: 0.7 });
+            feed.querySelectorAll('.vv-slide').forEach(sl => vdObs.observe(sl));
+            vdIdx = i;
+        }
+        function vdActivate(sl) {
+            vdEl('vdFeed').querySelectorAll('iframe').forEach(f => f.remove());
+            const i = +sl.dataset.i, v = vdList[i]; vdIdx = i;
+            const f = document.createElement('iframe');
+            f.src = 'https://www.youtube-nocookie.com/embed/' + v.ytId + '?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1&loop=1&playlist=' + v.ytId;
+            f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true; f.title = v.title;
+            sl.insertBefore(f, sl.querySelector('.vv-info'));
+        }
+        function vdStep(d) { const feed = vdEl('vdFeed'); feed.scrollTo({ top: Math.max(0, Math.min(vdList.length - 1, vdIdx + d)) * feed.clientHeight, behavior: 'smooth' }); }
+        function vdClose() { vdEl('vdViewer').hidden = true; vdEl('vdFeed').innerHTML = ''; document.body.style.overflow = ''; if (vdObs) vdObs.disconnect(); }
+        function vdNeedLogin() { if (window.isRegistered) return false; vdClose(); showGate(); return true; }
+        async function vdLike(i) {
+            if (vdNeedLogin()) return;
+            const v = vdList[i], on = !vdLiked.has(v.id), b = vdEl('vdFeed').querySelectorAll('.vv-slide')[i].querySelector('.lk');
+            const apply = x => { x ? vdLiked.add(v.id) : vdLiked.delete(v.id); v.likes = Math.max(0, (v.likes || 0) + (x ? 1 : -1)); b.className = 'vv-act lk' + (x ? ' on' : ''); b.querySelector('span').textContent = v.likes; };
+            apply(on);
+            try { await window.Cloud.vid.like(v.id, on); } catch (e) { apply(!on); alert('تعذر تسجيل الإعجاب.'); }
+        }
+        async function vdSave(i) {
+            if (vdNeedLogin()) return;
+            const v = vdList[i], on = !vdSaved.has(v.id), b = vdEl('vdFeed').querySelectorAll('.vv-slide')[i].querySelector('.sv');
+            const apply = x => { x ? vdSaved.add(v.id) : vdSaved.delete(v.id); b.className = 'vv-act sv' + (x ? ' on' : ''); };
+            apply(on);
+            try { await window.Cloud.vid.save(v.id, on); if (on) appToast('اتحفظ الفيديو ✓'); } catch (e) { apply(!on); alert('تعذر الحفظ.'); }
+        }
+        async function vdShare(i) {
+            const v = vdList[i], url = location.origin + '/?v=' + v.id;
+            try { if (navigator.share) { await navigator.share({ title: v.title, text: v.title + ' - الربيع للمساحة', url }); return; } } catch (e) { return; }
+            try { await navigator.clipboard.writeText(url); appToast('اتنسخ رابط الفيديو ✓'); } catch (e) { prompt('انسخ الرابط:', url); }
+        }
+        function vdCmtClose() { vdEl('vdCmtSheet').hidden = true; }
+        async function vdCmt(i) {
+            vdCmtI = i; vdEl('vdCmtSheet').hidden = false;
+            vdEl('vdCmtBox').innerHTML = window.isRegistered
+                ? '<div class="areply"><textarea id="vdCmtText" rows="1" maxlength="500" placeholder="اكتب تعليقك..."></textarea><button class="rbtn send" onclick="vdCmtSend()" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button></div>'
+                : '<div class="ai-note">سجّل دخول بحساب علشان تقدر تعلّق. <button class="qpill" onclick="vdCmtClose(); vdClose(); showGate()">دخول / إنشاء حساب</button></div>';
+            await vdCmtLoad();
+        }
+        async function vdCmtLoad() {
+            const box = vdEl('vdCmtList'), v = vdList[vdCmtI];
+            box.innerHTML = '<div class="qempty"><i class="fas fa-spinner fa-spin"></i></div>';
+            let list = [];
+            try { list = await window.Cloud.vid.comments(v.id); } catch (e) { box.textContent = 'تعذر تحميل التعليقات.'; return; }
+            list.forEach(c => { CMT_T[c.id] = c.text; });
+            const me = window.currentUser && window.currentUser.uid;
+            vdEl('vdCmtTitle').textContent = 'التعليقات (' + list.length + ')';
+            box.innerHTML = list.length ? list.map(c => '<div class="acard"><div class="qhead">' + avHtml(c.name, c.photo) + '<div class="who"><strong>' + esc(c.name) + '</strong><small>' + esc(ago(c.at)) + '</small></div>' +
+                ((c.uid === me || window.isAdmin) ? '<button class="qpill del" onclick="vdCmtDel(\'' + esc(c.id) + '\')" aria-label="حذف"><i class="fas fa-trash"></i></button>' : '') + (c.uid !== me ? '<button class="qpill" onclick="rptCmt(\'' + esc(c.id) + '\')" aria-label="إبلاغ"><i class="fas fa-flag"></i></button>' : '') + '</div><div class="qbody">' + esc(c.text) + '</div></div>').join('')
+                : '<div class="qempty"><i class="fas fa-comments"></i>مفيش تعليقات لسه.</div>';
+        }
+        function vdCmtCount(v, i) { const e = vdEl('vc-' + i); if (e) e.textContent = v.comments || 0; }
+        async function vdCmtSend() {
+            if (!navigator.onLine) return alert('العملية دي محتاجة إنترنت.');
+            const t = vdEl('vdCmtText'), text = t.value.trim(), v = vdList[vdCmtI]; if (!text) return;
+            try { await window.Cloud.vid.comment(v.id, text); t.value = ''; v.comments = (v.comments || 0) + 1; vdCmtCount(v, vdCmtI); await vdCmtLoad(); } catch (e) { alert('تعذر إرسال التعليق.'); }
+        }
+        async function vdCmtDel(cid) {
+            if (!confirm('تمسح التعليق ده؟')) return;
+            const v = vdList[vdCmtI];
+            try { await window.Cloud.vid.delComment(v.id, cid); v.comments = Math.max(0, (v.comments || 1) - 1); vdCmtCount(v, vdCmtI); await vdCmtLoad(); } catch (e) { alert('تعذر الحذف.'); }
+        }
+        function vdOpenAdd() { vdEl('vdCat').innerHTML = VD_CATS.map(c => '<option>' + esc(c) + '</option>').join(''); vdEl('vdUrl').value = ''; vdEl('vdTitle').value = ''; vdEl('vdAddSheet').hidden = false; }
+        function vdAddClose() { vdEl('vdAddSheet').hidden = true; }
+        async function vdFillTitle() {
+            const u = vdEl('vdUrl').value.trim(); if (!vdParse(u) || vdEl('vdTitle').value) return;
+            try { const r = await fetch('https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + vdParse(u))); const j = await r.json(); if (j.title) vdEl('vdTitle').value = j.title; } catch (e) {}
+        }
+        async function vdSaveNew() {
+            const id = vdParse(vdEl('vdUrl').value), title = vdEl('vdTitle').value.trim(), btn = vdEl('vdSaveBtn');
+            if (!id) return alert('الرابط مش صحيح. الصق رابط يوتيوب.');
+            if (!title) return alert('اكتب عنوان للفيديو.');
+            btn.disabled = true;
+            try { await window.Cloud.vid.add({ ytId: id, title, cat: vdEl('vdCat').value }); vdAddClose(); appToast('اتنشر الفيديو ✓'); await renderVideos(); }
+            catch (e) { alert('تعذر النشر: ' + (e.code || e.message)); }
+            btn.disabled = false;
+        }
+        async function vdDelete(id) {
+            if (!confirm('تمسح الفيديو ده؟')) return;
+            try { await window.Cloud.vid.del(id); await renderVideos(); } catch (e) { alert('تعذر الحذف.'); }
+        }
+        function vdDeep(id, tries) {
+            if (!window.Cloud && (tries || 0) < 10) return setTimeout(() => vdDeep(id, (tries || 0) + 1), 600);
+            openTab('tab-videos', null);
+            renderVideos().then(() => { vdCat = 'all'; vdEl('vdSearch').value = ''; const i = vdFiltered().findIndex(v => v.id === id); if (i >= 0) vdOpen(i); });
+        }
+        window.addEventListener('load', () => { const v = new URLSearchParams(location.search).get('v'); if (v) setTimeout(() => vdDeep(v), 1200); });
+        navMark('tab-home');
+        const ANS_T = {}, CMT_T = {};
+        let rpCtx = null, admItems = [];
+        const RP_REASONS = ['إساءة أو محتوى مخالف', 'حقوق ملكية (محتوى منسوخ)', 'معلومات مساحية غلط', 'سبام أو إعلان', 'سبب تاني'];
+        const RP_KIND = { video: 'فيديو', vcomment: 'تعليق على فيديو', question: 'سؤال', answer: 'إجابة' };
+        function rpOpen(ctx) {
+            if (!window.Cloud) return alert('الإبلاغ غير متاح حالياً.');
+            if (!navigator.onLine) return alert('الإبلاغ محتاج إنترنت.');
+            rpCtx = ctx; document.getElementById('rpSheet').hidden = false;
+        }
+        function rpClose() { document.getElementById('rpSheet').hidden = true; }
+        async function rpSend(i) {
+            const k = 'rabia_rp', day = new Date().toDateString(); let st = {};
+            try { st = JSON.parse(localStorage.getItem(k) || '{}'); } catch (e) {}
+            if (st.d !== day) st = { d: day, n: 0 };
+            if (st.n >= 10) return alert('وصلت للحد اليومي للإبلاغات.');
+            try {
+                await window.Cloud.rep.add(Object.assign({}, rpCtx, { reason: RP_REASONS[i] }));
+                st.n++; try { localStorage.setItem(k, JSON.stringify(st)); } catch (e) {}
+                rpClose(); appToast('اتبعت البلاغ، شكراً ليك ✓');
+            } catch (e) { alert('تعذر إرسال البلاغ.'); }
+        }
+        function rptVid(i) { const v = vdList[i]; if (v) rpOpen({ kind: 'video', vid: v.id, snip: v.title }); }
+        function rptCmt(cid) { const v = vdList[vdCmtI]; if (v) rpOpen({ kind: 'vcomment', vid: v.id, cid, snip: CMT_T[cid] }); }
+        function rptQ(i) { const q = qaItems[i]; if (q) rpOpen({ kind: 'question', qid: q.id, snip: q.text }); }
+        function rptA(i, aid) { const q = qaItems[i]; if (q) rpOpen({ kind: 'answer', qid: q.id, aid, snip: ANS_T[aid] }); }
+        async function admRender() {
+            const box = document.getElementById('admList');
+            if (!window.isAdmin) { box.innerHTML = '<div class="qempty"><i class="fas fa-lock"></i>القسم ده للمشرف بس.</div>'; return; }
+            if (!navigator.onLine) { box.innerHTML = '<div class="qempty"><i class="fas fa-plane"></i>محتاج إنترنت.</div>'; return; }
+            box.innerHTML = '<div class="qempty"><i class="fas fa-spinner fa-spin"></i>جاري التحميل...</div>';
+            try { admItems = await window.Cloud.rep.list(); } catch (e) { box.innerHTML = '<div class="qempty">تعذر تحميل البلاغات. اتأكد إن قواعد Firebase اتحدّثت.</div>'; return; }
+            box.innerHTML = admItems.length ? admItems.map((r, i) =>
+                '<div class="qcard"><div class="qhead"><div class="who"><strong>' + esc(RP_KIND[r.kind] || r.kind) + ' · ' + esc(r.reason) + '</strong><small>' + esc(r.name || '') + ' · ' + esc(ago(r.at)) + '</small></div></div>' +
+                '<div class="qbody">' + esc(r.snip || '') + '</div><div class="qfoot"><button class="qpill del" onclick="admAct(' + i + ',true)"><i class="fas fa-trash"></i> حذف المحتوى</button><button class="qpill" onclick="admAct(' + i + ',false)">تجاهل البلاغ</button></div></div>').join('')
+                : '<div class="qempty"><i class="fas fa-check-circle"></i>مفيش بلاغات مفتوحة.</div>';
+        }
+        async function admAct(i, del) {
+            const r = admItems[i]; if (!r) return;
+            if (del && !confirm('تحذف المحتوى المبلّغ عنه؟')) return;
+            try { if (del) await window.Cloud.rep.removeTarget(r); await window.Cloud.rep.del(r.id); admRender(); }
+            catch (e) { alert('تعذر التنفيذ: ' + (e.code || e.message)); }
+        }
+        async function doDeleteAccount() {
+            if (!navigator.onLine) return alert('حذف الحساب محتاج إنترنت.');
+            if (!confirm('هتحذف حسابك نهائياً مع سجلك والفيديوهات المحفوظة والإعجابات وأسئلتك. تكمل؟')) return;
+            try {
+                await window.Cloud.deleteAccount(() => prompt('اكتب كلمة السر للتأكيد:'));
+                H.saveLocal([]); try { sessionStorage.removeItem(GUEST_KEY); } catch (e) {}
+                alert('اتحذف حسابك.');
+            } catch (e) { if (e && e.code === 'cancelled') return; alert('تعذر حذف الحساب: ' + ((e && (e.code || e.message)) || '')); }
+        }
         paintAuth(null);
     </script>
     <script>
@@ -2462,10 +2737,93 @@
                         }
                     }
                 };
+                const vdr = k => F.collection(db, 'videos', k);
+                window.Cloud.vid = {
+                    async list() { const s = await F.getDocs(F.query(F.collection(db, 'videos'), F.orderBy('at', 'desc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                    async myLikes() { const s = await F.getDocs(F.collection(db, 'users', auth.currentUser.uid, 'vlikes')); return new Set(s.docs.map(d => d.id)); },
+                    async mySaved() { const s = await F.getDocs(F.collection(db, 'users', auth.currentUser.uid, 'saved')); return new Set(s.docs.map(d => d.id)); },
+                    async like(vid, on) {
+                        const u = auth.currentUser, b = F.writeBatch(db), a = F.doc(db, 'videos', vid, 'likes', u.uid), m = F.doc(db, 'users', u.uid, 'vlikes', vid);
+                        if (on) { b.set(a, { at: Date.now() }); b.set(m, { at: Date.now() }); } else { b.delete(a); b.delete(m); }
+                        b.update(F.doc(db, 'videos', vid), { likes: F.increment(on ? 1 : -1) }); await b.commit();
+                    },
+                    save(vid, on) { const r = F.doc(db, 'users', auth.currentUser.uid, 'saved', vid); return on ? F.setDoc(r, { at: Date.now() }) : F.deleteDoc(r); },
+                    async comments(vid) { const s = await F.getDocs(F.query(F.collection(db, 'videos', vid, 'comments'), F.orderBy('at', 'asc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                    async comment(vid, text) {
+                        const u = auth.currentUser, b = F.writeBatch(db);
+                        b.set(F.doc(F.collection(db, 'videos', vid, 'comments')), { text, uid: u.uid, name: who(u), photo: u.photoURL || '', at: Date.now() });
+                        b.update(F.doc(db, 'videos', vid), { comments: F.increment(1) }); await b.commit();
+                    },
+                    async delComment(vid, cid) { const b = F.writeBatch(db); b.delete(F.doc(db, 'videos', vid, 'comments', cid)); b.update(F.doc(db, 'videos', vid), { comments: F.increment(-1) }); await b.commit(); },
+                    add(o) { return F.addDoc(F.collection(db, 'videos'), { ytId: o.ytId, title: o.title, cat: o.cat, uid: auth.currentUser.uid, at: Date.now(), likes: 0, comments: 0 }); },
+                    del: vid => F.deleteDoc(F.doc(db, 'videos', vid))
+                };
+                window.Cloud.rep = {
+                    async add(o) {
+                        if (!auth.currentUser) await A.signInAnonymously(auth);
+                        const u = auth.currentUser, d = { kind: o.kind, reason: String(o.reason).slice(0, 80), snip: String(o.snip || '').slice(0, 200), uid: u.uid, name: u.isAnonymous ? 'زائر' : who(u), at: Date.now() };
+                        ['vid', 'cid', 'qid', 'aid'].forEach(k => { if (o[k]) d[k] = String(o[k]); });
+                        return F.addDoc(F.collection(db, 'reports'), d);
+                    },
+                    async list() { const s = await F.getDocs(F.query(F.collection(db, 'reports'), F.orderBy('at', 'desc'), F.limit(100))); return s.docs.map(d => ({ id: d.id, ...d.data() })); },
+                    del: id => F.deleteDoc(F.doc(db, 'reports', id)),
+                    async removeTarget(r) {
+                        const gone = async (ref, parent, key) => { const b = F.writeBatch(db); b.delete(ref); b.update(parent, { [key]: F.increment(-1) }); try { await b.commit(); } catch (e) { await F.deleteDoc(ref); } };
+                        if (r.kind === 'video') return F.deleteDoc(F.doc(db, 'videos', r.vid));
+                        if (r.kind === 'vcomment') return gone(F.doc(db, 'videos', r.vid, 'comments', r.cid), F.doc(db, 'videos', r.vid), 'comments');
+                        if (r.kind === 'question') return F.deleteDoc(F.doc(db, 'questions', r.qid));
+                        if (r.kind === 'answer') return gone(F.doc(db, 'questions', r.qid, 'answers', r.aid), F.doc(db, 'questions', r.qid), 'answers');
+                    }
+                };
+                window.Cloud.deleteAccount = async getPw => {
+                    const u = auth.currentUser, pid = (u.providerData[0] || {}).providerId;
+                    if (pid === 'google.com') await A.reauthenticateWithPopup(u, new A.GoogleAuthProvider());
+                    else if (pid === 'password') { const pw = getPw(); if (!pw) throw { code: 'cancelled' }; await A.reauthenticateWithCredential(u, A.EmailAuthProvider.credential(u.email, pw)); }
+                    const wipe = async n => { const s = await F.getDocs(F.collection(db, 'users', u.uid, n)); await Promise.all(s.docs.map(d => F.deleteDoc(d.ref))); };
+                    await Promise.all(['history', 'saved', 'vlikes'].map(wipe));
+                    const qs = await F.getDocs(F.query(F.collection(db, 'questions'), F.where('uid', '==', u.uid)));
+                    await Promise.all(qs.docs.map(d => F.deleteDoc(d.ref)));
+                    await A.deleteUser(u);
+                };
                 A.onAuthStateChanged(auth, u => window.onAuthChanged(u));
             } catch (e) { window.Cloud = undefined; window.onAuthChanged(null); }
         })();
     </script>
+        <div id="vdViewer" class="vv" hidden>
+        <div class="vv-top"><button onclick="vdClose()" aria-label="إغلاق"><i class="fas fa-times"></i></button><span></span></div>
+        <div class="vv-ud"><button onclick="vdStep(-1)" aria-label="السابق"><i class="fas fa-chevron-up"></i></button><button onclick="vdStep(1)" aria-label="التالي"><i class="fas fa-chevron-down"></i></button></div>
+        <div id="vdFeed" class="vv-feed"></div>
+    </div>
+    <div id="vdCmtSheet" class="sheet" hidden onclick="if (event.target === this) vdCmtClose()">
+        <div class="sheet-p">
+            <div class="sheet-h"><h3 id="vdCmtTitle">التعليقات</h3><button class="sheet-x" onclick="vdCmtClose()" aria-label="إغلاق"><i class="fas fa-times"></i></button></div>
+            <div id="vdCmtList" class="cm-list"></div>
+            <div id="vdCmtBox"></div>
+        </div>
+    </div>
+    <div id="vdAddSheet" class="sheet" hidden onclick="if (event.target === this) vdAddClose()">
+        <div class="sheet-p vd-form">
+            <div class="sheet-h"><h3>إضافة فيديو</h3><button class="sheet-x" onclick="vdAddClose()" aria-label="إغلاق"><i class="fas fa-times"></i></button></div>
+            <p class="ai-note">الصق رابط الفيديو من يوتيوب (عادي أو Shorts).</p>
+            <input id="vdUrl" placeholder="رابط يوتيوب" dir="ltr" onchange="vdFillTitle()">
+            <input id="vdTitle" placeholder="عنوان الفيديو" maxlength="150">
+            <select id="vdCat"></select>
+            <button class="btn-calc" id="vdSaveBtn" onclick="vdSaveNew()">نشر الفيديو</button>
+        </div>
+    </div>
+    <div id="rpSheet" class="sheet" hidden onclick="if (event.target === this) rpClose()" style="z-index: 6000;">
+        <div class="sheet-p">
+            <div class="sheet-h"><h3>إبلاغ عن محتوى</h3><button class="sheet-x" onclick="rpClose()" aria-label="إغلاق"><i class="fas fa-times"></i></button></div>
+            <p class="ai-note">اختار سبب البلاغ، والمشرف هيراجعه.</p>
+            <div class="rp-list">
+                <button onclick="rpSend(0)">إساءة أو محتوى مخالف</button>
+                <button onclick="rpSend(1)">حقوق ملكية (محتوى منسوخ)</button>
+                <button onclick="rpSend(2)">معلومات مساحية غلط</button>
+                <button onclick="rpSend(3)">سبام أو إعلان</button>
+                <button onclick="rpSend(4)">سبب تاني</button>
+            </div>
+        </div>
+    </div>
     <div id="appToast" class="toast" hidden></div>
 </body>
 </html>

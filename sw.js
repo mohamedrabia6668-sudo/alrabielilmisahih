@@ -1,6 +1,6 @@
-const SHELL_CACHE = 'rabia-v3-shell';
+const SHELL_CACHE = 'rabia-v4-shell';
 const LIB_CACHE = 'rabia-libs-v1';
-const SHELL = ['./', 'index.html', 'manifest.json', 'logo.png', 'icon-192.png', 'icon-512.png', 'firebase-config.js'];
+const SHELL = ['./', 'index.html', 'manifest.json', 'logo.png', 'icon-192.png', 'icon-512.png', 'firebase-config.js', 'legal.html'];
 const LIBS = [
   'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
@@ -52,7 +52,7 @@ self.addEventListener('message', e => {
 });
 
 async function netFirst(req, ms) {
-  const cache = await caches.open(SHELL_CACHE), key = req.mode === 'navigate' ? 'index.html' : req;
+  const cache = await caches.open(SHELL_CACHE), pu = new URL(req.url), key = (pu.pathname === '/' || pu.pathname.endsWith('/index.html')) ? 'index.html' : req;
   const back = async () => (await cache.match(key, { ignoreSearch: true })) || (await cache.match('index.html')) || (await cache.match('./'));
   try {
     const res = await Promise.race([fetch(req), new Promise((_, no) => setTimeout(() => no(new Error('slow')), ms))]);
